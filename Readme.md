@@ -1,65 +1,68 @@
 # 🚀 Social Media Application (MERN + TypeScript)
 
-A **production-ready full-stack social media application** built using the MERN stack with TypeScript. This project focuses on **scalability, clean architecture, and real-world backend design patterns**.
+A **production-ready, scalable full-stack social media application** built using the MERN stack with TypeScript.
+This project focuses on **clean architecture, performance optimization, and real-world backend design patterns** used in large-scale systems.
 
 ---
 
-## 🧠 Project Goal
+# 🧠 Project Goal
 
-Build a **real-world social platform** where users can:
+Build a scalable social platform where users can:
 
-- Create and share posts
-- Like and comment on posts
-- Follow/unfollow users
-- View personalized feeds
-- Manage profiles securely
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-- React 18+
-- TypeScript
-- Tailwind CSS
-- Redux Toolkit / Context API
-- Axios
-- React Router
-
-### Backend
-
-- Node.js
-- Express.js
-- TypeScript
-- MongoDB
-- Mongoose
-- JWT (Authentication)
-- bcryptjs (Password hashing)
-
-### Dev Tools
-
-- Nodemon
-- ESLint
-- Prettier
+* Create and share posts
+* Like and comment on posts
+* Follow/unfollow users
+* View personalized feeds
+* Manage user profiles securely
 
 ---
 
-## ✨ Features
+# 🛠️ Tech Stack
 
-- 🔐 Authentication (JWT-based login/register)
-- 👤 User Profiles (bio, profile image)
-- 📝 Posts (CRUD operations)
-- ❤️ Like System (optimized with counts)
-- 💬 Comments System
-- 👥 Follow/Unfollow Users
-- 📰 Feed System (latest + following posts)
+## Frontend
+
+* React 18+
+* TypeScript
+* Tailwind CSS
+* Redux Toolkit
+* Axios
+* React Router
+
+## Backend
+
+* Node.js
+* Express.js
+* TypeScript
+* MongoDB
+* Mongoose
+* JWT (Authentication)
+* bcryptjs (Password hashing)
+
+## Dev Tools
+
+* Nodemon
+* ESLint
+* Prettier
 
 ---
 
-## 🧱 Database Design (Mongoose Models)
+# ✨ Features
 
-### 🧑 User Model
+* 🔐 JWT-based Authentication (Login/Register)
+* 👤 User Profiles (bio, profile image)
+* 📝 Posts (Create, Read, Update, Delete)
+* ❤️ Scalable Like System
+* 💬 Comment System
+* 👥 Follow/Unfollow Users
+* 📰 Personalized Feed System
+
+---
+
+# 🧱 Database Design (Optimized for Scalability)
+
+---
+
+## 🧑 User Model
 
 ```ts
 {
@@ -91,14 +94,11 @@ Build a **real-world social platform** where users can:
     type: String,
     default: ""
   },
-  followers: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }],
-  following: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }],
+
+  // NOTE:
+  // Followers and following arrays are NOT stored here.
+  // Reason: Large users (millions of followers) can exceed MongoDB document size limit (16MB).
+
   createdAt: {
     type: Date,
     default: Date.now
@@ -112,7 +112,7 @@ Build a **real-world social platform** where users can:
 
 ---
 
-### 📝 Post Model
+## 📝 Post Model
 
 ```ts
 {
@@ -128,28 +128,33 @@ Build a **real-world social platform** where users can:
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
+    index: true // Used in feed queries
   },
-  likes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }],
+
+  // NOTE:
+  // Likes array is removed to avoid large document growth.
+  // Instead, Like collection is used.
+
   likeCount: {
     type: Number,
     default: 0
   },
-  comments: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Comment"
-  }],
+
+  // NOTE:
+  // Comments array is removed for scalability.
+
   commentCount: {
     type: Number,
     default: 0
   },
+
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    index: true // Important for sorting feeds
   },
+
   updatedAt: {
     type: Date,
     default: Date.now
@@ -159,7 +164,38 @@ Build a **real-world social platform** where users can:
 
 ---
 
-### 💬 Comment Model
+## ❤️ Like Model (Source of Truth)
+
+```ts
+{
+  post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+    required: true,
+    index: true
+  },
+  likedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    index: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+}
+```
+
+### Unique Index (Prevents Duplicate Likes)
+
+```ts
+LikeSchema.index({ post: 1, likedBy: 1 }, { unique: true });
+```
+
+---
+
+## 💬 Comment Model
 
 ```ts
 {
@@ -171,7 +207,8 @@ Build a **real-world social platform** where users can:
   post: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",
-    required: true
+    required: true,
+    index: true
   },
   commentedBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -181,29 +218,27 @@ Build a **real-world social platform** where users can:
   createdAt: {
     type: Date,
     default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
 }
 ```
 
 ---
 
-### ❤️ Like Model (Important for Scaling)
+## 👥 Follow Model
 
 ```ts
 {
-  post: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Post",
-    required: true
-  },
-  likedBy: {
+  follower: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
+    index: true
+  },
+  following: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    index: true
   },
   createdAt: {
     type: Date,
@@ -212,21 +247,21 @@ Build a **real-world social platform** where users can:
 }
 ```
 
-👉 **Why Like Model?**
+### Unique Index (Prevents Duplicate Follows)
 
-- Tracks history (who liked when)
-- Prevents duplicate likes
-- Useful for analytics
+```ts
+FollowSchema.index({ follower: 1, following: 1 }, { unique: true });
+```
 
 ---
 
-## 📊 Entity Relationship Diagram
+# 📊 Entity Relationship
 
 ```
 User ─── creates ───▶ Post
 User ─── writes ───▶ Comment
-User ─── likes ───▶ Post
-User ─── follows ───▶ User
+User ─── likes ───▶ Post (via Like collection)
+User ─── follows ───▶ User (via Follow collection)
 
 Post ─── has ───▶ Comment
 Post ─── has ───▶ Like
@@ -234,9 +269,11 @@ Post ─── has ───▶ Like
 
 ---
 
-## 🔌 API Design
+# 🔌 API Design
 
-### 🔐 Auth Routes
+---
+
+## 🔐 Auth Routes
 
 ```
 POST   /api/auth/register
@@ -246,23 +283,33 @@ POST   /api/auth/logout
 
 ---
 
-### 👤 User Routes
+## 👤 User Routes
 
 ```
 GET    /api/users/:id
 PUT    /api/users/:id
 POST   /api/users/:id/follow
 DELETE /api/users/:id/follow
-GET    /api/users/:id/followers
-GET    /api/users/:id/following
 ```
 
 ---
 
-### 📝 Post Routes
+## 📰 Feed Route (Important)
 
 ```
-GET    /api/posts
+GET /api/posts/feed
+```
+
+### Why not `/api/posts`?
+
+Fetching all posts is not scalable.
+Feed returns only posts from followed users.
+
+---
+
+## 📝 Post Routes
+
+```
 POST   /api/posts
 GET    /api/posts/:id
 PUT    /api/posts/:id
@@ -271,7 +318,7 @@ DELETE /api/posts/:id
 
 ---
 
-### ❤️ Like Routes
+## ❤️ Like Routes
 
 ```
 POST   /api/likes
@@ -281,30 +328,67 @@ GET    /api/likes/:postId
 
 ---
 
-### 💬 Comment Routes
+## 💬 Comment Routes
 
 ```
 POST   /api/comments
-PUT    /api/comments/:id
-DELETE /api/comments/:id
 GET    /api/comments/:postId
+DELETE /api/comments/:id
 ```
 
 ---
 
-## 🧠 Backend Architecture
+# ⚡ Performance Optimization
+
+---
+
+## Indexing
+
+```ts
+PostSchema.index({ owner: 1, createdAt: -1 });
+```
+
+### Why?
+
+* Optimizes feed queries
+* Avoids full collection scan
+
+---
+
+## Time Complexity
+
+| Operation            | Complexity |
+| -------------------- | ---------- |
+| Feed (without index) | O(n)       |
+| Feed (with index)    | O(log n)   |
+
+---
+
+## Pagination (Recommended)
+
+Use cursor-based pagination:
 
 ```
-controllers → business logic
-routes → API endpoints
-models → database schema
-middleware → auth + error handling
-utils → helper functions
+GET /api/posts/feed?cursor=<timestamp>&limit=10
 ```
 
 ---
 
-## 📁 Project Structure
+# 🧠 Backend Architecture
+
+```
+routes → controllers → services → models
+```
+
+### Why Service Layer?
+
+* Clean separation of logic
+* Reusability
+* Industry best practice
+
+---
+
+# 📁 Project Structure
 
 ```
 social-media/
@@ -313,6 +397,7 @@ social-media/
 │   ├── src/
 │   │   ├── models/
 │   │   ├── controllers/
+│   │   ├── services/
 │   │   ├── routes/
 │   │   ├── middleware/
 │   │   ├── config/
@@ -330,9 +415,9 @@ social-media/
 
 ---
 
-## 🚀 Setup Instructions
+# 🚀 Setup Instructions
 
-### 1️⃣ Clone Repo
+## 1️⃣ Clone Repository
 
 ```bash
 git clone <your-repo-url>
@@ -341,7 +426,7 @@ cd social-media
 
 ---
 
-### 2️⃣ Backend Setup
+## 2️⃣ Backend Setup
 
 ```bash
 cd server
@@ -351,7 +436,7 @@ npm run dev
 
 ---
 
-### 3️⃣ Frontend Setup
+## 3️⃣ Frontend Setup
 
 ```bash
 cd client
@@ -361,9 +446,9 @@ npm start
 
 ---
 
-## 🔑 Environment Variables
+# 🔑 Environment Variables
 
-### Backend `.env`
+## Backend (.env)
 
 ```
 PORT=5000
@@ -379,57 +464,39 @@ CORS_ORIGIN=http://localhost:3000
 
 ---
 
-## 🔒 Security Practices
+# 🔒 Security Practices
 
-- Password hashing using bcrypt
-- JWT-based authentication
-- Input validation
-- Proper error handling
-- Protected routes middleware
-
----
-
-## 📈 Performance Considerations
-
-- Use `likeCount` & `commentCount` (denormalization)
-- Indexing on:
-  - email
-  - username
-  - post owner
-
-- Pagination for feeds
-- Lazy loading for frontend
+* Password hashing using bcrypt
+* JWT-based authentication
+* Input validation
+* Protected routes middleware
+* Unique indexes to prevent duplicates
 
 ---
 
-## 🎯 Future Improvements
+# 📈 Scalability Considerations
 
-- 🔔 Notifications system
-- 📩 Real-time chat (Socket.IO)
-- 📸 Media uploads (Cloudinary)
-- 🧠 AI-based feed ranking
-- 📊 Analytics dashboard
-
----
-
-## 📄 License
-
-MIT License
+* Avoid large arrays in documents
+* Use separate collections (Like, Follow)
+* Use denormalization (counts)
+* Add proper indexing
+* Implement pagination
 
 ---
 
-## 👨‍💻 Author
+# 🚀 Future Improvements
 
-**Your Name Here**
+* 🔔 Notifications System
+* 📩 Real-time Chat (Socket.IO)
+* 📸 Media Upload (Cloudinary)
+* ⚡ Redis Caching
+* 📊 Analytics Dashboard
+* 🧠 AI-based Feed Ranking
 
 ---
 
-## ⭐ Final Note
+# 👨‍💻 Author
 
-This project is designed to reflect **real-world backend engineering practices**, not just CRUD operations.
+**Bhanu Pratap Patkar**
 
-👉 Perfect for:
-
-- Portfolio
-- Interviews
-- Internship / Job applications
+---
