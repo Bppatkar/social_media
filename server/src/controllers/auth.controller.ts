@@ -112,7 +112,7 @@ export const login = async (req: Request, res: Response) => {
         expiresIn: '7d',
       }
     );
-    
+
     /* 
     | Token Type    | Expiry   |
     | ------------- | -------- |
@@ -141,6 +141,21 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(500).json({
       message: 'Login failed',
+      error: error.message,
+    });
+  }
+};
+
+export const logout = async (_req: Request, res: Response) => {
+  try {
+    // For JWT, the primary way to "logout" is for the client to delete the token.
+    // On the server, we simply return a success message.
+    res.status(200).json({
+      message: 'Logged out successfully',
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: 'Logout failed',
       error: error.message,
     });
   }
