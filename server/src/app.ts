@@ -13,6 +13,13 @@ app.get('/', (req, res) => {
   res.send('Social Media API is running');
 });
 
+// Import routes
+import authRoutes from './routes/user.route.js';
+
+// Use routes
+app.use('/api/auth', authRoutes);
+
+
 const PORT = process.env.PORT || 3000;
 db()
   .then(() => {
