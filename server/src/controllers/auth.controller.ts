@@ -154,8 +154,17 @@ export const logout = async (_req: Request, res: Response) => {
       message: 'Logged out successfully',
     });
   } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+    if (error instanceof Error) {
+      console.error('Error', error.message);
+    }
+
     res.status(500).json({
-      message: 'Logout failed',
+      message: 'Login failed',
       error: error.message,
     });
   }

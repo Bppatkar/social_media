@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import type { IUserDocument } from '../types/user.types.js';
 
 const userSchema = new mongoose.Schema(
   {
@@ -43,5 +44,5 @@ const userSchema = new mongoose.Schema(
 userSchema.index({ username: 1 });
 userSchema.index({ email: 1 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<IUserDocument>('User', userSchema);
 export default User;
