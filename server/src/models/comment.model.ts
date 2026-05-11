@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import type { ICommentDocument } from '../types/comment.types.js';
 
 const commentSchema = new mongoose.Schema(
   {
@@ -23,5 +24,5 @@ const commentSchema = new mongoose.Schema(
 );
 commentSchema.index({ post: 1 });
 
-const Comment = mongoose.model('Comment', commentSchema);
+const Comment = mongoose.model<ICommentDocument>('Comment', commentSchema);
 export default Comment;

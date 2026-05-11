@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import type { ILikeDocument } from '../types/like.types.js';
 
 const likeSchema = new mongoose.Schema(
   {
@@ -17,5 +18,5 @@ const likeSchema = new mongoose.Schema(
 );
 likeSchema.index({ post: 1, likedBy: 1 }, { unique: true });
 
-const Like = mongoose.model('Like', likeSchema);
+const Like = mongoose.model<ILikeDocument>('Like', likeSchema);
 export default Like;

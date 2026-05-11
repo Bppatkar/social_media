@@ -1,25 +1,27 @@
-import type { Request, Response } from 'express';
-export const createPost = (req: Request, res: Response) => {
+import type { Response } from 'express';
+import type { AuthRequest } from '../types/auth.types.js';
+
+export const createPost = (req: AuthRequest, res: Response) => {
   try {
   } catch (error) {}
 };
 
-export const likePost = (req: Request, res: Response) => {
+export const getFeedPosts = (req: AuthRequest, res: Response) => {
   try {
   } catch (error) {}
 };
 
-export const commentOnPost = (req: Request, res: Response) => {
+export const getSinglePost = (req: AuthRequest, res: Response) => {
   try {
   } catch (error) {}
 };
 
-export const followUser = (req: Request, res: Response) => {
+export const deletePost = (req: AuthRequest, res: Response) => {
   try {
   } catch (error) {}
 };
 
-export const updateProfile = (req: Request, res: Response) => {
+export const updatePost = (req: AuthRequest, res: Response) => {
   try {
   } catch (error) {}
 };

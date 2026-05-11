@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import type { IPostDocument } from '../types/post.types.js';
 
 const postSchema = new mongoose.Schema(
   {
@@ -22,5 +23,5 @@ const postSchema = new mongoose.Schema(
 
 postSchema.index({ owner: 1, createdAt: -1 });
 
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.model<IPostDocument>('Post', postSchema);
 export default Post;

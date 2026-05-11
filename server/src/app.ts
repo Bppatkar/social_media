@@ -14,11 +14,18 @@ app.get('/', (req, res) => {
 });
 
 // Import routes
-import authRoutes from './routes/auth.route.js';
+import authRoutes from './routes/auth.routes.js';
+import postRoutes from './routes/post.routes.js';
+import commentRoutes from './routes/comment.routes.js';
+import likeRoutes from './routes/like.routes.js';
+import followRoutes from './routes/follow.routes.js';
 
 // Use routes
 app.use('/api/auth', authRoutes);
-
+app.use('/api/posts', postRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/likes', likeRoutes);
+app.use('/api/follows', followRoutes);
 
 const PORT = process.env.PORT || 3000;
 db()
@@ -31,3 +38,7 @@ db()
     console.error('Failed to connect to the database:', error);
     process.exit(1); // Exit with failure
   });
+
+// Error handling middleware
+import errorMiddleware from './middlewares/error.middleware.js';
+app.use(errorMiddleware);

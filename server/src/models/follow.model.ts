@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import type { IFollowDocument } from '../types/follow.types.js';
 
 const followSchema = new mongoose.Schema(
   {
@@ -19,5 +20,5 @@ const followSchema = new mongoose.Schema(
 );
 followSchema.index({ follower: 1, following: 1 }, { unique: true });
 
-const Follow = mongoose.model('Follow', followSchema);
+const Follow = mongoose.model<IFollowDocument>('Follow', followSchema);
 export default Follow;
