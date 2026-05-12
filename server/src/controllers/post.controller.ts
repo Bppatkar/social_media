@@ -1,6 +1,7 @@
 import type { Response } from 'express';
 import type { AuthRequest } from '../types/auth.types.js';
 import asyncHandler from '../utils/asyncHandler.js';
+import getPagination from '../utils/pagination.js';
 
 import {
   createPostService,
@@ -22,7 +23,12 @@ export const createPost = asyncHandler(
 
 export const getFeedPosts = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const posts = await getFeedPostsService();
+    const { page, limit, skip } = getPagination(req.query);
+
+    const search = (req.query.search as string) || '';
+    const sort = (req.query.sort as string) || 'latest';
+
+    const posts = await getFeedPostsService(page, limit, search, sort, skip);
     res.status(200).json(posts);
   }
 );
