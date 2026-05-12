@@ -31,7 +31,7 @@ export const addCommentService = async (
 
 export const getPostCommentsService = async (postId: string) => {
   const comments = await Comment.find({ post: postId })
-    .populate('commentedBy', 'username email profilePicture')
+    .populate('commentedBy', 'username email profileImage')
     .sort({ createdAt: -1 });
   return comments;
 };

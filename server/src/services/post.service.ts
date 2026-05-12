@@ -20,7 +20,7 @@ export const createPostService = async (
 
 export const getFeedPostsService = async () => {
   const posts = await Post.find()
-    .populate('owner', 'username email profilePicture')
+    .populate('owner', 'username email profileImage')
     .sort({ createdAt: -1 });
   return posts;
 };
@@ -28,7 +28,7 @@ export const getFeedPostsService = async () => {
 export const getSinglePostService = async (postId: string) => {
   const post = await Post.findById(postId).populate(
     'owner',
-    'username email profilePicture'
+    'username email profileImage'
   );
 
   if (!post) {

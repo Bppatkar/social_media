@@ -48,7 +48,7 @@ export const unfollowUserService = async (
 export const getFollowersService = async (userId: string) => {
   const followers = await Follow.find({ following: userId }).populate(
     'follower',
-    'username email profilePicture'
+    'username email profileImage'
   );
   return followers;
 };
@@ -56,7 +56,7 @@ export const getFollowersService = async (userId: string) => {
 export const getFollowingService = async (userId: string) => {
   const following = await Follow.find({ follower: userId }).populate(
     'following',
-    'username email profilePicture'
+    'username email profileImage'
   );
   return following;
 };
