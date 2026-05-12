@@ -1,13 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import ApiError from '../utils/ApiError.js';
-import { STATUS_CODES } from 'node:http';
 
 const errorMiddleware = (
   err: Error | ApiError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   // default values
   let statusCode = 500;
@@ -17,21 +16,13 @@ const errorMiddleware = (
   if (err instanceof ApiError) {
     statusCode = err.statusCode;
     message = err.message;
-  }
-
-  // mongoose validation error
-  if (err.name === 'ValidationError') {
+  } else if (err.name === 'ValidationError') {
     statusCode = 400;
     message = err.message;
-  }
-  
-  // JWT errors
-  if (err.name === 'JsonWebTokenError') {
+  } else if (err.name === 'JsonWebTokenError') {
     statusCode = 401;
     message = 'Invalid token';
-  }
-
-  if (err.name === 'TokenExpiredError') {
+  } else if (err.name === 'TokenExpiredError') {
     statusCode = 401;
     message = 'Token expired';
   }

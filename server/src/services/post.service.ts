@@ -9,9 +9,7 @@ export const createPostService = async (
   image: string,
   ownerId: string
 ) => {
-  if (!content) {
-    throw new ApiError(400, 'Content is required');
-  }
+  
   const post = await Post.create({
     content,
     image,

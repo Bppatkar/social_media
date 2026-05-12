@@ -19,7 +19,9 @@ export const likePostService = async (postId: string, userId: string) => {
   post.likeCount += 1;
   await post.save();
 
-  return { message: 'Post liked successfully' };
+  return {
+    likeCount: post.likeCount,
+  };
 };
 
 export const unlikePostService = async (postId: string, userId: string) => {
@@ -33,5 +35,7 @@ export const unlikePostService = async (postId: string, userId: string) => {
     post.likeCount -= 1;
     await post.save();
   }
-  return { message: 'Post unliked successfully' };
+  return {
+    likeCount: post?.likeCount || 0,
+  };
 };

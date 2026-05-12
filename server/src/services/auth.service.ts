@@ -10,25 +10,6 @@ export const registerUserService = async (
   email: string,
   password: string
 ) => {
-  // Validation
-  if (!username || !email || !password) {
-    throw new ApiError(400, 'Username, email and password are required');
-  }
-
-  if (username.length < 3) {
-    throw new ApiError(400, 'Username must be at least 3 characters');
-  }
-
-  if (password.length < 6) {
-    throw new ApiError(400, 'Password must be at least 6 characters');
-  }
-
-  const emailRegex = /^\S+@\S+\.\S+$/;
-
-  if (!emailRegex.test(email)) {
-    throw new ApiError(400, 'Invalid email format');
-  }
-
   // Existing user check
   const existingUser = await User.findOne({
     $or: [{ username }, { email }],
@@ -67,9 +48,7 @@ export const registerUserService = async (
 };
 
 export const loginUserService = async (email: string, password: string) => {
-  if (!email || !password) {
-    throw new ApiError(400, 'Email and password are required');
-  }
+  
 
   // Find user
   const user = await User.findOne({ email });

@@ -42,10 +42,10 @@ export const getSinglePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const postId = req.params.postId as string;
     const post = await getSinglePostService(postId);
-    if (!post) {
-      return res.status(404).json(new ApiResponse(false, 'Post not found', null));
-    }
-    res.status(200).json(new ApiResponse(true, 'Post fetched successfully', post));
+
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Post fetched successfully', post));
   }
 );
 
@@ -54,12 +54,10 @@ export const deletePost = asyncHandler(
     const postId = req.params.postId as string;
     const userId = req.user!.userId;
     const result = await deletePostService(postId, userId);
-    if (!result) {
-      return res
-        .status(404)
-        .json(new ApiResponse(false, 'Post not found or unauthorized', null));
-    }
-    res.status(200).json(new ApiResponse(true, 'Post deleted successfully', null));
+
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Post deleted successfully', null));
   }
 );
 
@@ -72,6 +70,8 @@ export const updatePost = asyncHandler(
 
     const updatedPost = await updatePostService(postId, userId, content, image);
 
-    res.status(200).json(new ApiResponse(true, 'Post updated successfully', updatedPost));
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Post updated successfully', updatedPost));
   }
 );

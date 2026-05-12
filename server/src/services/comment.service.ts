@@ -11,10 +11,7 @@ export const addCommentService = async (
   userId: string,
   content: string
 ) => {
-  if (!content) {
-    throw new ApiError(400, 'Content is required');
-  }
-
+  
   const post = await Post.findById(postId);
   if (!post) {
     throw new ApiError(404, 'Post not found');

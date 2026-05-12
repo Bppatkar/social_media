@@ -3,7 +3,6 @@ import User from '../models/user.model.js';
 
 import ApiError from '../utils/ApiError.js';
 
-import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
 
 export const followUserService = async (
@@ -30,7 +29,7 @@ export const followUserService = async (
 
   await Follow.create({ follower: followerId, following: followingId });
 
-  return { message: 'User followed successfully' };
+  return { followingId, followerId };
 };
 
 export const unfollowUserService = async (

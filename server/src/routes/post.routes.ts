@@ -8,13 +8,45 @@ import {
   updatePost,
 } from '../controllers/post.controller.js';
 
+import validate from '../middlewares/validate.middleware.js';
+
+import {
+  createPostSchema,
+  postIdParamSchema,
+    updatePostWithParamSchema,
+} from '../validators/post.validation.js';
+import { paginationQuerySchema } from '../validators/common.validation.js';
+
 const router = Router();
 
 //! Protected route
-router.post('/create', authMiddleware, createPost);
-router.get('/feed', authMiddleware, getFeedPosts);
-router.get('/:postId', authMiddleware, getSinglePost);
-router.delete('/:postId', authMiddleware, deletePost);
-router.put('/:postId', authMiddleware, updatePost);
+router.post('/create', authMiddleware, validate(createPostSchema), createPost);
+router.get(
+  '/feed',
+  validate(paginationQuerySchema),
+  authMiddleware,
+  getFeedPosts
+);
+
+router.get(
+  '/:postId',
+  validate(postIdParamSchema),
+  authMiddleware,
+  getSinglePost
+);
+
+router.delete(
+  '/:postId',
+  validate(postIdParamSchema),
+  authMiddleware,
+  deletePost
+);
+
+router.put(
+  '/:postId',
+  validate(updatePostWithParamSchema),
+  authMiddleware,
+  updatePost
+);
 
 export default router;
