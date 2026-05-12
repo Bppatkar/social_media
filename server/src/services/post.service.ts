@@ -1,5 +1,7 @@
 import Post from '../models/post.model.js';
 import ApiError from '../utils/ApiError.js';
+import buildSearchQuery from '../utils/search.js';
+import buildSortQuery from '../utils/sort.js';
 
 //? Basic Structure of a service function
 export const createPostService = async (
@@ -26,17 +28,10 @@ export const getFeedPostsService = async (
   skip: number
 ) => {
   // search filter
-  const searchFilter = search
-    ? { content: { $regex: search, $options: 'i' } } // $options: 'i' for case-insensitive search
-    : {};
+  const searchFilter = buildSearchQuery('content', search);
 
-  // sorting  const sortOption = sort === 'asc' ? { createdAt: 1 } : { createdAt: -1 };
-  let sortOption = {};
-  if (sort === 'oldest') {
-    sortOption = { createdAt: 1 };
-  } else {
-    sortOption = { createdAt: -1 };
-  }
+  // sorting
+  const sortOption = buildSortQuery(sort);
 
   // query
   const posts = await Post.find(searchFilter)
@@ -50,7 +45,7 @@ export const getFeedPostsService = async (
 
   return {
     currentPage: page,
-    totalPages: totalPosts === 0 ? 1 : Math.ceil(totalPosts / limit), 
+    totalPages: totalPosts === 0 ? 1 : Math.ceil(totalPosts / limit),
     // Math.ciel = (12/5) = 2.4 => 3
     totalPosts,
     posts,

@@ -3,6 +3,9 @@ import Post from '../models/post.model.js';
 
 import ApiError from '../utils/ApiError.js';
 
+import buildSearchQuery from '../utils/search.js';
+import buildSortQuery from '../utils/sort.js';
+
 export const addCommentService = async (
   postId: string,
   userId: string,
@@ -29,11 +32,34 @@ export const addCommentService = async (
   return comment;
 };
 
-export const getPostCommentsService = async (postId: string) => {
-  const comments = await Comment.find({ post: postId })
+export const getPostCommentsService = async (
+  postId: string,
+  page: number,
+  limit: number,
+  skip: number,
+  search: string,
+  sort: string
+) => {
+  const searchFilter = search
+    ? { post: postId, ...buildSearchQuery('content', search) }
+    : { post: postId };
+
+  const sortOption = buildSortQuery(sort);
+
+  const comments = await Comment.find(searchFilter)
     .populate('commentedBy', 'username email profileImage')
-    .sort({ createdAt: -1 });
-  return comments;
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limit);
+
+  const totalComments = await Comment.countDocuments(searchFilter);
+
+  return {
+    currentPage: page,
+    totalPages: totalComments === 0 ? 1 : Math.ceil(totalComments / limit),
+    totalComments,
+    comments,
+  };
 };
 
 export const deleteCommentService = async (

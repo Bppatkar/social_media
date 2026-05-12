@@ -10,6 +10,7 @@ import {
   deletePostService,
   updatePostService,
 } from '../services/post.service.js';
+import ApiResponse from '../utils/ApiResponse.js';
 
 export const createPost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -17,7 +18,9 @@ export const createPost = asyncHandler(
     const ownerId = req.user!.userId;
 
     const post = await createPostService(content, image, ownerId);
-    res.status(201).json(post);
+    res
+      .status(201)
+      .json(new ApiResponse(true, 'Post created successfully', post));
   }
 );
 
@@ -29,7 +32,9 @@ export const getFeedPosts = asyncHandler(
     const sort = (req.query.sort as string) || 'latest';
 
     const posts = await getFeedPostsService(page, limit, search, sort, skip);
-    res.status(200).json(posts);
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Posts fetched successfully', posts));
   }
 );
 
@@ -38,9 +43,9 @@ export const getSinglePost = asyncHandler(
     const postId = req.params.postId as string;
     const post = await getSinglePostService(postId);
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json(new ApiResponse(false, 'Post not found', null));
     }
-    res.status(200).json(post);
+    res.status(200).json(new ApiResponse(true, 'Post fetched successfully', post));
   }
 );
 
@@ -52,9 +57,9 @@ export const deletePost = asyncHandler(
     if (!result) {
       return res
         .status(404)
-        .json({ message: 'Post not found or unauthorized' });
+        .json(new ApiResponse(false, 'Post not found or unauthorized', null));
     }
-    res.status(200).json({ message: 'Post deleted successfully' });
+    res.status(200).json(new ApiResponse(true, 'Post deleted successfully', null));
   }
 );
 
@@ -67,6 +72,6 @@ export const updatePost = asyncHandler(
 
     const updatedPost = await updatePostService(postId, userId, content, image);
 
-    res.status(200).json(updatedPost);
+    res.status(200).json(new ApiResponse(true, 'Post updated successfully', updatedPost));
   }
 );

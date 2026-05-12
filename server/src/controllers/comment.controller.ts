@@ -9,6 +9,8 @@ import {
   getPostCommentsService,
   deleteCommentService,
 } from '../services/comment.service.js';
+import ApiResponse from '../utils/ApiResponse.js';
+import getPagination from '../utils/pagination.js';
 
 export const addComment = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -18,7 +20,9 @@ export const addComment = asyncHandler(
 
     const comment = await addCommentService(postId, userId, content);
 
-    res.status(201).json(comment);
+    res
+      .status(201)
+      .json(new ApiResponse(true, 'Comment added successfully', comment));
   }
 );
 
@@ -26,9 +30,14 @@ export const getPostComments = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const postId = req.params.postId as string;
 
-    const comments = await getPostCommentsService(postId);
+    const {page, limit, skip} = getPagination(req.query);
 
-    res.status(200).json(comments);
+    const search = (req.query.search as string) || '';
+    const sort = (req.query.sort as string) || 'latest';
+
+    const comments = await getPostCommentsService(postId, page, limit, skip, search, sort);
+
+    res.status(200).json(new ApiResponse(true, 'Comments retrieved successfully', comments));
   }
 );
 
@@ -40,6 +49,6 @@ export const deleteComment = asyncHandler(
 
     const result = await deleteCommentService(commentId, userId);
 
-    res.status(200).json(result);
+    res.status(200).json(new ApiResponse(true, 'Comment deleted successfully', result));
   }
 );

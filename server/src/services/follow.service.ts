@@ -3,6 +3,9 @@ import User from '../models/user.model.js';
 
 import ApiError from '../utils/ApiError.js';
 
+import buildSearchQuery from '../utils/search.js';
+import buildSortQuery from '../utils/sort.js';
+
 export const followUserService = async (
   followerId: string,
   followingId: string
@@ -45,18 +48,50 @@ export const unfollowUserService = async (
   return { message: 'User unfollowed successfully' };
 };
 
-export const getFollowersService = async (userId: string) => {
-  const followers = await Follow.find({ following: userId }).populate(
-    'follower',
-    'username email profileImage'
-  );
-  return followers;
+export const getFollowersService = async (
+  userId: string,
+  page: number,
+  limit: number,
+  skip: number,
+  sort: string
+) => {
+  const sortOption = buildSortQuery(sort);
+
+  const followers = await Follow.find({ following: userId })
+    .populate('follower', 'username email profileImage')
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limit);
+
+  const totalFollowers = await Follow.countDocuments({ following: userId });
+  return {
+    currentPage: page,
+    totalPages: totalFollowers === 0 ? 1 : Math.ceil(totalFollowers / limit),
+    totalFollowers,
+    followers,
+  };
 };
 
-export const getFollowingService = async (userId: string) => {
-  const following = await Follow.find({ follower: userId }).populate(
-    'following',
-    'username email profileImage'
-  );
-  return following;
+export const getFollowingService = async (
+  userId: string,
+  page: number,
+  limit: number,
+  skip: number,
+  sort: string
+) => {
+  const sortOption = buildSortQuery(sort);
+
+  const following = await Follow.find({ follower: userId })
+    .populate('following', 'username email profileImage')
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limit);
+
+  const totalFollowing = await Follow.countDocuments({ follower: userId });
+  return {
+    currentPage: page,
+    totalPages: totalFollowing === 0 ? 1 : Math.ceil(totalFollowing / limit),
+    totalFollowing,
+    following,
+  };
 };

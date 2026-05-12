@@ -10,6 +10,8 @@ import {
   getFollowersService,
   getFollowingService,
 } from '../services/follow.service.js';
+import ApiResponse from '../utils/ApiResponse.js';
+import getPagination from '../utils/pagination.js';
 
 export const followUser = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -18,7 +20,9 @@ export const followUser = asyncHandler(
 
     const result = await followUserService(followerId, followingId);
 
-    res.status(200).json(result);
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'User followed successfully', result));
   }
 );
 
@@ -30,7 +34,9 @@ export const unfollowUser = asyncHandler(
 
     const result = await unfollowUserService(followerId, followingId);
 
-    res.status(200).json(result);
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'User unfollowed successfully', result));
   }
 );
 
@@ -38,18 +44,37 @@ export const getFollowers = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const userId = req.params.userId as string;
 
-    const followers = await getFollowersService(userId);
+    const { page, limit, skip } = getPagination(req.query);
+    const sort = (req.query.sort as string) || 'latest';
 
-    res.status(200).json(followers);
+    const followers = await getFollowersService(
+      userId,
+      page,
+      limit,
+      skip,
+      sort
+    );
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(true, 'Followers retrieved successfully', followers)
+      );
   }
 );
 
 export const getFollowing = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const userId = req.params.userId as string;
+    const { page, limit, skip } = getPagination(req.query);
+    const sort = (req.query.sort as string) || 'latest';
 
-    const following = await getFollowingService(userId);
+    const following = await getFollowingService(userId, page, limit, skip, sort);
 
-    res.status(200).json(following);
+    res
+      .status(200)
+      .json(
+        new ApiResponse(true, 'Following retrieved successfully', following)
+      );
   }
 );

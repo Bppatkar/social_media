@@ -2,6 +2,7 @@ import type { Response } from 'express';
 import type { AuthRequest } from '../types/auth.types.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import { likePostService, unlikePostService } from '../services/like.service.js';
+import ApiResponse from '../utils/ApiResponse.js';
 
 export const likePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -11,7 +12,7 @@ export const likePost = asyncHandler(
 
     const result = await likePostService(postId, userId);
 
-    res.status(200).json(result);
+    res.status(200).json(new ApiResponse(true, 'Post liked successfully', result));
   }
 );
 
@@ -23,6 +24,6 @@ export const unlikePost = asyncHandler(
 
     const result = await unlikePostService(postId, userId);
 
-    res.status(200).json(result);
+    res.status(200).json(new ApiResponse(true, 'Post unliked successfully', result));
   }
 );
