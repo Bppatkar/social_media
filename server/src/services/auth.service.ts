@@ -48,8 +48,6 @@ export const registerUserService = async (
 };
 
 export const loginUserService = async (email: string, password: string) => {
-  
-
   // Find user
   const user = await User.findOne({ email });
 
@@ -85,4 +83,12 @@ export const loginUserService = async (email: string, password: string) => {
 export const logoutUserService = async () => {
   // For JWT, logout is handled on the client side by deleting the token.
   // Optionally, you can implement token blacklisting on the server side if needed.
+};
+
+export const getUserProfileService = async (userId: string) => {
+  const user = await User.findById(userId).select('-password');
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+  return user;
 };

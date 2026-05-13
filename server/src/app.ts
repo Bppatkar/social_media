@@ -1,4 +1,5 @@
 import express from 'express';
+import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
 import db from './db/db.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -6,6 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+applySecurityMiddlewares(app);
 app.use(cors());
 app.use(express.json());
 
