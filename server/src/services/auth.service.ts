@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 
 import User from '../models/user.model.js';
 
-import generateToken from '../utils/generateToken.js';
+import generateToken from '../utils/generateAccessToken.js';
 import ApiError from '../utils/ApiError.js';
 
 export const registerUserService = async (
