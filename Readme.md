@@ -10,20 +10,21 @@ A professionally structured and scalable social media backend built with modern 
 
 This project focuses heavily on:
 
-- Scalable Architecture
-- Backend Engineering Principles
-- Security
-- Performance Optimization
-- Reusable Backend Patterns
-- Clean Code Organization
-- Real-world API Design
+* Scalable Architecture
+* Backend Engineering Principles
+* Production Authentication Systems
+* Security Architecture
+* Performance Optimization
+* Reusable Backend Patterns
+* Clean Code Organization
+* Real-world API Design
 
-The architecture and database design are inspired by production-scale applications such as:
+Inspired by backend architectures used in:
 
-- Instagram
-- Twitter/X
-- LinkedIn
-- Threads
+* Instagram
+* Twitter/X
+* LinkedIn
+* Threads
 
 ---
 
@@ -31,45 +32,60 @@ The architecture and database design are inspired by production-scale applicatio
 
 ## 🖥️ Backend
 
-- Node.js
-- Express.js
-- TypeScript
-- MongoDB
-- Mongoose
+* Node.js
+* Express.js
+* TypeScript
+* MongoDB
+* Mongoose
 
 ---
 
-## 🔐 Authentication & Security
+# 🔐 Authentication & Security
 
-- JWT Authentication
-- Protected Routes
-- Ownership Authorization
-- Helmet Security
-- Rate Limiting
-- HPP Protection
-- MongoDB Injection Protection
-- Secure Error Responses
+## ✅ Production Authentication System
 
----
-
-## ✅ Validation
-
-- Zod v4 Validation
-- Request Validation Middleware
-- Params Validation
-- Query Validation
-- MongoDB ObjectId Validation
+* JWT Access Token
+* JWT Refresh Token
+* Refresh Token Rotation
+* Session Rotation
+* Refresh Token Revocation
+* Database-based Session Management
+* Protected Routes
+* Authentication Middleware
+* Secure Logout Architecture
+* Current User Endpoint
 
 ---
 
-## 🧠 Backend Architecture
+## ✅ Security Middleware
 
-- Controller Layer
-- Service Layer
-- Middleware Layer
-- Validation Layer
-- Utility Layer
-- Centralized Error Handling
+* Helmet
+* Express Rate Limit
+* HPP Protection
+* MongoDB Injection Protection
+* Secure Error Responses
+
+---
+
+# ✅ Validation
+
+* Zod Validation
+* Request Validation Middleware
+* Params Validation
+* Query Validation
+* MongoDB ObjectId Validation
+* Structured Validation Errors
+
+---
+
+# 🧠 Backend Architecture
+
+* Controller Layer
+* Service Layer
+* Middleware Layer
+* Validation Layer
+* Utility Layer
+* Centralized Error Handling
 
 ---
 
@@ -121,24 +137,91 @@ Centralized Response
 
 ---
 
-# 🧠 Backend Engineering Concepts Applied
+# 🔐 AUTHENTICATION FLOW
 
-This project focuses on real backend engineering concepts instead of only CRUD development.
+# LOGIN FLOW
+
+```text
+User Login
+   ↓
+Verify Credentials
+   ↓
+Generate Access Token
+   ↓
+Generate Refresh Token
+   ↓
+Store Refresh Token In Database
+   ↓
+Return Tokens To Client
+```
+
+---
+
+# REFRESH TOKEN FLOW
+
+```text
+Access Token Expired
+   ↓
+Frontend Calls /auth/refresh
+   ↓
+Backend Verifies Refresh Token
+   ↓
+Check Token In Database
+   ↓
+Check isRevoked Flag
+   ↓
+Check Expiry Time
+   ↓
+Generate New Access Token
+```
+
+---
+
+# LOGOUT FLOW
+
+```text
+User Clicks Logout
+   ↓
+Frontend Sends Refresh Token
+   ↓
+Backend Revokes Session
+   ↓
+Token Becomes Invalid
+```
+
+---
+
+# SESSION ROTATION FLOW
+
+```text
+User Logs In Again
+   ↓
+Old Refresh Tokens Revoked
+   ↓
+New Refresh Token Generated
+   ↓
+Only Latest Session Remains Active
+```
+
+---
+
+# 🧠 Backend Engineering Concepts Applied
 
 Implemented concepts include:
 
-- Layered Architecture
-- Separation of Concerns
-- Centralized Error Handling
-- Validation Architecture
-- Scalable MongoDB Relationship Modeling
-- Reusable Middleware Design
-- Production-style API Responses
-- Token-based Authentication
-- Pagination Architecture
-- Search & Sorting Utilities
-- Denormalization Concepts
-- Indexing Strategies
+* Layered Architecture
+* Separation of Concerns
+* Centralized Error Handling
+* Production Authentication Architecture
+* Refresh Token Rotation
+* Session Revocation
+* Reusable Middleware Design
+* Production-style API Responses
+* Pagination Architecture
+* Search & Sorting Utilities
+* Scalable MongoDB Relationship Modeling
+* Denormalization Concepts
+* Indexing Strategies
 
 ---
 
@@ -146,70 +229,58 @@ Implemented concepts include:
 
 # ✅ Authentication System
 
-- User Registration
-- User Login
-- User Logout
-- JWT Token Generation
-- Protected Routes
-- Authentication Middleware
-- Current User Endpoint (`/auth/me`)
+* User Registration
+* User Login
+* Access Token Authentication
+* Refresh Token Authentication
+* Refresh Token Rotation
+* Session Rotation
+* Refresh Token Revocation
+* Secure Logout
+* Protected Routes
+* Current User Endpoint (`/auth/me`)
 
 ---
 
 # ✅ Post System
 
-- Create Post
-- Update Post
-- Delete Post
-- Get Single Post
-- Feed API
-- Pagination
-- Search
-- Sorting
-- Ownership Validation
+* Create Post
+* Update Post
+* Delete Post
+* Get Single Post
+* Feed API
+* Pagination
+* Search
+* Sorting
+* Ownership Validation
 
 ---
 
 # ✅ Like System
 
-- Like Post
-- Unlike Post
-- Duplicate Like Prevention
+* Like Post
+* Unlike Post
+* Duplicate Like Prevention
 
 ---
 
 # ✅ Comment System
 
-- Add Comment
-- Delete Comment
-- Get Post Comments
+* Add Comment
+* Delete Comment
+* Get Post Comments
 
 ---
 
 # ✅ Follow System
 
-- Follow User
-- Unfollow User
-- Get Followers
-- Get Following
-- Self-follow Prevention
+* Follow User
+* Unfollow User
+* Self-follow Prevention
 
 ---
 
-# ✅ Validation System (Zod)
-
-Industry-level validation architecture:
-
-- Body Validation
-- Params Validation
-- Query Validation
-- Pagination Validation
-- MongoDB ObjectId Validation
-- Structured Validation Errors
-
----
-
-# 🔍 Example Validation Error Response
+# 🔍 Example Validation Error
 
 ```json
 {
@@ -222,24 +293,6 @@ Industry-level validation architecture:
     }
   ]
 }
-```
-
----
-
-# ✅ Pagination + Search + Sorting
-
-Reusable utilities implemented for:
-
-- Pagination
-- Search
-- Sorting
-
----
-
-# 🔍 Example Query
-
-```bash
-/api/posts/feed?page=1&limit=10&sort=latest&search=mern
 ```
 
 ---
@@ -251,31 +304,14 @@ Reusable utilities implemented for:
 ```json
 {
   "success": true,
-  "message": "Post created successfully",
+  "message": "Success",
   "data": {}
 }
 ```
 
 ---
 
-## ❌ Validation Error Response
-
-```json
-{
-  "success": false,
-  "message": "Validation Error",
-  "errors": [
-    {
-      "field": "body.email",
-      "message": "Invalid email address"
-    }
-  ]
-}
-```
-
----
-
-## ❌ Server Error Response
+# ❌ Error Response
 
 ```json
 {
@@ -286,122 +322,6 @@ Reusable utilities implemented for:
 
 ---
 
-# 🧠 Database Design Philosophy
-
-This backend avoids storing massive embedded arrays inside documents.
-
-Instead of:
-
-```js
-post.likes = [];
-user.followers = [];
-```
-
-Separate scalable collections are used:
-
-- Like Collection
-- Follow Collection
-- Comment Collection
-
-This prevents:
-
-- Huge MongoDB document growth
-- Large array update problems
-- Performance degradation
-
----
-
-# 📊 Database Models
-
-## 👤 User
-
-- username
-- email
-- password
-- bio
-- profileImage
-
----
-
-## 📝 Post
-
-- content
-- image
-- owner
-- likeCount
-- commentCount
-
----
-
-## ❤️ Like
-
-- post
-- likedBy
-
----
-
-## 💬 Comment
-
-- content
-- post
-- commentedBy
-
----
-
-## 👥 Follow
-
-- follower
-- following
-
----
-
-# ⚡ Performance Optimizations
-
-# ✅ Pagination
-
-Paginated APIs implemented to avoid loading massive datasets into memory.
-
----
-
-# ✅ Indexing
-
-MongoDB indexes added for:
-
-- Feed Queries
-- Follow Queries
-- Like Queries
-- Search Operations
-
----
-
-# ✅ Denormalization
-
-Counts stored directly inside documents:
-
-```js
-likeCount;
-commentCount;
-```
-
-This reduces expensive aggregation operations.
-
----
-
-# 🔐 Security Features
-
-## ✅ Implemented Security Stack
-
-- Helmet Security Headers
-- Rate Limiting
-- HTTP Parameter Pollution Protection (HPP)
-- MongoDB Injection Protection
-- JWT Authentication
-- Protected Routes
-- Ownership Authorization
-- Secure Error Responses
-
----
-
 # 🧪 Example API Endpoints
 
 # 🔐 Auth
@@ -409,6 +329,7 @@ This reduces expensive aggregation operations.
 ```http
 POST   /api/auth/register
 POST   /api/auth/login
+POST   /api/auth/refresh
 POST   /api/auth/logout
 GET    /api/auth/me
 ```
@@ -427,47 +348,9 @@ DELETE /api/posts/:postId
 
 ---
 
-# ❤️ Likes
-
-```http
-POST   /api/likes/:postId
-DELETE /api/likes/:postId
-```
-
----
-
-# 💬 Comments
-
-```http
-POST   /api/comments/:postId
-GET    /api/comments/:postId
-DELETE /api/comments/:commentId
-```
-
----
-
-# 👥 Follow
-
-```http
-POST   /api/follow/:userId
-DELETE /api/follow/:userId
-GET    /api/follow/followers/:userId
-GET    /api/follow/following/:userId
-```
-
----
-
 # 🚀 Getting Started
 
-# 1️⃣ Clone Repository
-
-```bash
-git clone <your-repository-url>
-```
-
----
-
-# 2️⃣ Install Dependencies
+## 1️⃣ Install Dependencies
 
 ```bash
 npm install
@@ -475,24 +358,23 @@ npm install
 
 ---
 
-# 3️⃣ Setup Environment Variables
-
-Create `.env`
+## 2️⃣ Setup Environment Variables
 
 ```env
 PORT=3000
 
 MONGODB_URI=your_mongodb_uri
 
-JWT_ACCESS_SECRET=your_secret_key
+JWT_ACCESS_SECRET=your_access_secret
 JWT_ACCESS_EXPIRES_IN=15m
+
 JWT_REFRESH_SECRET=your_refresh_secret
 JWT_REFRESH_EXPIRES_IN=7d
 ```
 
 ---
 
-# 4️⃣ Run Development Server
+## 3️⃣ Run Development Server
 
 ```bash
 npm run dev
@@ -500,79 +382,54 @@ npm run dev
 
 ---
 
-# 🧠 Current Backend Level
+# 🚀 Upcoming Features
 
-This project is no longer a beginner CRUD application.
+## 🍪 Cookie Authentication
 
-Current backend engineering concepts implemented:
-
-✅ Layered Architecture
-✅ Reusable Middleware
-✅ Production-style Validation
-✅ Service Layer Pattern
-✅ Centralized Error Handling
-✅ Pagination Utilities
-✅ Search & Sorting Utilities
-✅ JWT Authentication
-✅ Scalable MongoDB Relationships
-✅ Security Middleware Integration
+* HTTP-only Cookies
+* Secure Cookies
+* SameSite Cookies
 
 ---
 
-# 🚀 Upcoming Backend Engineering Features
+## 🔐 Advanced Security
 
-## 🔐 Authentication & Security
-
-- Refresh Token System
-- HTTP-only Cookie Authentication
-- RBAC (Role Based Access Control)
-- Session Management
-- Advanced Security Hardening
+* Refresh Token Reuse Detection
+* RBAC
+* Device-based Sessions
+* Token Blacklisting
 
 ---
 
-## ⚡ Infrastructure & Scalability
+## ⚡ Scalability
 
-- Redis Caching
-- Feed Optimization
-- Request Logging & Monitoring
-- Queue Systems
-
----
-
-## 📦 Media & Realtime
-
-- Multer File Uploads
-- Cloudinary Integration
-- WebSockets
-- Real-time Notifications
-- Live Chat System
+* Redis Caching
+* Feed Optimization
+* Queue Systems
 
 ---
 
-## 🚀 DevOps & Deployment
+## 📦 Media Features
 
-- Docker
-- CI/CD Pipeline
-- AWS Deployment
-- Nginx Reverse Proxy
+* Multer Uploads
+* Cloudinary Integration
 
 ---
 
-# 🧠 Learning Goals of This Project
+## 🔔 Realtime Features
 
-The primary goal of this project is to deeply understand:
+* Socket.IO
+* Live Notifications
+* Real-time Chat
 
-- Backend Engineering
-- Scalable API Design
-- Security Architecture
-- Database Modeling
-- Authentication Systems
-- Production-level Backend Patterns
-- Performance Optimization
-- Maintainable Project Structure
+---
 
-instead of building tutorial-level CRUD applications only.
+## 🚀 DevOps
+
+* Docker
+* CI/CD
+* AWS Deployment
+* Nginx
 
 ---
 
@@ -587,16 +444,15 @@ https://github.com/Bppatkar
 
 ---
 
-# ⭐ Project Vision
+# ⭐ Vision
 
-Build a production-style backend system while learning:
+Build a production-style backend system while deeply learning:
 
-- Real-world backend architecture
-- Security best practices
-- Scalable database design
-- Production engineering workflows
-- System design fundamentals
+* Backend Engineering
+* Security Architecture
+* Scalable System Design
+* Authentication Systems
+* Performance Optimization
+* Production Workflows
 
-step-by-step through practical implementation.
-
----
+through practical implementation.
