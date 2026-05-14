@@ -14,14 +14,15 @@ import {
   clearTokenCookieOptions,
   refreshTokenCookieOptions,
 } from '../utils/cookieOptions.js';
+import { clearAuthCookies, setAuthCookies } from '../utils/authCookies.js';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   const data = await registerUserService(username, email, password);
 
+  setAuthCookies(res, data.accessToken, data.refreshToken);
+
   res
-    .cookie('accessToken', data.accessToken, accessTokenCookieOptions)
-    .cookie('refreshToken', data.refreshToken, refreshTokenCookieOptions)
     .status(201)
     .json(
       new ApiResponse(true, 'User registered successfully', { user: data.user })
@@ -32,11 +33,8 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const data = await loginUserService(email, password);
 
-  // setting refresh and access token in cookie
-  // console.log(data,"logged in data");
+  setAuthCookies(res, data.accessToken, data.refreshToken);
   res
-    .cookie('accessToken', data.accessToken, accessTokenCookieOptions)
-    .cookie('refreshToken', data.refreshToken, refreshTokenCookieOptions)
     .status(200)
     .json(
       new ApiResponse(true, 'user logged in successfully', { user: data.user })
@@ -48,11 +46,9 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
   await logoutUserService(refreshToken);
 
-  res
-    .clearCookie('accessToken', clearTokenCookieOptions)
-    .clearCookie('refreshToken', clearTokenCookieOptions)
-    .status(200)
-    .json(new ApiResponse(true, 'Logged out successfully', null));
+  clearAuthCookies(res);
+
+  res.status(200).json(new ApiResponse(true, 'Logged out successfully', null));
 });
 
 export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
