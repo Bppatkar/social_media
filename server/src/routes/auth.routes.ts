@@ -25,6 +25,6 @@ router.get(
   validate(userIdParamSchema),
   getUserProfile
 );
-router.post('/logout', authMiddleware, logout);
+router.post('/logout', validate(refreshTokenSchema), authMiddleware, logout);
 
 export default router;
