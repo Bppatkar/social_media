@@ -2,13 +2,20 @@ import express from 'express';
 import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
 import db from './db/db.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const app = express();
 applySecurityMiddlewares(app);
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true, // Allow cookies to be sent with requests
+  })
+);
 app.use(express.json());
 
 app.get('/', (req, res) => {

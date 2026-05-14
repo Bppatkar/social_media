@@ -161,6 +161,9 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
     throw new ApiError(401, 'Refresh token expired');
   }
 
+  existingToken.isRevoked = true;
+  await existingToken.save();
+
   const user = await User.findById(decoded.userId);
 
   if (!user) {
@@ -173,7 +176,18 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
     username: user.username,
   });
 
+  const newRefreshToken = generateRefreshToken({
+    userId: user._id.toString(),
+  });
+
+  await RefreshToken.create({
+    user: user._id,
+    token: newRefreshToken,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  });
+
   return {
     accessToken,
+    refreshToken: newRefreshToken,
   };
 };
