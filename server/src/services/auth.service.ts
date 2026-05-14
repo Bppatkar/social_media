@@ -2,8 +2,10 @@ import bcrypt from 'bcryptjs';
 
 import User from '../models/user.model.js';
 
-import generateToken from '../utils/generateAccessToken.js';
 import ApiError from '../utils/ApiError.js';
+import generateAccessToken from '../utils/generateAccessToken.js';
+import generateRefreshToken from '../utils/generateRefreshToken.js';
+import RefreshToken from '../models/RefreshToken.model.js';
 
 export const registerUserService = async (
   username: string,
@@ -29,16 +31,33 @@ export const registerUserService = async (
     password: hashedPass,
   });
 
-  // Generate token
-  const token = generateToken({
+  // Generate access and refresh tokens
+
+  const accessToken = generateAccessToken({
     userId: user._id.toString(),
     username: user.username,
   });
 
+  const refreshToken = generateRefreshToken({
+    userId: user._id.toString(),
+  });
+
+  await RefreshToken.create({
+    user: user._id,
+    token: refreshToken,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+  });
+
+  // const token = generateToken({
+  //   userId: user._id.toString(),
+  //   username: user.username,
+  // });
+
   // Response
   return {
     message: 'User registered successfully',
-    token,
+    accessToken,
+    refreshToken,
     user: {
       _id: user._id,
       username: user.username,
@@ -62,16 +81,27 @@ export const loginUserService = async (email: string, password: string) => {
     throw new ApiError(400, 'Invalid email or password');
   }
 
-  // Generate token
-  const token = generateToken({
+  // Generate access and refresh tokens
+  const accessToken = generateAccessToken({
     userId: user._id.toString(),
     username: user.username,
+  });
+
+  const refreshToken = generateRefreshToken({
+    userId: user._id.toString(),
+  });
+
+  await RefreshToken.create({
+    user: user._id,
+    token: refreshToken,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
   });
 
   // Response
   return {
     message: 'Login successful',
-    token,
+    accessToken,
+    refreshToken,
     user: {
       _id: user._id,
       username: user.username,

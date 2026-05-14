@@ -1,14 +1,22 @@
 import jwt from 'jsonwebtoken';
 
-interface TokenPayload {
+interface AccessTokenPayload {
   userId: string;
   username: string;
 }
 
-const generateToken = (payload: TokenPayload) => {
-  return jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, {
-    expiresIn: '7d',
+const generateAccessToken = (payload: AccessTokenPayload) => {
+  const secret = process.env.JWT_ACCESS_SECRET;
+
+  if (!secret) {
+    throw new Error(
+      'JWT_ACCESS_SECRET is not defined in environment variables'
+    );
+  }
+
+  return jwt.sign(payload, secret, {
+    expiresIn: '15m',
   });
 };
 
-export default generateToken;
+export default generateAccessToken;
