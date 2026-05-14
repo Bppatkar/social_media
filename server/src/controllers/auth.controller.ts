@@ -28,8 +28,9 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     .json(new ApiResponse(true, 'user logged in successfully', data));
 });
 
-export const logout = asyncHandler(async (_req: Request, res: Response) => {
-  await logoutUserService();
+export const logout = asyncHandler(async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+  await logoutUserService(refreshToken);
   res.status(200).json(new ApiResponse(true, 'Logged out successfully', null));
 });
 

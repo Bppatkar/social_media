@@ -89,6 +89,13 @@ export const loginUserService = async (email: string, password: string) => {
     username: user.username,
   });
 
+  await RefreshToken.updateMany(
+    {
+      user: user._id,
+    },
+    { isRevoked: true }
+  );
+
   const refreshToken = generateRefreshToken({
     userId: user._id.toString(),
   });
@@ -112,9 +119,16 @@ export const loginUserService = async (email: string, password: string) => {
   };
 };
 
-export const logoutUserService = async () => {
-  // For JWT, logout is handled on the client side by deleting the token.
-  // Optionally, you can implement token blacklisting on the server side if needed.
+export const logoutUserService = async (refreshToken: string) => {
+  // receive refresh token
+  // find token in DB and mark as revoked
+
+  await RefreshToken.findOneAndUpdate(
+    {
+      token: refreshToken,
+    },
+    { isRevoked: true }
+  );
 };
 
 export const getUserProfileService = async (userId: string) => {
