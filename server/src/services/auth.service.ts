@@ -125,7 +125,7 @@ export const getUserProfileService = async (userId: string) => {
   return user;
 };
 
-export const refreshAcessTokenService = async (refreshToken: string) => {
+export const refreshAccessTokenService = async (refreshToken: string) => {
   // verify jwt token
   const decoded = verifyRefreshToken(refreshToken) as JwtPayload;
 
@@ -136,10 +136,9 @@ export const refreshAcessTokenService = async (refreshToken: string) => {
     throw new ApiError(401, 'Invalid refresh token');
   }
 
-  // Token revoked [simply means - invalidate the token by deleting it from DB]
+  //* Token revoked [simply means - token is not valid anymore, and backend remove trust on that token]
+  //? token stays in DB but marked as isRevoked = true, so that we can track token usage and revoke if needed
   if (existingToken.isRevoked) {
-    // if existing token hai database mein but revoked hai, toh usko delete kar do
-    // revoked ka matlab hai ki user ne logout kar diya hai, toh us token ko invalidate kar do
     throw new ApiError(401, 'Invalid refresh token');
   }
 

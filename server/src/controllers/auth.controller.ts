@@ -5,6 +5,7 @@ import {
   loginUserService,
   logoutUserService,
   getUserProfileService,
+  refreshAccessTokenService,
 } from '../services/auth.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import type { AuthRequest } from '../types/auth.types.js';
@@ -42,11 +43,20 @@ export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
 export const getUserProfile = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const userId = req.params.userId as string;
-
     const user = await getUserProfileService(userId);
-
     res
       .status(200)
       .json(new ApiResponse(true, 'User profile retrieved successfully', user));
+  }
+);
+
+export const refreshAccessToken = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { refreshToken } = req.body;
+    const data = await refreshAccessTokenService(refreshToken);
+
+    return res
+      .status(200)
+      .json(new ApiResponse(true, 'Access token refreshed successfully', data));
   }
 );
