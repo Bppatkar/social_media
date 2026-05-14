@@ -6,6 +6,8 @@ import ApiError from '../utils/ApiError.js';
 import generateAccessToken from '../utils/generateAccessToken.js';
 import generateRefreshToken from '../utils/generateRefreshToken.js';
 import RefreshToken from '../models/RefreshToken.model.js';
+import verifyRefreshToken from '../utils/verifyRefreshToken.js';
+import type { JwtPayload } from 'jsonwebtoken';
 
 export const registerUserService = async (
   username: string,
@@ -121,4 +123,44 @@ export const getUserProfileService = async (userId: string) => {
     throw new ApiError(404, 'User not found');
   }
   return user;
+};
+
+export const refreshAcessTokenService = async (refreshToken: string) => {
+  // verify jwt token
+  const decoded = verifyRefreshToken(refreshToken) as JwtPayload;
+
+  // Check if token exists in DB
+  const existingToken = await RefreshToken.findOne({ token: refreshToken });
+
+  if (!existingToken) {
+    throw new ApiError(401, 'Invalid refresh token');
+  }
+
+  // Token revoked [simply means - invalidate the token by deleting it from DB]
+  if (existingToken.isRevoked) {
+    // if existing token hai database mein but revoked hai, toh usko delete kar do
+    // revoked ka matlab hai ki user ne logout kar diya hai, toh us token ko invalidate kar do
+    throw new ApiError(401, 'Invalid refresh token');
+  }
+
+  // Token expired
+  if (existingToken.expiresAt < new Date()) {
+    throw new ApiError(401, 'Refresh token expired');
+  }
+
+  const user = await User.findById(decoded.userId);
+
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  // generate new access token
+  const accessToken = generateAccessToken({
+    userId: user._id.toString(),
+    username: user.username,
+  });
+
+  return {
+    accessToken,
+  };
 };
