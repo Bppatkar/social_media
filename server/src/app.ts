@@ -28,6 +28,7 @@ import postRoutes from './routes/post.routes.js';
 import commentRoutes from './routes/comment.routes.js';
 import likeRoutes from './routes/like.routes.js';
 import followRoutes from './routes/follow.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -35,6 +36,7 @@ app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/follows', followRoutes);
+app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 3000;
 db()

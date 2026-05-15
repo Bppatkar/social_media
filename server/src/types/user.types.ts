@@ -6,6 +6,7 @@ export interface IUser {
   password: string;
   bio?: string;
   profileImage?: string;
+  role: 'user' | 'admin';
   createdAt: Date;
   updatedAt: Date;
 }

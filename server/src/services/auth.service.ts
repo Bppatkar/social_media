@@ -38,6 +38,7 @@ export const registerUserService = async (
   const accessToken = generateAccessToken({
     userId: user._id.toString(),
     username: user.username,
+    role: user.role,
   });
 
   const refreshToken = generateRefreshToken({
@@ -50,10 +51,7 @@ export const registerUserService = async (
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
   });
 
-  // const token = generateToken({
-  //   userId: user._id.toString(),
-  //   username: user.username,
-  // });
+  
 
   // Response
   return {
@@ -87,6 +85,7 @@ export const loginUserService = async (email: string, password: string) => {
   const accessToken = generateAccessToken({
     userId: user._id.toString(),
     username: user.username,
+    role: user.role,
   });
 
   await RefreshToken.updateMany(
@@ -174,6 +173,7 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
   const accessToken = generateAccessToken({
     userId: user._id.toString(),
     username: user.username,
+    role: user.role,
   });
 
   const newRefreshToken = generateRefreshToken({
