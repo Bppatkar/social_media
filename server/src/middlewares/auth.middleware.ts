@@ -1,32 +1,25 @@
-import type { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import type { Response, NextFunction } from 'express';
 import type { AuthRequest, JwtUserPayload } from '../types/auth.types.js';
+import verifyAccessToken from '../utils/verifyAccessToken.js';
+import ApiError from '../utils/ApiError.js';
 
 export const authMiddleware = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): any => {
+): void => {
   const authHeader = req.headers.authorization;
 
   const token = authHeader?.startsWith('Bearer ')
     ? authHeader.split(' ')[1]
     : null;
-    
+
   if (!token) {
-    return res.status(401).json({
-      message: 'Token missing',
-    });
+    throw new ApiError(401, 'No token provided');
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
+  const decoded = verifyAccessToken(token);
 
-    req.user = decoded as JwtUserPayload;
-    next();
-  } catch (error) {
-    return res.status(401).json({
-      message: 'Invalid token',
-    });
-  }
+  req.user = decoded as JwtUserPayload;
+  next();
 };
