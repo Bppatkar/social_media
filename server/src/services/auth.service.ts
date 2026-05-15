@@ -8,6 +8,8 @@ import generateRefreshToken from '../utils/generateRefreshToken.js';
 import RefreshToken from '../models/RefreshToken.model.js';
 import verifyRefreshToken from '../utils/verifyRefreshToken.js';
 import type { JwtPayload } from 'jsonwebtoken';
+import hashToken from '../utils/hashToken.js';
+import findRefreshTokenSession from '../utils/findRefreshTokenSession.js';
 
 export const registerUserService = async (
   username: string,
@@ -45,9 +47,11 @@ export const registerUserService = async (
     userId: user._id.toString(),
   });
 
+  const hashedRefreshToken = await hashToken(refreshToken);
+
   await RefreshToken.create({
     user: user._id,
-    token: refreshToken,
+    token: hashedRefreshToken,
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
   });
 
@@ -97,9 +101,11 @@ export const loginUserService = async (email: string, password: string) => {
     userId: user._id.toString(),
   });
 
+  const hashedRefreshToken = await hashToken(refreshToken);
+
   await RefreshToken.create({
     user: user._id,
-    token: refreshToken,
+    token: hashedRefreshToken,
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
   });
 
@@ -145,7 +151,7 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
   const decoded = verifyRefreshToken(refreshToken) as JwtPayload;
 
   // Check if token exists in DB
-  const existingToken = await RefreshToken.findOne({ token: refreshToken });
+  const existingToken = await findRefreshTokenSession(refreshToken);
 
   if (!existingToken) {
     throw new ApiError(401, 'Invalid refresh token');
@@ -182,9 +188,11 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
     userId: user._id.toString(),
   });
 
+  const hashedNewRefreshToken = await hashToken(newRefreshToken);
+
   await RefreshToken.create({
     user: user._id,
-    token: newRefreshToken,
+    token: hashedNewRefreshToken,
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 
