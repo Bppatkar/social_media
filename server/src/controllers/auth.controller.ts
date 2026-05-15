@@ -9,36 +9,37 @@ import {
 } from '../services/auth.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import type { AuthRequest } from '../types/auth.types.js';
+
 import {
-  accessTokenCookieOptions,
-  clearTokenCookieOptions,
-  refreshTokenCookieOptions,
-} from '../utils/cookieOptions.js';
-import { clearAuthCookies, setAuthCookies } from '../utils/authCookies.js';
+  clearAuthCookies,
+  setRefreshTokenCookie,
+} from '../utils/authCookies.js';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   const data = await registerUserService(username, email, password);
 
-  setAuthCookies(res, data.accessToken, data.refreshToken);
+  setRefreshTokenCookie(res, data.refreshToken);
 
-  res
-    .status(201)
-    .json(
-      new ApiResponse(true, 'User registered successfully', { user: data.user })
-    );
+  res.status(201).json(
+    new ApiResponse(true, 'User registered successfully', {
+      user: data.user,
+      accessToken: data.accessToken,
+    })
+  );
 });
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const data = await loginUserService(email, password);
 
-  setAuthCookies(res, data.accessToken, data.refreshToken);
-  res
-    .status(200)
-    .json(
-      new ApiResponse(true, 'user logged in successfully', { user: data.user })
-    );
+  setRefreshTokenCookie(res, data.refreshToken);
+  res.status(200).json(
+    new ApiResponse(true, 'user logged in successfully', {
+      user: data.user,
+      accessToken: data.accessToken,
+    })
+  );
   // now browser stores tokens in cookies and send them automatically with every request,  so response should mainly contain user data and success message, no need to send tokens in response body
 });
 
@@ -74,17 +75,20 @@ export const refreshAccessToken = asyncHandler(
 
     if (!refreshToken) {
       return res
-        .status(400)
+        .status(401)
         .json(new ApiResponse(false, 'Refresh token is required', null));
     }
 
     // Try to get refresh token from cookies first, then fallback to request body
     const data = await refreshAccessTokenService(refreshToken);
 
-    return res
-      .cookie('accessToken', data.accessToken, accessTokenCookieOptions)
-      .cookie('refreshToken', data.refreshToken, refreshTokenCookieOptions)
-      .status(200)
-      .json(new ApiResponse(true, 'Access token refreshed successfully', null));
+    // rotate refresh token - generate new one and invalidate old one in DB
+    setRefreshTokenCookie(res, data.refreshToken);
+
+    return res.status(200).json(
+      new ApiResponse(true, 'Access token refreshed successfully', {
+        accessToken: data.accessToken,
+      })
+    );
   }
 );

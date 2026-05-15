@@ -1,17 +1,24 @@
 import type { Response } from 'express';
 
-import { clearTokenCookieOptions } from './cookieOptions.js';
+import {
+  refreshTokenCookieOptions,
+  clearTokenCookieOptions,
+} from './cookieOptions.js';
 
-export const setAuthCookies = (
+export const setRefreshTokenCookie = (
   res: Response,
-  accessToken: string,
   refreshToken: string
 ) => {
-  res.cookie('accessToken', accessToken, clearTokenCookieOptions);
-  res.cookie('refreshToken', refreshToken, clearTokenCookieOptions);
+  res.cookie(
+    'refreshToken',
+    refreshToken,
+    refreshTokenCookieOptions
+  );
 };
 
 export const clearAuthCookies = (res: Response) => {
-  res.clearCookie('accessToken', clearTokenCookieOptions);
-  res.clearCookie('refreshToken', clearTokenCookieOptions);
+  res.clearCookie(
+    'refreshToken',
+    clearTokenCookieOptions
+  );
 };
