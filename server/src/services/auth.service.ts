@@ -51,8 +51,6 @@ export const registerUserService = async (
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
   });
 
-  
-
   // Response
   return {
     message: 'User registered successfully',
@@ -139,6 +137,10 @@ export const getUserProfileService = async (userId: string) => {
 };
 
 export const refreshAccessTokenService = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw new ApiError(401, 'Refresh token is required');
+  }
+
   // verify jwt token
   const decoded = verifyRefreshToken(refreshToken) as JwtPayload;
 

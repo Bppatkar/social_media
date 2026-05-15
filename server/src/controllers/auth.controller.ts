@@ -73,12 +73,6 @@ export const refreshAccessToken = asyncHandler(
   async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
 
-    if (!refreshToken) {
-      return res
-        .status(401)
-        .json(new ApiResponse(false, 'Refresh token is required', null));
-    }
-
     // Try to get refresh token from cookies first, then fallback to request body
     const data = await refreshAccessTokenService(refreshToken);
 
