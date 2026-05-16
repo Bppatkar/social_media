@@ -1,498 +1,516 @@
 # 🚀 SOCIAL MEDIA BACKEND — PROGRESS TRACKER
 
-> Production-Style Backend Engineering Journey
-> Built using Node.js, Express.js, MongoDB, TypeScript
+# 👨‍💻 Developer
+
+Bhanu Pratap Patkar
+
+Goal:
+
+Build a production-level scalable social media backend + frontend system capable of helping secure international remote software engineering opportunities.
 
 ---
 
-# 📅 DAY-WISE PROGRESS
+# 🧠 Core Engineering Goal
+
+The goal is NOT simply building CRUD APIs.
+
+The real goal is learning:
+
+* scalable backend architecture
+* production authentication systems
+* security engineering
+* reusable architecture patterns
+* abstraction thinking
+* backend scaling concepts
+* enterprise engineering principles
+* clean code architecture
+* system design thinking
+
+The project is being built with the mindset of:
+
+* production engineering
+* maintainability
+* scalability
+* security
+* reusable architecture
+* long-term growth
 
 ---
 
-# ✅ DAY 1 — PROJECT FOUNDATION
+# ⚙️ Tech Stack
 
-## ✅ Initial Project Setup
+Backend:
 
-- [x] Node.js + Express Setup
-- [x] TypeScript Configuration
-- [x] Folder Structure Setup
-- [x] Environment Variables Setup
-- [x] MongoDB Connection
-- [x] Express App Configuration
-- [x] Basic Server Setup
+* Node.js
+* Express.js
+* TypeScript
+* MongoDB
+* Mongoose
+* JWT Authentication
+* Zod Validation
 
----
+Planned:
 
-## ✅ Core Utility Architecture
-
-- [x] ApiError Utility
-- [x] ApiResponse Utility
-- [x] AsyncHandler Utility
-- [x] Global Error Middleware
-
----
-
-## ✅ Initial Authentication
-
-- [x] Basic JWT Token Generation
-- [x] Auth Middleware
-- [x] Protected Route Setup
+* React Frontend
+* Next.js Frontend
+* Socket.IO
+* Redis
+* Docker
+* CI/CD
+* AWS
+* Kubernetes
+* Microservices
+* System Design Scaling
 
 ---
 
----
+# 📅 DAY 1 — FOUNDATION + PROJECT SETUP
 
-# ✅ DAY 2 — DATABASE DESIGN + ARCHITECTURE
+## ✅ Completed
 
-## ✅ Database Design
+### Backend Initialization
 
-Production-style scalable database design completed.
+* Node.js setup
+* Express setup
+* TypeScript setup
+* tsconfig setup
+* package architecture
 
-### ✅ Collections Designed
+### Environment Configuration
 
-- [x] User
-- [x] Post
-- [x] Comment
-- [x] Like
-- [x] Follow
+* dotenv setup
+* environment variable structure
+* config understanding
 
----
+### Database Setup
 
-## ✅ Architecture Design
+* MongoDB connection
+* Mongoose integration
+* database connection architecture
 
-### Layered Backend Architecture
+### Project Architecture
 
-- [x] Controller Layer
-- [x] Service Layer
-- [x] Validation Layer
-- [x] Middleware Layer
-- [x] Utility Layer
+Implemented scalable folder structure:
 
----
+* controllers
+* services
+* models
+* middlewares
+* validators
+* utils
+* types
+* routes
 
-## ✅ TypeScript Architecture
+### Reusable Core Utilities
 
-- [x] Custom Interfaces
-- [x] AuthRequest Interface
-- [x] JWT Payload Interfaces
-- [x] Mongoose Generics
-- [x] Reusable Types
+Created:
 
----
+* ApiResponse
+* ApiError
+* asyncHandler
 
----
+### Concepts Learned
 
-# ✅ DAY 3 — CORE FEATURES
-
-# ✅ Authentication System
-
-- [x] Register API
-- [x] Login API
-- [x] Password Hashing using bcrypt
-- [x] Protected Routes
-- [x] Current Logged-In User API
-- [x] User Profile API
-
----
-
-# ✅ Post System
-
-- [x] Create Post
-- [x] Update Post
-- [x] Delete Post
-- [x] Get Single Post
-- [x] Feed API
+* layered architecture
+* request-response lifecycle
+* centralized error handling
+* reusable utility architecture
+* backend project structure fundamentals
 
 ---
 
-# ✅ Like System
+# 📅 DAY 2 — DATABASE DESIGN + BACKEND ARCHITECTURE
 
-- [x] Like Post
-- [x] Unlike Post
-- [x] Duplicate Like Prevention
+## ✅ Completed
 
----
+### Database Models
 
-# ✅ Comment System
+Created:
 
-- [x] Add Comment
-- [x] Delete Comment
-- [x] Get Post Comments
+* User Model
+* Post Model
+* Comment Model
+* Like Model
+* Follow Model
+* RefreshToken Model
 
----
+### Backend Architecture Improvements
 
-# ✅ Follow System
+Implemented:
 
-- [x] Follow User
-- [x] Unfollow User
-- [x] Self-follow Prevention
-- [x] Get Followers
-- [x] Get Following
+* controllers layer
+* services layer
+* validators layer
+* middleware architecture
+* reusable type architecture
 
----
+### Concepts Learned
 
----
-
-# ✅ DAY 4 — REUSABLE ENGINEERING + SECURITY
-
-# ✅ Reusable Backend Utilities
-
-## Pagination Utility
-
-- [x] Reusable Pagination Logic
-- [x] Page Metadata
-- [x] Dynamic Limits
+* schema design
+* MongoDB relationships
+* document references
+* scalable folder organization
+* service-controller separation
+* backend modularity
 
 ---
 
-## Search Utility
+# 📅 DAY 3 — CORE SOCIAL MEDIA FEATURES
 
-- [x] Reusable Search Logic
-- [x] Keyword Search
-- [x] MongoDB Regex Search
+## ✅ Completed
 
----
+### Authentication APIs
 
-## Sorting Utility
+Implemented:
 
-- [x] Reusable Sorting Logic
-- [x] Latest Sorting
-- [x] Oldest Sorting
-- [x] Popular Sorting
+* Register API
+* Login API
+* Protected Route Authentication
+* Current User API
+* User Profile API
 
----
+### Post System
 
-# ✅ Zod Validation Architecture
+Implemented:
 
-- [x] Body Validation
-- [x] Params Validation
-- [x] Query Validation
-- [x] MongoDB ObjectId Validation
-- [x] Structured Validation Errors
+* Create Post
+* Update Post
+* Delete Post
+* Feed API
 
----
+### Like System
 
-# ✅ Security Middleware
+Implemented:
 
-- [x] Helmet
-- [x] Express Rate Limit
-- [x] HPP Protection
-- [x] MongoDB Injection Protection
-- [x] Secure Error Responses
+* Like Post
+* Unlike Post
+* Duplicate Like Prevention
 
----
+### Comment System
 
----
+Implemented:
 
-# ✅ DAY 5 — PRODUCTION AUTHENTICATION ARCHITECTURE
+* Add Comment
+* Delete Comment
+* Get Comments
 
-# ✅ Access Token + Refresh Token System
+### Follow System
 
-## ✅ Access Token
+Implemented:
 
-- [x] Access Token Generation
-- [x] JWT Access Secret
-- [x] Access Token Verification
-- [x] Protected Route Access
+* Follow User
+* Unfollow User
+* Followers List
+* Following List
 
----
+### Concepts Learned
 
-## ✅ Refresh Token
-
-- [x] Refresh Token Generation
-- [x] Refresh Token Verification
-- [x] Refresh Token Validation
-- [x] Refresh Token Database Storage
+* CRUD architecture
+* protected routes
+* request validation
+* social media relationship systems
+* reusable service patterns
 
 ---
 
-# ✅ Refresh Token Database Architecture
+# 📅 DAY 4 — VALIDATION + SECURITY FOUNDATIONS
 
-## RefreshToken Collection
+## ✅ Completed
 
-- [x] token
-- [x] user
-- [x] expiresAt
-- [x] isRevoked
-- [x] timestamps
+### Reusable Query Utilities
 
----
+Created:
 
-# ✅ Session Management
+* pagination utility
+* search utility
+* sorting utility
 
-## Token Revocation System
+### Validation Architecture
 
-- [x] isRevoked Flag
-- [x] Refresh Token Invalidation
-- [x] Logout Session Revocation
-- [x] Session Tracking
+Implemented:
 
----
+* Zod validation
+* params validation
+* query validation
+* ObjectId validation
+* reusable validation middleware
 
-## Session Rotation
+### Security Middlewares
 
-- [x] Old Sessions Revoked On Login
-- [x] New Refresh Token Generated
-- [x] Single Active Session Architecture
+Implemented:
 
----
+* Helmet
+* Rate Limiter
+* HPP protection
+* MongoDB injection protection
 
-# ✅ Refresh Flow
+### Concepts Learned
 
-- [x] POST /auth/refresh
-- [x] Refresh Token Verification
-- [x] Database Validation
-- [x] Expiry Validation
-- [x] Revoked Token Validation
-- [x] New Access Token Generation
-
----
-
-# ✅ Logout Architecture
-
-- [x] Refresh Token Revocation
-- [x] Secure Logout API
-- [x] Session Invalidation
+* reusable query architecture
+* validation pipeline
+* middleware chaining
+* backend security basics
+* API hardening fundamentals
 
 ---
 
----
+# 📅 DAY 5 — PRODUCTION AUTHENTICATION SYSTEM
 
-# ✅ DAY 6 — AUTHORIZATION + ROLE SYSTEM
+## ✅ Completed
 
-## ✅ RBAC (Role Based Access Control)
+### JWT Authentication Architecture
 
-- [x] User Roles
-- [x] Admin Role
-- [x] JWT Role Payload
-- [x] Reusable Authorization Middleware
-- [x] Admin-only Routes
+Implemented:
 
----
+* Access Token System
+* Refresh Token System
+* JWT payload engineering
+* token verification architecture
 
-## ✅ Authorization Architecture
+### Stateful + Stateless Hybrid Auth
 
-- [x] Role-based Access Control
-- [x] Permission Middleware
-- [x] Protected Admin APIs
-- [x] Scalable Authorization Structure
+Architecture:
 
----
+* Access Token → Stateless
+* Refresh Token → Stateful Session
 
-# 🧠 AUTHENTICATION FLOW ARCHITECTURE
+### Refresh Token System
 
----
+Implemented:
 
-# 🔐 LOGIN FLOW
+* refresh token database storage
+* session revocation
+* token expiry validation
+* refresh endpoint
+* logout revocation
+* token rotation
 
-```text
-User Login
-   ↓
-Verify Credentials
-   ↓
-Generate Access Token
-   ↓
-Generate Refresh Token
-   ↓
-Store Refresh Token In Database
-   ↓
-Return Tokens To Client
-```
+### Concepts Learned
+
+* JWT authentication flow
+* stateful vs stateless auth
+* session concepts
+* token lifecycle
+* production auth architecture
+* refresh token security
 
 ---
 
-# 🔄 ACCESS TOKEN REFRESH FLOW
+# 📅 DAY 6 — AUTH HARDENING + COOKIE SECURITY
 
-```text
-Access Token Expired
-   ↓
-Frontend Calls /auth/refresh
-   ↓
-Backend Verifies Refresh Token
-   ↓
-Check Token In Database
-   ↓
-Check isRevoked Flag
-   ↓
-Check Expiry Time
-   ↓
-Generate New Access Token
-   ↓
-Return New Access Token
-```
+## ✅ Completed
 
----
+### Cookie Authentication Architecture
 
-# 🚪 LOGOUT FLOW
+Implemented:
 
-```text
-User Clicks Logout
-   ↓
-Frontend Sends Refresh Token
-   ↓
-Backend Finds Token In Database
-   ↓
-Backend Sets:
-isRevoked = true
-   ↓
-Refresh Token Becomes Invalid
-```
+* HTTP-only refresh token cookies
+* Secure cookie configuration
+* SameSite cookie protection
+* cookie-parser integration
+* CORS credentials flow
+* cookie logout flow
+* refresh token cookie rotation
 
----
+### Auth Middleware Improvements
 
-# 🔁 SESSION ROTATION FLOW
+Implemented:
 
-```text
-User Logs In Again
-   ↓
-Old Refresh Tokens Revoked
-   ↓
-New Refresh Token Generated
-   ↓
-Only Latest Session Remains Active
-```
+* centralized token extraction
+* reusable auth verification
+* cleaner middleware architecture
+* access token extraction utility
 
----
+### Reusable Authentication Utilities
 
-# 🧠 CURRENT AUTHENTICATION LEVEL
+Created:
 
-Current authentication system is:
+* verifyAccessToken.ts
+* verifyRefreshToken.ts
+* extractAccessToken.ts
+* authCookies.ts
+* cookieOptions.ts
 
-# ✅ Stateful + Stateless Hybrid Authentication
+### Security Improvements
 
-Meaning:
+Implemented:
 
-- Access Token → Stateless JWT
-- Refresh Token → Database Controlled Stateful Session
+* centralized auth validation
+* secure cookie handling
+* browser credential flow understanding
+* refresh token rotation hardening
 
-This is production-style authentication architecture.
+### Concepts Learned
+
+* cookie authentication architecture
+* browser cookie flow
+* XSS protection basics
+* auth abstraction patterns
+* reusable auth engineering
+* scalable authentication design
 
 ---
 
-# 📦 CURRENT API ENDPOINTS
+# 📅 DAY 7 — ADVANCED SECURITY + API HARDENING
 
-# 🔐 Auth
+## ✅ Completed
 
-- [x] POST /api/auth/register
-- [x] POST /api/auth/login
-- [x] POST /api/auth/refresh
-- [x] POST /api/auth/logout
-- [x] GET /api/auth/me
+### Refresh Token Security Hardening
 
----
+Implemented:
 
-# 📝 Posts
+* hashed refresh token storage
+* bcrypt-based token hashing
+* refresh token comparison utility
+* hashed token session lookup
+* secure token rotation architecture
 
-- [x] POST /api/posts/create
-- [x] GET /api/posts/feed
-- [x] GET /api/posts/:postId
-- [x] PUT /api/posts/:postId
-- [x] DELETE /api/posts/:postId
+### Reusable Security Utilities
 
----
+Created:
 
-# ❤️ Likes
+* hashToken.ts
+* compareToken.ts
+* findRefreshTokenSession.ts
 
-- [x] POST /api/likes/:postId
-- [x] DELETE /api/likes/:postId
+### API Security Improvements
 
----
+Improved:
 
-# 💬 Comments
+* logout flow security
+* refresh token validation flow
+* centralized security logic
+* reusable auth security architecture
 
-- [x] POST /api/comments/:postId
-- [x] GET /api/comments/:postId
-- [x] DELETE /api/comments/:commentId
+### Backend Architecture Improvements
 
----
+Improved:
 
-# 👥 Follow
+* abstraction thinking
+* reusable security utilities
+* separation of concerns
+* service utility layering
+* centralized authentication handling
 
-- [x] POST /api/follow/:userId
-- [x] DELETE /api/follow/:userId
-- [x] GET /api/follow/followers/:userId
-- [x] GET /api/follow/following/:userId
+### Scaling + Engineering Concepts Learned
 
----
+Learned deeply:
 
-# 🚀 NEXT IMPLEMENTATION PHASES
-
-# 🍪 Cookie Based Authentication
-
-- [ ] HTTP-only Cookies
-- [ ] Secure Cookies
-- [ ] SameSite Cookies
-- [ ] Cookie-based Refresh Flow
-
----
-
-# 🔐 Advanced Security
-
-- [ ] Refresh Token Reuse Detection
-- [ ] Access Token Blacklisting
-- [ ] Device Fingerprinting
-- [ ] Suspicious Session Detection
-- [ ] RBAC (Role Based Access Control)
+* why scalable architecture matters
+* why modular files improve maintainability
+* session architecture concepts
+* authentication scaling limitations
+* hashed token lookup architecture
+* why bcrypt lookup is expensive
+* difference between learning architecture vs internet-scale architecture
+* abstraction-driven backend design
+* enterprise backend thinking
 
 ---
 
-# ⚡ Performance & Scalability
+# 🚀 CURRENT PROJECT STATUS
 
-- [ ] Redis Caching
-- [ ] Feed Optimization
-- [ ] Aggregation Optimization
-- [ ] Database Query Optimization
+The backend has now evolved far beyond beginner CRUD architecture.
 
----
+Current backend now includes:
 
-# 📦 Media Features
-
-- [ ] Multer Uploads
-- [ ] Cloudinary Integration
-- [ ] Image Optimization
-
----
-
-# 🔔 Realtime Features
-
-- [ ] Socket.IO Setup
-- [ ] Real-time Notifications
-- [ ] Live Chat
-- [ ] Real-time Likes & Comments
+* layered architecture
+* reusable utilities
+* production authentication system
+* RBAC authorization
+* security middleware stack
+* cookie authentication architecture
+* refresh token rotation
+* hashed token security
+* validation architecture
+* scalable backend structure
+* abstraction-focused engineering
 
 ---
 
-# 📊 Monitoring & Logging
+# 🧠 MOST IMPORTANT LEARNING PHILOSOPHY
 
-- [ ] Morgan Logging
-- [ ] Winston Logger
-- [ ] Request Monitoring
-- [ ] Error Monitoring
+The purpose of this project is NOT memorizing code.
+
+The purpose is learning:
+
+* how engineers think
+* how systems are designed
+* how abstractions are created
+* how scalable architecture evolves
+* how reusable systems are engineered
+* how backend systems communicate
+* how production security works
+
+Goal:
+
+Reach a level where backend engineering feels intuitive and architecture decisions become natural.
 
 ---
 
-# 🚀 DevOps & Deployment
+# 📂 CURRENT IMPORTANT ARCHITECTURE
 
-- [ ] Docker
-- [ ] CI/CD Pipeline
-- [ ] AWS Deployment
-- [ ] Nginx Reverse Proxy
+Main Backend Layers:
+
+* Controllers
+* Services
+* Models
+* Middlewares
+* Validators
+* Utilities
+* Routes
+* Types
+
+Architecture Style:
+
+* reusable
+* modular
+* scalable
+* abstraction-driven
+* security-focused
+* production-oriented
 
 ---
 
-# 🧠 LEARNING GOAL
+# 🚀 FUTURE PHASES (PLANNED)
 
-Goal is NOT just CRUD APIs.
+Upcoming advanced topics:
 
-Goal is understanding:
+* API logging system
+* audit logs
+* Redis caching
+* Socket.IO real-time systems
+* notifications
+* file uploads
+* Cloudinary integration
+* advanced database optimization
+* Docker
+* CI/CD
+* AWS deployment
+* microservices
+* Kubernetes
+* system design
+* scaling architecture
+* AI integrations
+* distributed systems
 
-- Backend Engineering
-- Production Authentication
-- Security Architecture
-- Scalable Database Design
-- Reusable Backend Patterns
-- Performance Optimization
-- System Design Thinking
-- Production API Structure
+---
 
-step-by-step.
+# 🔥 CURRENT ENGINEERING LEVEL
+
+Project has evolved from:
+
+❌ beginner CRUD backend
+
+into:
+
+✅ production-style backend engineering system
+
+with strong focus on:
+
+* scalability
+* security
+* maintainability
+* architecture
+* abstraction
+* real engineering thinking
