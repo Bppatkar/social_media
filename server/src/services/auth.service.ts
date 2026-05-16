@@ -123,15 +123,14 @@ export const loginUserService = async (email: string, password: string) => {
 };
 
 export const logoutUserService = async (refreshToken: string) => {
-  // receive refresh token
-  // find token in DB and mark as revoked
+  const existingToken = await findRefreshTokenSession(refreshToken);
 
-  await RefreshToken.findOneAndUpdate(
-    {
-      token: refreshToken,
-    },
-    { isRevoked: true }
-  );
+  if (!existingToken) {
+    throw new ApiError(401, 'Invalid refresh token');
+  }
+
+  existingToken.isRevoked = true;
+  await existingToken.save();
 };
 
 export const getUserProfileService = async (userId: string) => {
