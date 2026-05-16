@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import env from '../config/env.js';
 
 interface AccessTokenPayload {
   userId: string;
@@ -7,7 +8,7 @@ interface AccessTokenPayload {
 }
 
 const generateAccessToken = (payload: AccessTokenPayload) => {
-  const secret = process.env.JWT_ACCESS_SECRET;
+  const secret = env.JWT_ACCESS_SECRET;
 
   if (!secret) {
     throw new Error(

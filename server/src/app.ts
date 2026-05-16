@@ -1,26 +1,15 @@
+import './config/validateEnv.js'; // Ensuring environment variables are validated at startup
+
 import express from 'express';
-import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
-import db from './db/db.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 
-dotenv.config();
+import env from './config/env.js';
 
-const app = express();
-applySecurityMiddlewares(app);
-app.use(cookieParser());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    credentials: true, // Allow cookies to be sent with requests
-  })
-);
-app.use(express.json());
+import db from './db/db.js';
 
-app.get('/', (req, res) => {
-  res.send('Social Media API is running');
-});
+import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 // Import routes
 import authRoutes from './routes/auth.routes.js';
@@ -30,6 +19,25 @@ import likeRoutes from './routes/like.routes.js';
 import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
+const app = express();
+
+applySecurityMiddlewares(app);
+
+app.use(cookieParser());
+
+app.use(express.json());
+app.use(
+  cors({
+    origin: env.CLIENT_URL || 'http://localhost:5173', // Allow requests from the client URL
+    credentials: true, // Allow cookies to be sent with requests
+  })
+);
+
+// health route
+app.get('/', (req, res) => {
+  res.send('Social Media API is running');
+});
+
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
@@ -38,7 +46,10 @@ app.use('/api/likes', likeRoutes);
 app.use('/api/follows', followRoutes);
 app.use('/api/admin', adminRoutes);
 
-const PORT = process.env.PORT || 3000;
+app.use(errorMiddleware);
+
+const PORT = env.PORT || 3000;
+
 db()
   .then(() => {
     app.listen(PORT, () => {
@@ -49,7 +60,3 @@ db()
     console.error('Failed to connect to the database:', error);
     process.exit(1); // Exit with failure
   });
-
-// Error handling middleware
-import errorMiddleware from './middlewares/error.middleware.js';
-app.use(errorMiddleware);

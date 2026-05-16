@@ -4,10 +4,11 @@ import jwt, {
   type Secret,
 } from 'jsonwebtoken';
 import ApiError from './ApiError.js';
+import env from '../config/env.js';
 
 const verifyAccessToken = (token: string): JwtPayload => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as Secret);
+    const decoded = jwt.verify(token, env.JWT_ACCESS_SECRET as Secret);
     return decoded as JwtPayload;
   } catch (error) {
     // token expired
