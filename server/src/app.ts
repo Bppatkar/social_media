@@ -10,6 +10,7 @@ import db from './db/db.js';
 
 import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
 import errorMiddleware from './middlewares/error.middleware.js';
+import requestIdMiddleware from './middlewares/requestId.middleware.js';
 
 // Import routes
 import authRoutes from './routes/auth.routes.js';
@@ -22,6 +23,7 @@ import adminRoutes from './routes/admin.routes.js';
 const app = express();
 
 applySecurityMiddlewares(app);
+app.use(requestIdMiddleware);
 
 app.use(cookieParser());
 
