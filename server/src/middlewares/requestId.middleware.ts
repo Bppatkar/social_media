@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 
- const requestIdMiddleware = (
+ export const requestIdMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -11,4 +11,3 @@ import crypto from 'crypto';
   next();
 };
 
-export default requestIdMiddleware;
