@@ -43,3 +43,21 @@ export const paginationQuerySchema = z.object({
     search: z.string().optional(),
   }),
 });
+
+
+export const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email('Invalid email address');
+
+export const passwordSchema = z
+  .string()
+  .min(6, 'Password must be at least 6 characters long')
+  .max(50, 'Password too long');
+
+export const usernameSchema = z
+  .string()
+  .trim()
+  .min(3, 'Username must be at least 3 characters long')
+  .max(20, 'Username too long');

@@ -1,19 +1,28 @@
-import { z } from 'zod';
+import {  z } from 'zod';
+import {
+  emailSchema,
+  passwordSchema,
+  usernameSchema,
+} from './common.validation.js';
 
 export const registerSchema = z.object({
-  body: z.object({
-    username: z.string().min(3, 'Username must be at least 3 characters long'),
+  body: z
+    .object({
+      username: usernameSchema,
 
-    email: z.email('Invalid email address'),
+      email: emailSchema,
 
-    password: z.string().min(6, 'Password must be at least 6 characters long'),
-  }),
+      password: passwordSchema,
+    })
+    .strict(),
 });
 
 export const loginSchema = z.object({
-  body: z.object({
-    email: z.email('Invalid email address'),
+  body: z
+    .object({
+      email: emailSchema,
 
-    password: z.string().min(6, 'Password must be at least 6 characters long'),
-  }),
+      password: passwordSchema,
+    })
+    .strict(),
 });
