@@ -46,9 +46,9 @@ export const paginationQuerySchema = z.object({
 
 export const emailSchema = z
   .string()
-  .email('Invalid email address')
+  .trim()
   .toLowerCase()
-  .trim();
+  .email('Invalid email address');
 
 export const passwordSchema = z
   .string()

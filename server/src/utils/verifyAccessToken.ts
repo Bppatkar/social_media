@@ -1,8 +1,4 @@
-import jwt, {
-  TokenExpiredError,
-  type JwtPayload,
-  type Secret,
-} from 'jsonwebtoken';
+import jwt, { type JwtPayload, type Secret } from 'jsonwebtoken';
 import ApiError from './ApiError.js';
 import env from '../config/env.js';
 
@@ -12,7 +8,7 @@ const verifyAccessToken = (token: string): JwtPayload => {
     return decoded as JwtPayload;
   } catch (error) {
     // token expired
-    if (error instanceof TokenExpiredError) {
+    if (error instanceof jwt.TokenExpiredError) {
       throw new ApiError(401, 'Access token expired');
     }
     // invalid token
