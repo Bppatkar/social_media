@@ -44,12 +44,11 @@ export const paginationQuerySchema = z.object({
   }),
 });
 
-
 export const emailSchema = z
   .string()
-  .trim()
+  .email('Invalid email address')
   .toLowerCase()
-  .email('Invalid email address');
+  .trim();
 
 export const passwordSchema = z
   .string()
