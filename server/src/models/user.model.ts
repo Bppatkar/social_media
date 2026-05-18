@@ -38,6 +38,15 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    failedLoginAttempts: {
+      type: Number,
+      default: 0,
+    },
+    lockUntil: {
+      // account lock until 5 minutes after 5 failed login attempts
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

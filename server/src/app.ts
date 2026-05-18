@@ -22,19 +22,21 @@ import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
+app.set('trust proxy', 1); // trust first proxy used for , rate limiting and secure cookies in production behind a proxy/load balancer
 
 applySecurityMiddlewares(app);
 app.use(requestIdMiddleware);
 app.use(loggerMiddleware);
 app.use(cookieParser());
 
-app.use(express.json());
 app.use(
   cors({
     origin: env.CLIENT_URL || 'http://localhost:5173', // Allow requests from the client URL
     credentials: true, // Allow cookies to be sent with requests
   })
 );
+
+app.use(express.json({ limit: '10kb' })); // attackers can only send small payloads to prevent DoS attacks
 
 // health route
 app.get('/', (req, res) => {
@@ -51,12 +53,10 @@ app.use('/api/admin', adminRoutes);
 
 app.use(errorMiddleware);
 
-const PORT = env.PORT || 3000;
-
 db()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port http://localhost:${PORT}`);
+    app.listen(env.PORT, () => {
+      console.log(`Server is running on port http://localhost:${env.PORT}`);
     });
   })
   .catch((error) => {

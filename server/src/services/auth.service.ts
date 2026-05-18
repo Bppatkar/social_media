@@ -72,6 +72,14 @@ export const loginUserService = async (email: string, password: string) => {
   // Find user
   const user = await User.findOne({ email });
 
+  if (user?.lockUntil && user.lockUntil > new Date()) {
+    throw new ApiError(
+      // 423 - locked status code, indicates that the resource is currently locked and cannot be accessed
+      423,
+      'Account temporarily locked due to multiple failed login attempts'
+    );
+  }
+
   if (!user) {
     throw new ApiError(400, 'Invalid email or password');
   }
@@ -80,8 +88,23 @@ export const loginUserService = async (email: string, password: string) => {
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
+    user.failedLoginAttempts += 1;
+
+    // lock account after 5 failed attempts
+    if (user.failedLoginAttempts >= 5) {
+      user.lockUntil = new Date(Date.now() + 5 * 60 * 1000); // lock for 5 minutes
+      user.failedLoginAttempts = 0; // reset attempts after locking
+    }
+
+    await user.save();
+
     throw new ApiError(400, 'Invalid email or password');
   }
+
+  // Reseting counter on successful login
+  user.failedLoginAttempts = 0;
+  user.lockUntil = null;
+  await user.save();
 
   // Generate access and refresh tokens
   const accessToken = generateAccessToken({
