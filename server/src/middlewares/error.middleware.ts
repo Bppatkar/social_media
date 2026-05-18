@@ -32,6 +32,7 @@ const errorMiddleware = (
   res.status(statusCode).json({
     success: false,
     message,
+    errors: err instanceof ApiError ? err.errors : undefined,
   });
 };
 

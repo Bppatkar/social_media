@@ -3,8 +3,11 @@ import type { Request, Response, NextFunction } from 'express';
 import type { ZodType } from 'zod';
 import { ZodError } from 'zod';
 
+import ApiError from '../utils/ApiError.js';
+import formatZodError from '../utils/formatZodError.js';
+
 const validate = (schema: ZodType) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, _res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
         body: req.body,
@@ -15,21 +18,12 @@ const validate = (schema: ZodType) => {
       next();
     } catch (error: unknown) {
       if (error instanceof ZodError) {
-        return res.status(400).json({
-          success: false,
-          message: 'Validation Error',
-
-          errors: error.issues.map((err) => ({
-            field: err.path.join('.'),
-            message: err.message,
-          })),
-        });
+        return next(
+          new ApiError(400, 'Validation Error', formatZodError(error))
+        );
       }
 
-      return res.status(500).json({
-        success: false,
-        message: 'Internal Server Error',
-      });
+      next(error);
     }
   };
 };

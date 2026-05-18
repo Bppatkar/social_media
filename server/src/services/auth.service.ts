@@ -69,8 +69,8 @@ export const registerUserService = async (
 };
 
 export const loginUserService = async (email: string, password: string) => {
-  // Find user
-  const user = await User.findOne({ email });
+  const normalizedEmail = email.toLowerCase().trim();
+  const user = await User.findOne({ email: normalizedEmail });
 
   if (user?.lockUntil && user.lockUntil > new Date()) {
     throw new ApiError(
@@ -146,6 +146,9 @@ export const loginUserService = async (email: string, password: string) => {
 };
 
 export const logoutUserService = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw new ApiError(400, 'Refresh token is missing');
+  }
   const existingToken = await findRefreshTokenSession(refreshToken);
 
   if (!existingToken) {
