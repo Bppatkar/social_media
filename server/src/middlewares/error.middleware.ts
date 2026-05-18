@@ -33,7 +33,7 @@ const errorMiddleware = (
     stack: err.stack,
     path: _req.originalUrl,
     method: _req.method,
-    requestId: _req.id,
+    requestId: _req.requestId,
   });
 
   res.status(statusCode).json({
