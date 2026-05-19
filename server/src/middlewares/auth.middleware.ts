@@ -1,11 +1,11 @@
-import type { Response, NextFunction } from 'express';
-import type { AuthRequest, JwtUserPayload } from '../types/auth.types.js';
+import type { Response, NextFunction, Request } from 'express';
+import type {  JwtUserPayload } from '../types/auth.types.js';
 import verifyAccessToken from '../utils/verifyAccessToken.js';
 import ApiError from '../utils/ApiError.js';
 import extractAccessToken from '../utils/extractAccessToken.js';
 
 export const authMiddleware = (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): void => {
