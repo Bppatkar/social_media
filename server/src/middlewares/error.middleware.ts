@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 
 import ApiError from '../utils/ApiError.js';
 import logger from '../config/logger.js';
+import { logError } from '../utils/loggers.js';
 
 const errorMiddleware = (
   err: Error | ApiError,
@@ -28,8 +29,7 @@ const errorMiddleware = (
     message = 'Token expired';
   }
 
-  logger.error({
-    message: err.message,
+  logger.error(err.message, {
     stack: err.stack,
     path: _req.originalUrl,
     method: _req.method,

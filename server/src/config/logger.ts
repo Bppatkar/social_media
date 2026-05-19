@@ -14,40 +14,58 @@ import winston from 'winston';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const devFormat = winston.format.combine(
+const consoleFormat = winston.format.combine(
   winston.format.colorize(),
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  winston.format.timestamp({
+    format: 'YYYY-MM-DD HH:mm:ss',
+  }),
 
   winston.format.printf(({ level, message, timestamp, ...meta }) => {
-    return `[${timestamp}] ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''}`;
+    return `[${timestamp}] ${level}: ${message} ${
+      Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''
+    }`;
   })
 );
 
-const prodFormat = winston.format.combine(
+const fileFormat = winston.format.combine(
   winston.format.timestamp(),
-  winston.format.errors({ stack: true }),
+  winston.format.errors({
+    stack: true,
+  }),
   winston.format.json()
 );
 
 const logger = winston.createLogger({
-  level: 'info',
-
-  format: isProduction ? prodFormat : devFormat,
+  level: 'http',
 
   defaultMeta: {
     service: 'social-media-backend',
   },
 
   transports: [
-    new winston.transports.Console(),
+    // console
+    new winston.transports.Console({
+      format: isProduction ? fileFormat : consoleFormat,
+    }),
 
+    // all logs
+    new winston.transports.File({
+      filename: 'logs/combined.log',
+      format: fileFormat,
+    }),
+
+    // errors only
     new winston.transports.File({
       filename: 'logs/error.log',
       level: 'error',
+      format: fileFormat,
     }),
 
+    // security logs
     new winston.transports.File({
-      filename: 'logs/combined.log',
+      filename: 'logs/security.log',
+      level: 'warn',
+      format: fileFormat,
     }),
   ],
 });

@@ -12,6 +12,8 @@ import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import loggerMiddleware from './middlewares/logger.middleware.js';
+import morgan from 'morgan';
+import loggerStream from './utils/loggerStream.js';
 
 // Import routes
 import authRoutes from './routes/auth.routes.js';
@@ -37,6 +39,12 @@ app.use(
 );
 
 app.use(express.json({ limit: '10kb' })); // attackers can only send small payloads to prevent DoS attacks
+
+app.use(
+  morgan(':method :url :status :response-time ms', {
+    stream: loggerStream,
+  })
+);
 
 // health route
 app.get('/', (req, res) => {
