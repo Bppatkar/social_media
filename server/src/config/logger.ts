@@ -85,7 +85,6 @@ const logger = winston.createLogger({
 
     new winston.transports.File({
       filename: 'logs/security.log',
-      level: 'security',
       format: winston.format.combine(
         winston.format((info) => {
           return info.level === 'security' ? info : false;
