@@ -10,6 +10,7 @@ import verifyRefreshToken from '../utils/verifyRefreshToken.js';
 import type { JwtPayload } from 'jsonwebtoken';
 import hashToken from '../utils/hashToken.js';
 import findRefreshTokenSession from '../utils/findRefreshTokenSession.js';
+import { logSecurityEvent } from '../utils/logger.util.js';
 
 export const registerUserService = async (
   username: string,
@@ -81,6 +82,10 @@ export const loginUserService = async (email: string, password: string) => {
   }
 
   if (!user) {
+    logSecurityEvent('Login attempt with non-existing email', {
+      email,
+    });
+
     throw new ApiError(400, 'Invalid email or password');
   }
 
@@ -88,6 +93,9 @@ export const loginUserService = async (email: string, password: string) => {
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
+    logSecurityEvent('Invalid password attempt', {
+      email,
+    });
     user.failedLoginAttempts += 1;
 
     // lock account after 5 failed attempts
@@ -97,8 +105,6 @@ export const loginUserService = async (email: string, password: string) => {
     }
 
     await user.save();
-
-    throw new ApiError(400, 'Invalid email or password');
   }
 
   // Reseting counter on successful login

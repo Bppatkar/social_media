@@ -35,8 +35,20 @@ const fileFormat = winston.format.combine(
   winston.format.json()
 );
 
+const customLevels = {
+  levels: {
+    error: 0,
+    warn: 1,
+    security: 2,
+    audit: 3,
+    info: 4,
+    http: 5,
+    debug: 6,
+  },
+};
+
 const logger = winston.createLogger({
-  level: 'http',
+  levels: customLevels.levels,
 
   defaultMeta: {
     service: 'social-media-backend',
@@ -61,10 +73,9 @@ const logger = winston.createLogger({
       format: fileFormat,
     }),
 
-    // security logs
     new winston.transports.File({
       filename: 'logs/security.log',
-      level: 'warn',
+      level: 'security',
       format: fileFormat,
     }),
   ],

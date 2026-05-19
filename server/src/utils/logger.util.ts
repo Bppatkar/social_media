@@ -27,3 +27,10 @@ export const logSecurityEvent = (
 ) => {
   logger.log('security', message, meta);
 };
+
+export const logAuditEvent = (
+  message: string,
+  meta?: LogMeta
+) => {
+  logger.log('audit', message, meta);
+};
