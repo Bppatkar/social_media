@@ -47,6 +47,16 @@ const customLevels = {
   },
 };
 
+winston.addColors({
+  error: 'red',
+  warn: 'yellow',
+  security: 'magenta',
+  audit: 'cyan',
+  info: 'green',
+  http: 'blue',
+  debug: 'white',
+});
+
 const logger = winston.createLogger({
   levels: customLevels.levels,
 
@@ -76,7 +86,25 @@ const logger = winston.createLogger({
     new winston.transports.File({
       filename: 'logs/security.log',
       level: 'security',
-      format: fileFormat,
+      format: winston.format.combine(
+        winston.format((info) => {
+          return info.level === 'security' ? info : false;
+        })(),
+
+        fileFormat
+      ),
+    }),
+
+    new winston.transports.File({
+      filename: 'logs/audit.log',
+
+      format: winston.format.combine(
+        winston.format((info) => {
+          return info.level === 'audit' ? info : false;
+        })(),
+
+        fileFormat
+      ),
     }),
   ],
 });

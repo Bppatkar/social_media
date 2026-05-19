@@ -96,15 +96,17 @@ export const loginUserService = async (email: string, password: string) => {
     logSecurityEvent('Invalid password attempt', {
       email,
     });
+
     user.failedLoginAttempts += 1;
 
-    // lock account after 5 failed attempts
     if (user.failedLoginAttempts >= 5) {
-      user.lockUntil = new Date(Date.now() + 5 * 60 * 1000); // lock for 5 minutes
-      user.failedLoginAttempts = 0; // reset attempts after locking
+      user.lockUntil = new Date(Date.now() + 5 * 60 * 1000);
+      user.failedLoginAttempts = 0;
     }
 
     await user.save();
+
+    throw new ApiError(400, 'Invalid email or password');
   }
 
   // Reseting counter on successful login
