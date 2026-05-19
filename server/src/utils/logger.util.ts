@@ -1,11 +1,11 @@
 import logger from '../config/logger.js';
 
 interface LogMeta {
-  requestId?: string;
-  userId?: string;
-  path?: string;
-  method?: string;
-  ip?: string;
+  requestId?: string | undefined;
+  userId?: string | undefined;
+  path?: string | undefined;
+  method?: string | undefined;
+  ip?: string | undefined;
   [key: string]: unknown;
 }
 
