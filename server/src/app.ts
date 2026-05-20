@@ -22,6 +22,8 @@ import commentRoutes from './routes/comment.routes.js';
 import likeRoutes from './routes/like.routes.js';
 import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import { connectRedis } from './config/redis.js';
+import { setCache, getCache, deleteCache } from './services/redis.service.js';
 
 const app = express();
 app.set('trust proxy', 1); // trust first proxy used for , rate limiting and secure cookies in production behind a proxy/load balancer
@@ -51,6 +53,25 @@ app.get('/', (req, res) => {
   res.send('Social Media API is running');
 });
 
+// testing redis
+app.get('/cache-test', async (_req, res) => {
+  await setCache(
+    'user:1',
+    {
+      name: 'Bhanu',
+      role: 'admin',
+    },
+    60
+  );
+
+  const user = await getCache('user:1');
+
+  res.json({
+    success: true,
+    data: user,
+  });
+});
+
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
@@ -61,13 +82,18 @@ app.use('/api/admin', adminRoutes);
 
 app.use(errorMiddleware);
 
-db()
-  .then(() => {
+const startServer = async () => {
+  try {
+    await db();
+    await connectRedis();
+
     app.listen(env.PORT, () => {
       console.log(`Server is running on port http://localhost:${env.PORT}`);
     });
-  })
-  .catch((error) => {
-    console.error('Failed to connect to the database:', error);
+  } catch (error) {
+    console.error('Failed to start the server:', error);
     process.exit(1); // Exit with failure
-  });
+  }
+};
+
+startServer();
