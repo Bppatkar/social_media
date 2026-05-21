@@ -10,7 +10,8 @@ import verifyRefreshToken from '../utils/verifyRefreshToken.js';
 import type { JwtPayload } from 'jsonwebtoken';
 import hashToken from '../utils/hashToken.js';
 import findRefreshTokenSession from '../utils/findRefreshTokenSession.js';
-import { logSecurityEvent } from '../utils/logger.util.js';
+import { logSecurityEvent, logInfo } from '../utils/logger.util.js';
+import { getCache, setCache } from './redis.service.js';
 
 export const registerUserService = async (
   username: string,
@@ -168,10 +169,20 @@ export const logoutUserService = async (refreshToken: string) => {
 };
 
 export const getUserProfileService = async (userId: string) => {
+  const cacheKey = `user:${userId}`;
+
+  const cachedUser = await getCache(cacheKey);
+  if (cachedUser) {
+    logInfo('Serving from Redis cache');
+    return cachedUser;
+  }
+
   const user = await User.findById(userId).select('-password');
   if (!user) {
     throw new ApiError(404, 'User not found');
   }
+  await setCache(cacheKey, user, 60);
+  logInfo('Serving from MongoDB and caching in Redis');
   return user;
 };
 
