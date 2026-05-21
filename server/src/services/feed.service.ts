@@ -28,3 +28,28 @@ export const getGlobalFeedService = async () => {
 export const invalidateFeedCacheService = async () => {
   await deleteCache(FEED_CACHE_KEY);
 };
+
+export const getCursorFeedService = async (
+  cursor?: string,
+  limit: number = 10
+) => {
+  const query = cursor ? { _id: { $lt: cursor } } : {};
+
+  const posts = await Post.find(query)
+    .populate('owner', 'username email profileImage')
+    .sort({ _id: -1 })
+    .limit(limit + 1);
+
+  const hashMore = posts.length > limit;
+
+  // if there are more posts than the limit, we have a next page
+  if (hashMore) posts.pop();
+
+  const nextCursor = posts.length > 0 ? posts[posts.length - 1]?._id : null;
+
+  return {
+    posts,
+    nextCursor,
+    hashMore,
+  };
+};
