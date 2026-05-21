@@ -410,6 +410,91 @@ Observability Improvements:
 
 ---
 
+# 📅 DAY 11 — REDIS CACHE ENGINEERING + CACHE INVALIDATION
+
+## ✅ Completed
+
+Redis Infrastructure:
+
+- Redis local setup
+- Redis connection architecture
+- centralized Redis config
+- reusable Redis service layer
+- cache helper abstractions
+- JSON cache serialization/deserialization
+
+Caching System:
+
+- user profile caching
+- cache key architecture
+- TTL-based cache expiration
+- cache invalidation on profile updates
+- cache-aside pattern implementation
+
+Production Improvements:
+
+- startup sequence improvements
+- async server bootstrap architecture
+- Redis connection lifecycle handling
+- centralized cache utilities
+
+Validation Improvements:
+
+- z.coerce number validation
+- strict query validation improvements
+- reusable schema evolution
+
+Profile System:
+
+- update profile API
+- cache invalidation after update
+- profile cache refresh architecture
+
+## 🧠 Concepts Learned
+
+- cache-aside pattern
+- cache invalidation strategy
+- hot data optimization
+- Redis abstraction architecture
+- TTL lifecycle thinking
+- distributed cache mindset
+- startup orchestration
+- scalable caching patterns
+
+## 🧠 HUGE ENGINEERING REALIZATION
+
+Database should NOT always handle every request.
+
+Production systems use:
+
+```txt
+Redis
+↓
+fast memory access
+↓
+reduced DB load
+↓
+better scalability
+```
+
+This was first step into:
+
+# distributed systems thinking
+
+Backend evolved from:
+
+```txt
+database-driven backend
+```
+
+towards:
+
+```txt
+cache-optimized architecture
+```
+
+---
+
 # 🔥 CURRENT BACKEND LEVEL
 
 Project has evolved from:
