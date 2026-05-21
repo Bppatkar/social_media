@@ -22,6 +22,7 @@ import commentRoutes from './routes/comment.routes.js';
 import likeRoutes from './routes/like.routes.js';
 import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import feedRoutes from './routes/feed.routes.js';
 import { connectRedis } from './config/redis.js';
 import { setCache, getCache, deleteCache } from './services/redis.service.js';
 
@@ -79,7 +80,7 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/follows', followRoutes);
 app.use('/api/admin', adminRoutes);
-
+app.use('/api/feed', feedRoutes);
 app.use(errorMiddleware);
 
 const startServer = async () => {

@@ -2,6 +2,7 @@ import Post from '../models/post.model.js';
 import ApiError from '../utils/ApiError.js';
 import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
+import { invalidateFeedCacheService } from './feed.service.js';
 
 //? Basic Structure of a service function
 export const createPostService = async (
@@ -15,6 +16,7 @@ export const createPostService = async (
     image,
     owner: ownerId,
   });
+  await invalidateFeedCacheService();
   return post;
 };
 
