@@ -40,16 +40,16 @@ export const getCursorFeedService = async (
     .sort({ _id: -1 })
     .limit(limit + 1);
 
-  const hashMore = posts.length > limit;
+  const hasMore = posts.length > limit;
 
   // if there are more posts than the limit, we have a next page
-  if (hashMore) posts.pop();
+  if (hasMore) posts.pop();
 
   const nextCursor = posts.length > 0 ? posts[posts.length - 1]?._id : null;
 
   return {
     posts,
     nextCursor,
-    hashMore,
+    hasMore,
   };
 };
