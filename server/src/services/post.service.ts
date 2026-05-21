@@ -10,7 +10,6 @@ export const createPostService = async (
   image: string,
   ownerId: string
 ) => {
-  
   const post = await Post.create({
     content,
     image,
@@ -83,6 +82,7 @@ export const updatePostService = async (
   if (content) post.content = content;
   if (image) post.image = image;
   await post.save();
+  await invalidateFeedCacheService();
   return post;
 };
 
@@ -98,5 +98,6 @@ export const deletePostService = async (postId: string, userId: string) => {
   }
 
   await post.deleteOne();
+  await invalidateFeedCacheService();
   return post;
 };
