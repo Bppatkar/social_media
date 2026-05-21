@@ -38,14 +38,16 @@ export const getCursorFeedService = async (
   const posts = await Post.find(query)
     .populate('owner', 'username email profileImage')
     .sort({ _id: -1 })
-    .limit(limit + 1);
+    .limit(limit + 1)
+    .lean(); // lean() returns plain JavaScript objects instead of Mongoose documents, which can be more efficient for read operations
 
   const hasMore = posts.length > limit;
 
   // if there are more posts than the limit, we have a next page
   if (hasMore) posts.pop();
 
-  const nextCursor = posts.length > 0 ? posts[posts.length - 1]?._id : null;
+  const nextCursor =
+    posts.length > 0 ? posts[posts.length - 1]?._id.toString() : null;
 
   return {
     posts,
