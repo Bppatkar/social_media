@@ -11,7 +11,7 @@ import type { JwtPayload } from 'jsonwebtoken';
 import hashToken from '../utils/hashToken.js';
 import findRefreshTokenSession from '../utils/findRefreshTokenSession.js';
 import { logSecurityEvent, logInfo } from '../utils/logger.util.js';
-import { getCache, setCache } from './redis.service.js';
+import { deleteCache, getCache, setCache } from './redis.service.js';
 
 export const registerUserService = async (
   username: string,
@@ -244,4 +244,22 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
     accessToken,
     refreshToken: newRefreshToken,
   };
+};
+
+export const updateUserProfileService = async (
+  userId: string,
+  updateData: { username?: string; email?: string }
+) => {
+  const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+    returnDocument: 'after',
+    runValidators: true,
+  }).select('-password');
+
+  if (!updatedUser) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  await deleteCache(`user:${userId}`);
+
+  return updatedUser;
 };

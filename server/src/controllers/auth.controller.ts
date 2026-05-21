@@ -6,9 +6,9 @@ import {
   logoutUserService,
   getUserProfileService,
   refreshAccessTokenService,
+  updateUserProfileService,
 } from '../services/auth.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
-import type { AuthRequest } from '../types/auth.types.js';
 
 import {
   clearAuthCookies,
@@ -52,15 +52,15 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(true, 'Logged out successfully', null));
 });
 
-export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const user = req.user;
+export const getMe = asyncHandler(async (req: Request, res: Response) => {
+  const user = req.user!;
   res
     .status(200)
     .json(new ApiResponse(true, 'User retrieved successfully', user));
 });
 
 export const getUserProfile = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
+  async (req: Request, res: Response) => {
     const userId = req.params.userId as string;
     const user = await getUserProfileService(userId);
     res
@@ -86,3 +86,13 @@ export const refreshAccessToken = asyncHandler(
     );
   }
 );
+
+export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
+  const updateUser = await updateUserProfileService(req.user!.userId, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: 'Profile updated successfully',
+    data: updateUser,
+  });
+});

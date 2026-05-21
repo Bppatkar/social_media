@@ -1,4 +1,4 @@
-import {  z } from 'zod';
+import { email, z } from 'zod';
 import {
   emailSchema,
   passwordSchema,
@@ -23,6 +23,15 @@ export const loginSchema = z.object({
       email: emailSchema,
 
       password: passwordSchema,
+    })
+    .strict(),
+});
+
+export const updateProfileSchema = z.object({
+  body: z
+    .object({
+      username: usernameSchema.optional(),
+      email: emailSchema,
     })
     .strict(),
 });
