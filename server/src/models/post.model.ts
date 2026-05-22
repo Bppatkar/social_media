@@ -10,6 +10,7 @@ const postSchema = new mongoose.Schema(
       trim: true,
     },
     image: { type: String, required: false },
+    imagePublicId: { type: String, default: '' },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

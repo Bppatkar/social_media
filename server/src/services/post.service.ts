@@ -8,11 +8,13 @@ import { invalidateFeedCacheService } from './feed.service.js';
 export const createPostService = async (
   content: string,
   image: string,
+  imagePublicId: string,
   ownerId: string
 ) => {
   const post = await Post.create({
     content,
     image,
+    imagePublicId,
     owner: ownerId,
   });
   await invalidateFeedCacheService();

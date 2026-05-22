@@ -20,16 +20,24 @@ export const createPost = asyncHandler(
 
     console.log('Received file:', file);
     console.log('Received Body:', req.body);
-    
+
     let imageUrl = '';
+    let imagePublicId = '';
+
     if (file) {
       const uploadedImage = await uploadToCloudinary(file.buffer, 'posts');
       imageUrl = uploadedImage.secure_url;
+      imagePublicId = uploadedImage.public_id;
     }
 
     const ownerId = req.user!.userId;
 
-    const post = await createPostService(content, imageUrl, ownerId);
+    const post = await createPostService(
+      content,
+      imageUrl,
+      imagePublicId,
+      ownerId
+    );
     res
       .status(201)
       .json(new ApiResponse(true, 'Post created successfully', post));
