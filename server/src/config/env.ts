@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-
 const env = {
   PORT: process.env.PORT || 3000,
 
@@ -16,6 +15,12 @@ const env = {
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || '',
 
   REDIS_URL: process.env.REDIS_URL || '',
+
+  CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || '',
+
+  CLOUD_API_KEY: process.env.CLOUDINARY_API_KEY || '',
+
+  CLOUD_API_SECRET: process.env.CLOUDINARY_API_SECRET || '',
 };
 
 export default env;

@@ -13,14 +13,22 @@ import validate from '../middlewares/validate.middleware.js';
 import {
   createPostSchema,
   postIdParamSchema,
-    updatePostWithParamSchema,
+  updatePostWithParamSchema,
 } from '../validators/post.validation.js';
 import { paginationQuerySchema } from '../validators/common.validation.js';
+import upload from '../middlewares/upload.middleware.js';
 
 const router = Router();
 
 //! Protected route
-router.post('/create', authMiddleware, validate(createPostSchema), createPost);
+router.post(
+  '/create',
+  authMiddleware,
+  upload.single('image'),
+  // validate(createPostSchema),
+  createPost
+);
+
 router.get(
   '/feed',
   validate(paginationQuerySchema),

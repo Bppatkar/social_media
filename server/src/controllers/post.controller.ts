@@ -11,13 +11,25 @@ import {
   updatePostService,
 } from '../services/post.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
+import uploadToCloudinary from '../utils/uploadToCloudinary.js';
 
 export const createPost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { content, image } = req.body;
+    const { content } = req.body;
+    const file = req.file;
+
+    console.log('Received file:', file);
+    console.log('Received Body:', req.body);
+    
+    let imageUrl = '';
+    if (file) {
+      const uploadedImage = await uploadToCloudinary(file.buffer, 'posts');
+      imageUrl = uploadedImage.secure_url;
+    }
+
     const ownerId = req.user!.userId;
 
-    const post = await createPostService(content, image, ownerId);
+    const post = await createPostService(content, imageUrl, ownerId);
     res
       .status(201)
       .json(new ApiResponse(true, 'Post created successfully', post));
