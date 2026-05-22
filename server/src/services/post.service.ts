@@ -1,5 +1,6 @@
 import Post from '../models/post.model.js';
 import ApiError from '../utils/ApiError.js';
+import deleteFromCloudinary from '../utils/deleteFromCloudinary.js';
 import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
 import { invalidateFeedCacheService } from './feed.service.js';
@@ -97,6 +98,10 @@ export const deletePostService = async (postId: string, userId: string) => {
   // checking ownership
   if (post.owner.toString() !== userId) {
     throw new ApiError(403, 'You are not authorized to delete this post');
+  }
+
+  if (post.imagePublicId) {
+    await deleteFromCloudinary(post.imagePublicId);
   }
 
   await post.deleteOne();
