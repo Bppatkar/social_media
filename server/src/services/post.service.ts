@@ -100,6 +100,7 @@ export const deletePostService = async (postId: string, userId: string) => {
     throw new ApiError(403, 'You are not authorized to delete this post');
   }
 
+  // delete image from cloudinary if exists
   if (post.imagePublicId) {
     await deleteFromCloudinary(post.imagePublicId);
   }

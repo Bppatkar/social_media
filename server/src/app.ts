@@ -27,6 +27,11 @@ import { connectRedis } from './config/redis.js';
 import { setCache, getCache, deleteCache } from './services/redis.service.js';
 
 const app = express();
+
+app.get('/test', (_req, res) => {
+  res.send('TEST ROUTE WORKING');
+});
+
 app.set('trust proxy', 1); // trust first proxy used for , rate limiting and secure cookies in production behind a proxy/load balancer
 
 applySecurityMiddlewares(app);
