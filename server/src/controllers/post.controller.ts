@@ -11,7 +11,7 @@ import {
   updatePostService,
 } from '../services/post.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
-import uploadToCloudinary from '../utils/uploadToCloudinary.js';
+import { uploadSingleImageService } from '../services/media.service.js';
 
 export const createPost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -25,9 +25,9 @@ export const createPost = asyncHandler(
     let imagePublicId = '';
 
     if (file) {
-      const uploadedImage = await uploadToCloudinary(file.buffer, 'posts');
-      imageUrl = uploadedImage.secure_url;
-      imagePublicId = uploadedImage.public_id;
+      const uploadedImage = await uploadSingleImageService(file.buffer, 'posts');
+      imageUrl = uploadedImage.imageUrl;
+      imagePublicId = uploadedImage.imagePublicId;
     }
 
     const ownerId = req.user!.userId;
@@ -94,9 +94,9 @@ export const updatePost = asyncHandler(
     let imagePublicId: string | undefined;
 
     if (file) {
-      const uploadedImage = await uploadToCloudinary(file.buffer, 'posts');
-      imageUrl = uploadedImage.secure_url;
-      imagePublicId = uploadedImage.public_id;
+      const uploadedImage = await uploadSingleImageService(file.buffer, 'posts');
+      imageUrl = uploadedImage.imageUrl;
+      imagePublicId = uploadedImage.imagePublicId;
     }
 
     const updatedPost = await updatePostService(
