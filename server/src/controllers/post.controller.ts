@@ -84,11 +84,28 @@ export const deletePost = asyncHandler(
 export const updatePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const postId = req.params.postId as string;
-    const { content, image } = req.body;
+    const { content } = req.body;
+
+    const file = req.file;
 
     const userId = req.user!.userId;
 
-    const updatedPost = await updatePostService(postId, userId, content, image);
+    let imageUrl: string | undefined;
+    let imagePublicId: string | undefined;
+
+    if (file) {
+      const uploadedImage = await uploadToCloudinary(file.buffer, 'posts');
+      imageUrl = uploadedImage.secure_url;
+      imagePublicId = uploadedImage.public_id;
+    }
+
+    const updatedPost = await updatePostService(
+      postId,
+      userId,
+      content,
+      imageUrl,
+      imagePublicId
+    );
 
     res
       .status(200)

@@ -70,9 +70,11 @@ export const updatePostService = async (
   postId: string,
   userId: string,
   content?: string,
-  image?: string
+  image?: string,
+  imagePublicId?: string
 ) => {
   const post = await Post.findById(postId);
+
   if (!post) {
     throw new ApiError(404, 'Post not found');
   }
@@ -83,7 +85,18 @@ export const updatePostService = async (
   }
 
   if (content) post.content = content;
-  if (image) post.image = image;
+
+  if (image && imagePublicId) {
+    // delete old cloudinary image
+    if (post.imagePublicId) {
+      await deleteFromCloudinary(post.imagePublicId);
+    }
+
+    // save new image
+    post.image = image;
+    post.imagePublicId = imagePublicId;
+  }
+  
   await post.save();
   await invalidateFeedCacheService();
   return post;

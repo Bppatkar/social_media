@@ -52,8 +52,9 @@ router.delete(
 
 router.put(
   '/:postId',
-  validate(updatePostWithParamSchema),
   authMiddleware,
+  upload.single('image'),
+  validate(updatePostWithParamSchema),
   updatePost
 );
 
