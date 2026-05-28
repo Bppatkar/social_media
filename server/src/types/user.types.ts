@@ -6,6 +6,7 @@ export interface IUser {
   password: string;
   bio?: string;
   profileImage?: string;
+  profileImagePublicId?: string;
   role: 'user' | 'admin';
   failedLoginAttempts: number;
   lockUntil: Date | null;

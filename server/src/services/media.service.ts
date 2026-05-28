@@ -3,10 +3,10 @@ import deleteFromCloudinary from '../utils/deleteFromCloudinary.js';
 import ApiError from '../utils/ApiError.js';
 
 export const uploadSingleImageService = async (
-  fileBugger: Buffer,
+  fileBuffer: Buffer,
   folder: string
 ) => {
-  const uploadedImage = await uploadToCloudinary(fileBugger, folder);
+  const uploadedImage = await uploadToCloudinary(fileBuffer, folder);
 
   return {
     imageUrl: uploadedImage.secure_url,

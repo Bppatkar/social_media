@@ -1,6 +1,6 @@
 import Post from '../models/post.model.js';
 import ApiError from '../utils/ApiError.js';
-import deleteFromCloudinary from '../utils/deleteFromCloudinary.js';
+import { deleteSingleImageService } from './media.service.js';
 import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
 import { invalidateFeedCacheService } from './feed.service.js';
@@ -89,14 +89,14 @@ export const updatePostService = async (
   if (image && imagePublicId) {
     // delete old cloudinary image
     if (post.imagePublicId) {
-      await deleteFromCloudinary(post.imagePublicId);
+      await deleteSingleImageService(post.imagePublicId);
     }
 
     // save new image
     post.image = image;
     post.imagePublicId = imagePublicId;
   }
-  
+
   await post.save();
   await invalidateFeedCacheService();
   return post;
@@ -115,7 +115,7 @@ export const deletePostService = async (postId: string, userId: string) => {
 
   // delete image from cloudinary if exists
   if (post.imagePublicId) {
-    await deleteFromCloudinary(post.imagePublicId);
+    await deleteSingleImageService(post.imagePublicId);
   }
 
   await post.deleteOne();
