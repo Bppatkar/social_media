@@ -264,10 +264,28 @@ export const updateUserProfileService = async (
   }
 
   if (updateData.username) {
+    const existingUsername = await User.findOne({
+      username: updateData.username,
+      _id: { $ne: userId }, // $ne - not equal operator, to exclude current user from the search
+    });
+
+    if (existingUsername) {
+      throw new ApiError(400, 'Username already taken');
+    }
+
     user.username = updateData.username;
   }
 
   if (updateData.email) {
+    const existingEmail = await User.findOne({
+      email: updateData.email,
+      _id: { $ne: userId },
+    });
+
+    if (existingEmail) {
+      throw new ApiError(400, 'Email already taken');
+    }
+
     user.email = updateData.email;
   }
 
@@ -275,24 +293,22 @@ export const updateUserProfileService = async (
     user.bio = updateData.bio;
   }
 
-  if (
-    updateData.profileImage &&
-    updateData.profileImagePublicId
-  ) {
+  if (updateData.profileImage && updateData.profileImagePublicId) {
     if (user.profileImagePublicId) {
-      await deleteSingleImageService(
-        user.profileImagePublicId
-      );
+      await deleteSingleImageService(user.profileImagePublicId);
     }
 
     user.profileImage = updateData.profileImage;
-    user.profileImagePublicId =
-      updateData.profileImagePublicId;
+    user.profileImagePublicId = updateData.profileImagePublicId;
   }
 
   await user.save();
 
   await deleteCache(`user:${userId}`);
 
-  return user;
+  const updatedUser = await User.findById(userId).select(
+    '-password -failedLoginAttempts -lockUntil -__v -profileImagePublicId'
+  );
+
+  return updatedUser;
 };
