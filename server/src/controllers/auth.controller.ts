@@ -14,6 +14,7 @@ import {
   clearAuthCookies,
   setRefreshTokenCookie,
 } from '../utils/authCookies.js';
+import { uploadSingleImageService } from '../services/media.service.js';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -87,12 +88,50 @@ export const refreshAccessToken = asyncHandler(
   }
 );
 
-export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
-  const updateUser = await updateUserProfileService(req.user!.userId, req.body);
+export const updateProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { username, email, bio } = req.body;
+    const file = req.file;
 
-  res.status(200).json({
-    success: true,
-    message: 'Profile updated successfully',
-    data: updateUser,
-  });
-});
+    let profileImageUrl: string | undefined;
+    let profileImagePublicId: string | undefined;
+
+    if (file) {
+      const uploadImage = await uploadSingleImageService(
+        file.buffer,
+        'avatars'
+      );
+
+      profileImageUrl = uploadImage.imageUrl;
+      profileImagePublicId = uploadImage.imagePublicId;
+    }
+
+    const updateData: {
+      username?: string;
+      email?: string;
+      bio?: string;
+      profileImage?: string;
+      profileImagePublicId?: string;
+    } = {};
+
+    if (username) updateData.username = username;
+    if (email) updateData.email = email;
+    if (bio) updateData.bio = bio;
+
+    if (profileImageUrl && profileImagePublicId) {
+      updateData.profileImage = profileImageUrl;
+      updateData.profileImagePublicId = profileImagePublicId;
+    }
+
+    const updateUser = await updateUserProfileService(
+      req.user!.userId,
+      updateData
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      data: updateUser,
+    });
+  }
+);

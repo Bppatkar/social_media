@@ -17,6 +17,7 @@ import {
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { userIdParamSchema } from '../validators/follow.validation.js';
 import auditMiddleware from '../middlewares/audit.middleware.js';
+import upload from "../middlewares/upload.middleware.js"
 
 const router = Router();
 
@@ -38,6 +39,7 @@ router.get(
 router.patch(
   '/update-profile',
   authMiddleware,
+  upload.single('profileImage'),
   validate(updateProfileSchema),
   updateProfile
 );

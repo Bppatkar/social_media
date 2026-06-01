@@ -12,6 +12,7 @@ import hashToken from '../utils/hashToken.js';
 import findRefreshTokenSession from '../utils/findRefreshTokenSession.js';
 import { logSecurityEvent, logInfo } from '../utils/logger.util.js';
 import { deleteCache, getCache, setCache } from './redis.service.js';
+import { deleteSingleImageService } from './media.service.js';
 
 export const registerUserService = async (
   username: string,
@@ -248,18 +249,50 @@ export const refreshAccessTokenService = async (refreshToken: string) => {
 
 export const updateUserProfileService = async (
   userId: string,
-  updateData: { username?: string; email?: string }
+  updateData: {
+    username?: string;
+    email?: string;
+    bio?: string;
+    profileImage?: string | undefined;
+    profileImagePublicId?: string | undefined;
+  }
 ) => {
-  const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-    returnDocument: 'after',
-    runValidators: true,
-  }).select('-password');
+  const user = await User.findById(userId);
 
-  if (!updatedUser) {
+  if (!user) {
     throw new ApiError(404, 'User not found');
   }
 
+  if (updateData.username) {
+    user.username = updateData.username;
+  }
+
+  if (updateData.email) {
+    user.email = updateData.email;
+  }
+
+  if (updateData.bio) {
+    user.bio = updateData.bio;
+  }
+
+  if (
+    updateData.profileImage &&
+    updateData.profileImagePublicId
+  ) {
+    if (user.profileImagePublicId) {
+      await deleteSingleImageService(
+        user.profileImagePublicId
+      );
+    }
+
+    user.profileImage = updateData.profileImage;
+    user.profileImagePublicId =
+      updateData.profileImagePublicId;
+  }
+
+  await user.save();
+
   await deleteCache(`user:${userId}`);
 
-  return updatedUser;
+  return user;
 };
