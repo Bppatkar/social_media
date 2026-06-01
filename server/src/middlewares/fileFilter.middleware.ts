@@ -2,8 +2,8 @@ import multer from 'multer';
 import ApiError from '../utils/ApiError.js';
 
 const fileFilter: multer.Options['fileFilter'] = (_req, file, cb) => {
-  console.log('FILE MIME TYPE:', file.mimetype);
-  console.log('FILE ORIGINAL NAME:', file.originalname);
+  // console.log('FILE MIME TYPE:', file.mimetype);
+  // console.log('FILE ORIGINAL NAME:', file.originalname);
 
   const allowedMimeTypes = [
     'image/jpeg',

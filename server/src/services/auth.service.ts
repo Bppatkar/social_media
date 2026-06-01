@@ -310,5 +310,9 @@ export const updateUserProfileService = async (
     '-password -failedLoginAttempts -lockUntil -__v -profileImagePublicId'
   );
 
+  if (!updatedUser) {
+    throw new ApiError(404, 'User not found');
+  }
+
   return updatedUser;
 };
