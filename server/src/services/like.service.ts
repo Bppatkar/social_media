@@ -16,11 +16,11 @@ export const likePostService = async (postId: string, userId: string) => {
 
   await Like.create({ post: postId, likedBy: userId });
 
-  post.likeCount += 1;
-  await post.save();
+  await Post.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } });
+  const updatedPost = await Post.findById(postId);
 
   return {
-    likeCount: post.likeCount,
+    likeCount: updatedPost?.likeCount || 0,
   };
 };
 
@@ -30,12 +30,9 @@ export const unlikePostService = async (postId: string, userId: string) => {
     throw new ApiError(400, 'You have not liked this post');
   }
   await Like.deleteOne({ post: postId, likedBy: userId });
-  const post = await Post.findById(postId);
-  if (post) {
-    post.likeCount -= 1;
-    await post.save();
-  }
+  await Post.findByIdAndUpdate(postId, { $inc: { likeCount: -1 } });
+  const updatedPost = await Post.findById(postId);
   return {
-    likeCount: post?.likeCount || 0,
+    likeCount: updatedPost?.likeCount || 0,
   };
 };

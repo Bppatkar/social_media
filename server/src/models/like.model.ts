@@ -16,7 +16,8 @@ const likeSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-likeSchema.index({ post: 1, likedBy: 1 }, { unique: true });
+likeSchema.index({ post: 1, likedBy: 1 }, { unique: true }); // Ensure a user can like a post only once
+likeSchema.index({likedBy: 1}); // Index for efficient retrieval of likes by user
 
 const Like = mongoose.model<ILikeDocument>('Like', likeSchema);
 export default Like;
