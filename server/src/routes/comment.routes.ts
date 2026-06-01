@@ -4,6 +4,7 @@ import {
   addComment,
   deleteComment,
   getPostComments,
+  updateComment,
 } from '../controllers/comment.controller.js';
 
 import validate from '../middlewares/validate.middleware.js';
@@ -11,6 +12,7 @@ import validate from '../middlewares/validate.middleware.js';
 import {
   addCommentWithPostSchema,
   commentIdParamSchema,
+  updateCommentSchema,
 } from '../validators/comment.validation.js';
 import { postIdParamSchema } from '../validators/post.validation.js';
 
@@ -35,6 +37,13 @@ router.delete(
   validate(commentIdParamSchema),
   authMiddleware,
   deleteComment
+);
+
+router.patch(
+  '/:commentId',
+  validate(updateCommentSchema),
+  authMiddleware,
+  updateComment
 );
 
 export default router;

@@ -8,6 +8,7 @@ import {
   addCommentService,
   getPostCommentsService,
   deleteCommentService,
+  updateCommentService,
 } from '../services/comment.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import getPagination from '../utils/pagination.js';
@@ -30,14 +31,23 @@ export const getPostComments = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const postId = req.params.postId as string;
 
-    const {page, limit, skip} = getPagination(req.query);
+    const { page, limit, skip } = getPagination(req.query);
 
     const search = (req.query.search as string) || '';
     const sort = (req.query.sort as string) || 'latest';
 
-    const comments = await getPostCommentsService(postId, page, limit, skip, search, sort);
+    const comments = await getPostCommentsService(
+      postId,
+      page,
+      limit,
+      skip,
+      search,
+      sort
+    );
 
-    res.status(200).json(new ApiResponse(true, 'Comments retrieved successfully', comments));
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Comments retrieved successfully', comments));
   }
 );
 
@@ -49,6 +59,23 @@ export const deleteComment = asyncHandler(
 
     const result = await deleteCommentService(commentId, userId);
 
-    res.status(200).json(new ApiResponse(true, 'Comment deleted successfully', result));
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Comment deleted successfully', result));
+  }
+);
+
+export const updateComment = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const commentId = req.params.commentId as string;
+    const userId = req.user!.userId;
+
+    const { content } = req.body;
+
+    const comment = await updateCommentService(commentId, userId, content);
+
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Comment updated successfully', comment));
   }
 );

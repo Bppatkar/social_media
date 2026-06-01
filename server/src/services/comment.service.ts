@@ -11,7 +11,6 @@ export const addCommentService = async (
   userId: string,
   content: string
 ) => {
-  
   const post = await Post.findById(postId);
   if (!post) {
     throw new ApiError(404, 'Post not found');
@@ -20,13 +19,18 @@ export const addCommentService = async (
   const comment = await Comment.create({
     post: postId,
     commentedBy: userId,
-    content,
+    content: content.trim(),
   });
 
   post.commentCount += 1;
   await post.save();
 
-  return comment;
+  const createdComment = await Comment.findById(comment._id).populate(
+    'commentedBy',
+    'username profileImage'
+  );
+
+  return createdComment;
 };
 
 export const getPostCommentsService = async (
@@ -37,6 +41,11 @@ export const getPostCommentsService = async (
   search: string,
   sort: string
 ) => {
+  const posts = await Post.findById(postId);
+  if (!posts) {
+    throw new ApiError(404, 'Post not found');
+  }
+
   const searchFilter = search
     ? { post: postId, ...buildSearchQuery('content', search) }
     : { post: postId };
@@ -44,7 +53,7 @@ export const getPostCommentsService = async (
   const sortOption = buildSortQuery(sort);
 
   const comments = await Comment.find(searchFilter)
-    .populate('commentedBy', 'username email profileImage')
+    .populate('commentedBy', 'username  profileImage')
     .sort(sortOption)
     .skip(skip)
     .limit(limit);
@@ -82,4 +91,30 @@ export const deleteCommentService = async (
   await comment.deleteOne();
 
   return { message: 'Comment deleted successfully' };
+};
+
+export const updateCommentService = async (
+  commentId: string,
+  userId: string,
+  content: string
+) => {
+  const comment = await Comment.findById(commentId);
+
+  if (!comment) {
+    throw new ApiError(404, 'Comment not found');
+  }
+
+  // ownership check
+  if (comment.commentedBy.toString() !== userId) {
+    throw new ApiError(403, 'You are not authorized to update this comment');
+  }
+
+  comment.content = content.trim();
+  await comment.save();
+
+  const updatedComment = await Comment.findById(commentId).populate(
+    'commentedBy',
+    'username profileImage'
+  );
+  return updatedComment;
 };
