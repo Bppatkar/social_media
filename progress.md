@@ -461,6 +461,114 @@ Profile System:
 - startup orchestration
 - scalable caching patterns
 
+# 📅 DAY 12 — MEDIA MANAGEMENT + CLOUDINARY ARCHITECTURE
+
+## ✅ Completed
+
+Media Infrastructure:
+
+- Cloudinary integration
+- Image upload pipeline
+- Image deletion pipeline
+- Media service abstraction
+
+Upload Architecture:
+
+- Multer middleware
+- File validation
+- File filtering
+- Upload middleware abstraction
+
+Post Media Features:
+
+- Image uploads for posts
+- Cloud storage integration
+- Media cleanup on deletion
+
+## 🧠 Concepts Learned
+
+- Cloud storage architecture
+- File upload lifecycle
+- Media abstraction
+- Storage provider separation
+- Scalable asset management
+
+# 📅 DAY 13 — AUTHORIZATION + AUDIT SYSTEMS
+
+## ✅ Completed
+
+Authorization:
+
+- Ownership validation
+- Protected resource access
+- Reusable authorize middleware
+
+Audit Infrastructure:
+
+- Audit log model
+- Audit middleware
+- Audit service
+- Action tracking architecture
+
+Observability:
+
+- User action logging
+- Audit trail generation
+
+## 🧠 Concepts Learned
+
+- Authentication vs authorization
+- Ownership-based permissions
+- Compliance logging
+- Audit trail architecture
+
+# 📅 DAY 14 — SOCIAL GRAPH SYSTEMS
+
+## ✅ Completed
+
+Like System:
+
+- Like post
+- Unlike post
+- Duplicate prevention
+
+Comment System:
+
+- Create comment
+- Delete comment
+- Comment listing
+- Pagination
+
+Follow System:
+
+- Follow user
+- Unfollow user
+- Follower listing
+- Following listing
+- Self-follow prevention
+- Duplicate prevention
+- Populated relationships
+
+Feed System:
+
+- Feed retrieval
+- Pagination
+- Sorting
+
+Database Optimization:
+
+- Follow indexes
+- Relationship modeling
+- Query optimization
+
+## 🧠 Concepts Learned
+
+- Social graph modeling
+- Relationship databases
+- Pagination architecture
+- Query optimization
+- Indexing strategies
+
 ## 🧠 HUGE ENGINEERING REALIZATION
 
 Database should NOT always handle every request.
