@@ -22,7 +22,8 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-postSchema.index({ owner: 1, createdAt: -1 });
+postSchema.index({ owner: 1, createdAt: -1 }); // for user profile feed sorting
+postSchema.index({ createdAt: -1 }); // for global feed sorting
 
 const Post = mongoose.model<IPostDocument>('Post', postSchema);
 export default Post;
