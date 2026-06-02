@@ -5,6 +5,7 @@ import {
   deletePost,
   getFeedPosts,
   getSinglePost,
+  getUserPosts,
   updatePost,
 } from '../controllers/post.controller.js';
 
@@ -14,6 +15,7 @@ import {
   createPostSchema,
   postIdParamSchema,
   updatePostWithParamSchema,
+  userIdParamSchema,
 } from '../validators/post.validation.js';
 import { paginationQuerySchema } from '../validators/common.validation.js';
 import upload from '../middlewares/upload.middleware.js';
@@ -25,7 +27,7 @@ router.post(
   '/create',
   authMiddleware,
   upload.single('image'),
-  // validate(createPostSchema),
+  validate(createPostSchema),
   createPost
 );
 
@@ -34,6 +36,13 @@ router.get(
   validate(paginationQuerySchema),
   authMiddleware,
   getFeedPosts
+);
+
+router.get(
+  '/user/:userId',
+  validate(userIdParamSchema),
+  authMiddleware,
+  getUserPosts
 );
 
 router.get(

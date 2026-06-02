@@ -9,17 +9,17 @@ export const postIdParamSchema = z.object({
 
 export const createPostSchema = z.object({
   body: z.object({
-    content: z.string().min(1, 'Content is required'),
-
-    image: z.string().optional(),
+    content: z
+      .string()
+      .trim()
+      .min(1, 'Content is required')
+      .max(500, 'Content too long'),
   }),
 });
 
 export const updatePostSchema = z.object({
   body: z.object({
-    content: z.string().optional(),
-
-    image: z.string().optional(),
+    content: z.string().trim().max(500).optional(),
   }),
 });
 
@@ -29,8 +29,12 @@ export const updatePostWithParamSchema = z.object({
   }),
 
   body: z.object({
-    content: z.string().optional(),
+    content: z.string().trim().max(500).optional(),
+  }),
+});
 
-    image: z.string().optional(),
+export const userIdParamSchema = z.object({
+  params: z.object({
+    userId: mongoIdSchema,
   }),
 });

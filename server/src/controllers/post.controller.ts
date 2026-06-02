@@ -9,6 +9,7 @@ import {
   getSinglePostService,
   deletePostService,
   updatePostService,
+  getUserPostsService,
 } from '../services/post.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import { uploadSingleImageService } from '../services/media.service.js';
@@ -112,3 +113,15 @@ export const updatePost = asyncHandler(
       .json(new ApiResponse(true, 'Post updated successfully', updatedPost));
   }
 );
+
+export const getUserPosts = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.params.userId as string;
+    const { page, limit, skip } = getPagination(req.query);
+    const posts = await getUserPostsService(userId, page, limit, skip);
+
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'User posts fetched successfully', posts));
+  }
+)

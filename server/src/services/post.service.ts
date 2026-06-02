@@ -4,6 +4,7 @@ import { deleteSingleImageService } from './media.service.js';
 import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
 import { invalidateFeedCacheService } from './feed.service.js';
+import User from '../models/user.model.js';
 
 //? Basic Structure of a service function
 export const createPostService = async (
@@ -121,4 +122,46 @@ export const deletePostService = async (postId: string, userId: string) => {
   await post.deleteOne();
   await invalidateFeedCacheService();
   return post;
+};
+
+export const getUserPostsService = async (
+  userId: string,
+  page: number,
+  limit: number,
+  skip: number
+) => {
+  // const user = await User.findById(userId);
+
+  // if (!user) {
+  //   throw new ApiError(404, 'User not found');
+  // }
+
+  // const posts = await Post.find({ owner: userId })
+  //   .populate('owner', 'username profileImage')
+  //   .sort({ createdAt: -1 })
+  //   .skip(skip)
+  //   .limit(limit);
+
+  // const totalPosts = await Post.countDocuments({ owner: userId });
+
+  const [user, posts, totalPosts] = await Promise.all([
+    User.findById(userId),
+    Post.find({ owner: userId })
+      .populate('owner', 'username profileImage')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit),
+    Post.countDocuments({ owner: userId }),
+  ]);
+
+  if(!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  return {
+    currentPage: page,
+    totalPages: totalPosts === 0 ? 1 : Math.ceil(totalPosts / limit),
+    totalPosts,
+    posts,
+  };
 };

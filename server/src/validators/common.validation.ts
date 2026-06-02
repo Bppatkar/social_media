@@ -1,4 +1,3 @@
-import { z } from 'zod';
 
 /* export const mongoIdSchema = z.string().regex(
   /^[0-9a-fA-F]{24}$/,
@@ -12,9 +11,9 @@ export const paginationQuerySchema = z.object({
     limit: z.string().optional(),
 
     sort: z.enum(['latest', 'oldest']).optional(),
-
+    
     search: z.string().optional(),
-  }),
+    }),
 }); */
 
 /* 
@@ -28,6 +27,9 @@ BAD. We should validate numbers properly.
 */
 //! we use coerce to convert string to number before validation
 
+
+
+import { z } from 'zod';
 export const mongoIdSchema = z
   .string()
   .regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoDB ObjectId');
