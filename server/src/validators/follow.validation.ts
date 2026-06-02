@@ -7,8 +7,3 @@ export const userIdParamSchema = z.object({
   }),
 });
 
-export const followSchema = z.object({
-  body: z.object({
-    userId: z.string().min(1, 'User id is required'),
-  }),
-});

@@ -27,9 +27,17 @@ export const followUserService = async (
     throw new ApiError(400, 'You are already following this user');
   }
 
-  await Follow.create({ follower: followerId, following: followingId });
+  const follow = await Follow.create({
+    follower: followerId,
+    following: followingId,
+  });
 
-  return { followingId, followerId };
+  const populatedFollow = await Follow.findById(follow._id).populate(
+    'following',
+    'username profileImage'
+  );
+
+  return { follow: populatedFollow, isFollowing: true };
 };
 
 export const unfollowUserService = async (
@@ -44,7 +52,7 @@ export const unfollowUserService = async (
     throw new ApiError(404, 'Follow not found');
   }
   await follow.deleteOne();
-  return { message: 'User unfollowed successfully' };
+  return { isFollowing: false };
 };
 
 export const getFollowersService = async (
@@ -57,7 +65,7 @@ export const getFollowersService = async (
   const sortOption = buildSortQuery(sort);
 
   const followers = await Follow.find({ following: userId })
-    .populate('follower', 'username email profileImage')
+    .populate('follower', 'username  profileImage')
     .sort(sortOption)
     .skip(skip)
     .limit(limit);
@@ -81,7 +89,7 @@ export const getFollowingService = async (
   const sortOption = buildSortQuery(sort);
 
   const following = await Follow.find({ follower: userId })
-    .populate('following', 'username email profileImage')
+    .populate('following', 'username  profileImage')
     .sort(sortOption)
     .skip(skip)
     .limit(limit);
