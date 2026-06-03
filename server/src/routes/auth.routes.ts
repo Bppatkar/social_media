@@ -18,12 +18,14 @@ import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { userIdParamSchema } from '../validators/follow.validation.js';
 import auditMiddleware from '../middlewares/audit.middleware.js';
 import upload from "../middlewares/upload.middleware.js"
+import { authLimiter } from '../middlewares/rateLimit.middleware.js';
 
 const router = Router();
 
 router.post('/register', validate(registerSchema), register);
 router.post(
   '/login',
+  authLimiter,
   validate(loginSchema),
   auditMiddleware({ action: 'LOGIN_ATTEMPT' }),
   login

@@ -14,6 +14,7 @@ import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import loggerMiddleware from './middlewares/logger.middleware.js';
 import morgan from 'morgan';
 import loggerStream from './utils/loggerStream.js';
+import compression from 'compression';
 
 // Import routes
 import authRoutes from './routes/auth.routes.js';
@@ -35,6 +36,7 @@ app.get('/test', (_req, res) => {
 app.set('trust proxy', 1); // trust first proxy used for , rate limiting and secure cookies in production behind a proxy/load balancer
 
 applySecurityMiddlewares(app);
+app.use(compression()); // Compress all responses to reduce payload size and improve performance
 app.use(requestIdMiddleware);
 app.use(loggerMiddleware);
 app.use(cookieParser());

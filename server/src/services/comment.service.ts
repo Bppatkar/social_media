@@ -41,8 +41,8 @@ export const getPostCommentsService = async (
   search: string,
   sort: string
 ) => {
-  const posts = await Post.findById(postId);
-  if (!posts) {
+  const post = await Post.findById(postId);
+  if (!post) {
     throw new ApiError(404, 'Post not found');
   }
 
