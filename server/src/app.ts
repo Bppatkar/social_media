@@ -6,8 +6,6 @@ import cookieParser from 'cookie-parser';
 
 import env from './config/env.js';
 
-import db from './db/db.js';
-
 import { applySecurityMiddlewares } from './middlewares/security.middleware.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
@@ -24,8 +22,7 @@ import likeRoutes from './routes/like.routes.js';
 import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import feedRoutes from './routes/feed.routes.js';
-import { connectRedis } from './config/redis.js';
-import { setCache, getCache, deleteCache } from './services/redis.service.js';
+import { setCache, getCache } from './services/redis.service.js';
 
 const app = express();
 
@@ -90,18 +87,4 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/feed', feedRoutes);
 app.use(errorMiddleware);
 
-const startServer = async () => {
-  try {
-    await db();
-    await connectRedis();
-
-    app.listen(env.PORT, () => {
-      console.log(`Server is running on port http://localhost:${env.PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start the server:', error);
-    process.exit(1); // Exit with failure
-  }
-};
-
-startServer();
+export default app;

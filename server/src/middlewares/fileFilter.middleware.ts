@@ -1,7 +1,11 @@
-import multer from 'multer';
-import ApiError from '../utils/ApiError.js';
+import type { Request } from 'express';
+import type { FileFilterCallback } from 'multer';
 
-const fileFilter: multer.Options['fileFilter'] = (_req, file, cb) => {
+const fileFilter = (
+  _req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) => {
   // console.log('FILE MIME TYPE:', file.mimetype);
   // console.log('FILE ORIGINAL NAME:', file.originalname);
 
@@ -14,9 +18,7 @@ const fileFilter: multer.Options['fileFilter'] = (_req, file, cb) => {
   ];
 
   if (!allowedMimeTypes.includes(file.mimetype)) {
-    return cb(
-      new ApiError(400, 'Only jpeg, png, jpg and webp files are allowed')
-    );
+    return cb(new Error('Only jpeg, png, jpg and webp files are allowed'));
   }
 
   cb(null, true);

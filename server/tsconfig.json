@@ -3,10 +3,12 @@
     "target": "esnext",
     "module": "nodenext",
     "moduleResolution": "nodenext",
+
     "rootDir": "./src",
     "outDir": "./dist",
 
     "strict": true,
+
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
@@ -15,10 +17,15 @@
     "exactOptionalPropertyTypes": true,
 
     "jsx": "react-jsx",
+
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
+
     "moduleDetection": "force",
-    "skipLibCheck": true
+    
+    "skipLibCheck": true,
+
+    "types": ["node", "jest"]
   }
 }
