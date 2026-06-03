@@ -6,7 +6,7 @@ import extractAccessToken from '../utils/extractAccessToken.js';
 
 export const authMiddleware = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   const token = extractAccessToken(req);
