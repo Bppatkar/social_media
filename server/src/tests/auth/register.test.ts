@@ -2,17 +2,22 @@ import { api } from '../testServer.js';
 
 describe('Auth - Register API', () => {
   it('should register a new user successfully', async () => {
-    const email = `register_${Date.now()}@gmail.com`;
+    const uniqueId = Date.now().toString().slice(-6);
 
-    const res = await api.post('/api/auth/register').send({
-      username: `user_${Date.now()}`,
+    const username = `user${uniqueId}`;
+    const email = `user${uniqueId}@gmail.com`;
+
+    const registerRes = await api.post('/api/auth/register').send({
+      username,
       email,
       password: '123456',
     });
 
-    expect(res.status).toBe(201);
-    expect(res.body.success).toBe(true);
-    expect(res.body.data).toHaveProperty('user');
+    console.log(registerRes.body);
+
+    expect(registerRes.status).toBe(201);
+    expect(registerRes.body.success).toBe(true);
+    expect(registerRes.body.data).toHaveProperty('user');
   });
 
   it('should fail if email already exists', async () => {
@@ -22,12 +27,12 @@ describe('Auth - Register API', () => {
       password: 'Test@1234',
     });
 
-    const res = await api.post('/api/auth/register').send({
+    const registerRes = await api.post('/api/auth/register').send({
       username: 'testuser2',
       email: 'dup@example.com',
       password: 'Test@1234',
     });
 
-    expect(res.status).toBe(400);
+    expect(registerRes.status).toBe(400);
   });
 });

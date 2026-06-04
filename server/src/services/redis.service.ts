@@ -5,6 +5,9 @@ export const setCache = async (
   value: unknown,
   ttlInSeconds?: number
 ) => {
+  if (!redisClient.isOpen) {
+    return;
+  }
   const serializedValue = JSON.stringify(value);
 
   if (ttlInSeconds) {
@@ -16,6 +19,9 @@ export const setCache = async (
 };
 
 export const getCache = async <T>(key: string): Promise<T | null> => {
+  if (!redisClient.isOpen) {
+    return null;
+  }
   const data = await redisClient.get(key);
 
   if (!data) {
@@ -26,5 +32,8 @@ export const getCache = async <T>(key: string): Promise<T | null> => {
 };
 
 export const deleteCache = async (key: string) => {
+  if (!redisClient.isOpen) {
+    return;
+  }
   await redisClient.del(key);
 };
