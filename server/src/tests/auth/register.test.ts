@@ -1,11 +1,12 @@
 import { api } from '../testServer.js';
 
 describe('Auth - Register API', () => {
-
   it('should register a new user successfully', async () => {
+    const email = `register_${Date.now()}@gmail.com`;
+
     const res = await api.post('/api/auth/register').send({
-      username: 'bhanu',
-      email: 'bhanu@gmail.com',
+      username: `user_${Date.now()}`,
+      email,
       password: '123456',
     });
 
@@ -29,5 +30,4 @@ describe('Auth - Register API', () => {
 
     expect(res.status).toBe(400);
   });
-
 });

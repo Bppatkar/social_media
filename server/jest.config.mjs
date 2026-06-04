@@ -28,9 +28,10 @@ export default {
 
   setupFilesAfterEnv: [
     '<rootDir>/src/tests/dbSetup.ts',
-    '<rootDir>/src/tests/setup.ts'
+    // '<rootDir>/src/tests/setup.ts'
   ],
 
   clearMocks: true,
   verbose: true,
+  maxWorkers: 1,
 };
