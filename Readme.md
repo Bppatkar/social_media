@@ -227,56 +227,106 @@ Implemented concepts include:
 
 # ✨ Features Implemented
 
-# ✅ Authentication System
+## ✅ Authentication System
 
-- User Registration
-- User Login
-- Access Token Authentication
-- Refresh Token Authentication
-- Refresh Token Rotation
-- Session Rotation
-- Refresh Token Revocation
-- Secure Logout
-- Protected Routes
-- Current User Endpoint (`/auth/me`)
-
----
-
-# ✅ Post System
-
-- Create Post
-- Update Post
-- Delete Post
-- Get Single Post
-- Feed API
-- Pagination
-- Search
-- Sorting
-- Ownership Validation
+* User Registration
+* User Login
+* JWT Access Tokens
+* JWT Refresh Tokens
+* Refresh Token Rotation
+* Session Rotation
+* Session Revocation
+* Account Locking Protection
+* Secure Logout
+* Protected Routes
+* Current User Endpoint
+* Cookie-based Authentication
 
 ---
 
-# ✅ Like System
+## ✅ User Profile System
 
-- Like Post
-- Unlike Post
-- Duplicate Like Prevention
-
----
-
-# ✅ Comment System
-
-- Add Comment
-- Delete Comment
-- Get Post Comments
+* Get Profile
+* Update Profile
+* Profile Image Upload
+* Cloudinary Integration
+* Redis Profile Cache
 
 ---
 
-# ✅ Follow System
+## ✅ Post System
 
-- Follow User
-- Unfollow User
-- Self-follow Prevention
+* Create Post
+* Update Post
+* Delete Post
+* Get Single Post
+* User Posts
+* Feed API
+* Pagination
+* Search
+* Sorting
+* Ownership Validation
+* Image Upload Support
+
+---
+
+## ✅ Feed System
+
+* Global Feed
+* Cursor Pagination
+* Redis Feed Cache
+* Feed Cache Invalidation
+
+---
+
+## ✅ Like System
+
+* Like Post
+* Unlike Post
+* Duplicate Like Prevention
+
+---
+
+## ✅ Comment System
+
+* Add Comment
+* Update Comment
+* Delete Comment
+* Get Post Comments
+
+---
+
+## ✅ Follow System
+
+* Follow User
+* Unfollow User
+* Get Followers
+* Get Following
+* Self Follow Prevention
+
+---
+
+## ✅ Security
+
+* Helmet
+* Rate Limiting
+* HPP Protection
+* MongoDB Sanitization
+* Secure Cookies
+* Request Compression
+
+---
+
+## ✅ Testing
+
+* Jest
+* Supertest
+* Integration Testing
+* Authentication Tests
+* Follow Tests
+* Comment Tests
+* Like Tests
+* Feed Tests
 
 ---
 
