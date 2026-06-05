@@ -24,7 +24,12 @@ import adminRoutes from './routes/admin.routes.js';
 import feedRoutes from './routes/feed.routes.js';
 import { setCache, getCache } from './services/redis.service.js';
 
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
+
 const app = express();
+
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/test', (_req, res) => {
   res.send('TEST ROUTE WORKING');
