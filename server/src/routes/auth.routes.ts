@@ -154,8 +154,42 @@ router.get('/me', authMiddleware, getMe);
  *     responses:
  *       200:
  *         description: User profile fetched successfully
- *       404:
- *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User profile retrieved successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 6a02027f5d3b5622da98f77f
+ *                     username:
+ *                       type: string
+ *                       example: bhanu_swagger
+ *                     email:
+ *                       type: string
+ *                       example: bhanu@gmail.com
+ *                     bio:
+ *                       type: string
+ *                       example: MERN Stack Developer with dsa
+ *                     profileImage:
+ *                       type: string
+ *                       example: https://res.cloudinary.com/...
+ *                     role:
+ *                       type: string
+ *                       example: admin
+ *       400:
+ *         description: Bad request - validation errors
+ *       401: 
+ *         description: Unauthorized - invalid credentials
  */
 
 router.get(

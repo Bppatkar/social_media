@@ -14,6 +14,34 @@ import validate from '../middlewares/validate.middleware.js';
 const router = Router();
 
 // Protected routes
+
+/**
+ * @swagger
+ * /api/follows/{userId}:
+ *   post:
+ *     summary: Follow a user
+ *     tags:
+ *       - Follows
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: 6a02027f5d3b5622da98f77f
+ *     responses:
+ *       200:
+ *         description: User followed successfully
+ *       400:
+ *         description: Invalid user ID
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
+
 router.post(
   '/:userId',
   validate(userIdParamSchema),
@@ -21,13 +49,93 @@ router.post(
   followUser
 );
 
+/**
+ * @swagger
+ * /api/follows/{userId}:
+ *   delete:
+ *     summary: Unfollow a user
+ *     tags:
+ *       - Follows
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: 6a02027f5d3b5622da98f77f
+ *     responses:
+ *       200:
+ *         description: User unfollowed successfully
+ *       400:
+ *         description: Invalid user ID
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
+
 router.delete(
   '/:userId',
   validate(userIdParamSchema),
   authMiddleware,
   unfollowUser
 );
+
+/**
+ * @swagger
+ * /api/follows/followers/{userId}:
+ *   get:
+ *     summary: Get followers of a user
+ *     tags:
+ *       - Follows
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: 6a02027f5d3b5622da98f77f
+ *     responses:
+ *       200:
+ *         description: Followers retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
+
+
 router.get('/followers/:userId', authMiddleware, validate(userIdParamSchema), getFollowers);
+
+/**
+ * @swagger
+ * /api/follows/following/{userId}:
+ *   get:
+ *     summary: Get users followed by a user
+ *     tags:
+ *       - Follows
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: 6a02027f5d3b5622da98f77f
+ *     responses:
+ *       200:
+ *         description: Following list retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
+
 router.get('/following/:userId', authMiddleware, validate(userIdParamSchema), getFollowing);
 
 export default router;
