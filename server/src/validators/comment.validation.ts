@@ -43,3 +43,16 @@ export const updateCommentSchema = z.object({
       .max(300, 'Comment content must be less than 300 characters'),
   }),
 });
+
+export const getCommentSchema = z.object({
+  params: z.object({
+    postId: mongoIdSchema,
+  }),
+
+  query: z.object({
+    page: z.coerce.number().min(1).optional(),
+    limit: z.coerce.number().min(1).max(100).optional(),
+    sort: z.enum(['latest', 'oldest']).optional(),
+    search: z.string().optional(),
+  }),
+});

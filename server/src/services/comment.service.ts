@@ -52,13 +52,22 @@ export const getPostCommentsService = async (
 
   const sortOption = buildSortQuery(sort);
 
-  const comments = await Comment.find(searchFilter)
-    .populate('commentedBy', 'username  profileImage')
-    .sort(sortOption)
-    .skip(skip)
-    .limit(limit);
+  // const comments = await Comment.find(searchFilter)
+  //   .populate('commentedBy', 'username  profileImage')
+  //   .sort(sortOption)
+  //   .skip(skip)
+  //   .limit(limit);
 
-  const totalComments = await Comment.countDocuments(searchFilter);
+  // const totalComments = await Comment.countDocuments(searchFilter);
+
+  const [comments, totalComments] = await Promise.all([
+    Comment.find(searchFilter)
+      .populate('commentedBy', 'username profileImage')
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit),
+    Comment.countDocuments(searchFilter),
+  ]);
 
   return {
     currentPage: page,

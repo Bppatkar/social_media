@@ -12,6 +12,7 @@ import validate from '../middlewares/validate.middleware.js';
 import {
   addCommentWithPostSchema,
   commentIdParamSchema,
+  getCommentSchema,
   updateCommentSchema,
 } from '../validators/comment.validation.js';
 import { postIdParamSchema } from '../validators/post.validation.js';
@@ -81,6 +82,34 @@ router.post(
  *         schema:
  *           type: string
  *         example: 686123456789abcdef123456
+ *
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - latest
+ *             - oldest
+ *         example: latest
+ *
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         example: nice
+ *
  *     responses:
  *       200:
  *         description: Comments retrieved successfully
@@ -92,7 +121,7 @@ router.post(
 
 router.get(
   '/:postId',
-  validate(postIdParamSchema),
+  validate(getCommentSchema),
   authMiddleware,
   getPostComments
 );
