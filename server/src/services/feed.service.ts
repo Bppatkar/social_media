@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Post from '../models/post.model.js';
 import { getCache, setCache, deleteCache } from './redis.service.js';
 import { logInfo } from '../utils/logger.util.js';
+import { redisClient } from '../config/redis.js';
 
 const FEED_CACHE_KEY = 'feed:global';
 
@@ -29,6 +30,11 @@ export const getGlobalFeedService = async () => {
 
 export const invalidateFeedCacheService = async () => {
   await deleteCache(FEED_CACHE_KEY);
+  const keys = await redisClient.keys('feed:*');
+
+  if (keys.length > 0) {
+    await redisClient.del(keys);
+  }
 };
 
 export const getCursorFeedService = async (

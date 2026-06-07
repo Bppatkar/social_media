@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { getCursorFeed, getGlobalFeed } from '../controllers/feed.controller.js';
 import validate from '../middlewares/validate.middleware.js';
 import { cursorPaginationSchema } from '../validators/feed.validation.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ const router = Router();
  *         description: Global feed retrieved successfully
  */
 
-router.get('/', getGlobalFeed);
+router.get('/', authMiddleware,getGlobalFeed);
 
 /**
  * @swagger
@@ -45,6 +46,6 @@ router.get('/', getGlobalFeed);
  *         description: Invalid query parameters
  */
 
-router.get('/cursor', validate(cursorPaginationSchema), getCursorFeed);
+router.get('/cursor', authMiddleware, validate(cursorPaginationSchema), getCursorFeed);
 
 export default router;
