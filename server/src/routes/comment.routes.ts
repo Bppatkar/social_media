@@ -15,7 +15,6 @@ import {
   getCommentSchema,
   updateCommentSchema,
 } from '../validators/comment.validation.js';
-import { postIdParamSchema } from '../validators/post.validation.js';
 
 const router = Router();
 
@@ -82,37 +81,38 @@ router.post(
  *         schema:
  *           type: string
  *         example: 686123456789abcdef123456
- *
  *       - in: query
  *         name: page
+ *         description: Page number
  *         schema:
  *           type: integer
  *           example: 1
- *
  *       - in: query
  *         name: limit
+ *         description: Number of comments per page
  *         schema:
  *           type: integer
  *           example: 10
- *
  *       - in: query
  *         name: sort
+ *         description: Sort comments by creation date
  *         schema:
  *           type: string
  *           enum:
  *             - latest
  *             - oldest
  *         example: latest
- *
  *       - in: query
  *         name: search
+ *         description: Search comments by content
  *         schema:
  *           type: string
  *         example: nice
- *
  *     responses:
  *       200:
  *         description: Comments retrieved successfully
+ *       400:
+ *         description: Validation error
  *       401:
  *         description: Unauthorized
  *       404:
@@ -150,7 +150,6 @@ router.get(
  *       404:
  *         description: Comment not found
  */
-
 
 router.delete(
   '/:commentId',
