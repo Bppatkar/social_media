@@ -64,13 +64,25 @@ export const getFollowersService = async (
 ) => {
   const sortOption = buildSortQuery(sort);
 
-  const followers = await Follow.find({ following: userId })
-    .populate('follower', 'username  profileImage')
-    .sort(sortOption)
-    .skip(skip)
-    .limit(limit);
+  // const followers = await Follow.find({ following: userId })
+  //   .populate('follower', 'username  profileImage')
+  //   .sort(sortOption)
+  //   .skip(skip)
+  //   .limit(limit);
 
-  const totalFollowers = await Follow.countDocuments({ following: userId });
+  // const totalFollowers = await Follow.countDocuments({ following: userId });
+
+  const [followers, totalFollowers] = await Promise.all([
+    Follow.find({ following: userId })
+      .populate('follower', 'username profileImage')
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit),
+
+    Follow.countDocuments({
+      following: userId,
+    }),
+  ]);
   return {
     currentPage: page,
     totalPages: totalFollowers === 0 ? 1 : Math.ceil(totalFollowers / limit),
@@ -88,13 +100,15 @@ export const getFollowingService = async (
 ) => {
   const sortOption = buildSortQuery(sort);
 
-  const following = await Follow.find({ follower: userId })
-    .populate('following', 'username  profileImage')
-    .sort(sortOption)
-    .skip(skip)
-    .limit(limit);
+  const [following, totalFollowing] = await Promise.all([
+    Follow.find({ follower: userId })
+      .populate('following', 'username profileImage')
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit),
+    Follow.countDocuments({ follower: userId }),
+  ]);
 
-  const totalFollowing = await Follow.countDocuments({ follower: userId });
   return {
     currentPage: page,
     totalPages: totalFollowing === 0 ? 1 : Math.ceil(totalFollowing / limit),

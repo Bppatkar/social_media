@@ -8,7 +8,7 @@ import {
   getFollowers,
   getFollowing,
 } from '../controllers/follow.controller.js';
-import { userIdParamSchema } from '../validators/follow.validation.js';
+import { getFollowListSchema, userIdParamSchema } from '../validators/follow.validation.js';
 import validate from '../middlewares/validate.middleware.js';
 
 const router = Router();
@@ -99,6 +99,30 @@ router.delete(
  *         schema:
  *           type: string
  *         example: 6a02027f5d3b5622da98f77f
+ *
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Records per page
+ *
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - latest
+ *             - oldest
+ *         description: Sort order
+ *
  *     responses:
  *       200:
  *         description: Followers retrieved successfully
@@ -109,7 +133,7 @@ router.delete(
  */
 
 
-router.get('/followers/:userId', authMiddleware, validate(userIdParamSchema), getFollowers);
+router.get('/followers/:userId', authMiddleware, validate(getFollowListSchema), getFollowers);
 
 /**
  * @swagger
@@ -127,6 +151,30 @@ router.get('/followers/:userId', authMiddleware, validate(userIdParamSchema), ge
  *         schema:
  *           type: string
  *         example: 6a02027f5d3b5622da98f77f
+ *
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Records per page
+ *
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - latest
+ *             - oldest
+ *         description: Sort order
+ *
  *     responses:
  *       200:
  *         description: Following list retrieved successfully
@@ -136,6 +184,6 @@ router.get('/followers/:userId', authMiddleware, validate(userIdParamSchema), ge
  *         description: User not found
  */
 
-router.get('/following/:userId', authMiddleware, validate(userIdParamSchema), getFollowing);
+router.get('/following/:userId', authMiddleware, validate(getFollowListSchema), getFollowing);
 
 export default router;
