@@ -14,10 +14,13 @@ export const likePostService = async (postId: string, userId: string) => {
     throw new ApiError(400, 'You have already liked this post');
   }
 
-  await Like.create({ post: postId, likedBy: userId });
+  // await Like.create({ post: postId, likedBy: userId });
 
-  await Post.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } });
-  const updatedPost = await Post.findById(postId);
+  // await Post.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } });
+  // const updatedPost = await Post.findById(postId);
+
+  await Like.create({ post: postId, likedBy: userId });
+  const updatedPost = await Post.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } }, { new: true });
 
   return {
     likeCount: updatedPost?.likeCount || 0,
@@ -30,8 +33,7 @@ export const unlikePostService = async (postId: string, userId: string) => {
     throw new ApiError(400, 'You have not liked this post');
   }
   await Like.deleteOne({ post: postId, likedBy: userId });
-  await Post.findByIdAndUpdate(postId, { $inc: { likeCount: -1 } });
-  const updatedPost = await Post.findById(postId);
+  const updatedPost = await Post.findByIdAndUpdate(postId, { $inc: { likeCount: -1 } }, { new: true });
   return {
     likeCount: updatedPost?.likeCount || 0,
   };

@@ -24,7 +24,7 @@ const router = Router();
  *           type: string
  *         example: 686123456789abcdef123456
  *     responses:
- *       201:
+ *       200:
  *         description: Post liked successfully
  *       400:
  *         description: Invalid post ID
@@ -34,7 +34,7 @@ const router = Router();
  *         description: Post not found
  */
 
-router.post('/:postId', validate(likePostSchema), authMiddleware, likePost);
+router.post('/:postId', authMiddleware, validate(likePostSchema), likePost);
 
 /**
  * @swagger
@@ -63,6 +63,6 @@ router.post('/:postId', validate(likePostSchema), authMiddleware, likePost);
  *         description: Post not found
  */
 
-router.delete('/:postId', validate(likePostSchema), authMiddleware, unlikePost);
+router.delete('/:postId', authMiddleware, validate(likePostSchema), unlikePost);
 
 export default router;
