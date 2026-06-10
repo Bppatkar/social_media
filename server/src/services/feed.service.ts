@@ -29,11 +29,29 @@ export const getGlobalFeedService = async () => {
 };
 
 export const invalidateFeedCacheService = async () => {
-  await deleteCache(FEED_CACHE_KEY);
-  const keys = await redisClient.keys('feed:*');
+  console.log('NODE_ENV =', process.env.NODE_ENV);
+  console.log('REDIS OPEN =', redisClient.isOpen);
 
-  if (keys.length > 0) {
-    await redisClient.del(keys);
+  if (process.env.NODE_ENV === 'test') {
+    console.log('SKIPPING REDIS INVALIDATION');
+    return;
+  }
+
+  try {
+    if (!redisClient.isOpen) {
+      console.log('REDIS CLOSED');
+      return;
+    }
+
+    await deleteCache(FEED_CACHE_KEY);
+
+    const keys = await redisClient.keys('feed:*');
+
+    if (keys.length > 0) {
+      await redisClient.del(keys);
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
