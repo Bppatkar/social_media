@@ -17,6 +17,11 @@ jobs:
       run:
         working-directory: ./server
 
+    env:
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -34,3 +39,14 @@ jobs:
 
       - name: Run Tests
         run: npm test
+
+      - name: Debug Secrets
+        run: |
+          echo "MONGO_URI exists?"
+          [ -n "$MONGO_URI" ] && echo YES || echo NO
+
+          echo "JWT_SECRET exists?"
+          [ -n "$JWT_SECRET" ] && echo YES || echo NO
+
+          echo "JWT_REFRESH_SECRET exists?"
+          [ -n "$JWT_REFRESH_SECRET" ] && echo YES || echo NO
