@@ -229,104 +229,158 @@ Implemented concepts include:
 
 ## ✅ Authentication System
 
-* User Registration
-* User Login
-* JWT Access Tokens
-* JWT Refresh Tokens
-* Refresh Token Rotation
-* Session Rotation
-* Session Revocation
-* Account Locking Protection
-* Secure Logout
-* Protected Routes
-* Current User Endpoint
-* Cookie-based Authentication
+- User Registration
+- User Login
+- JWT Access Tokens
+- JWT Refresh Tokens
+- Refresh Token Rotation
+- Session Rotation
+- Session Revocation
+- Account Locking Protection
+- Secure Logout
+- Protected Routes
+- Current User Endpoint
+- Cookie-based Authentication
 
 ---
 
 ## ✅ User Profile System
 
-* Get Profile
-* Update Profile
-* Profile Image Upload
-* Cloudinary Integration
-* Redis Profile Cache
+- Get Profile
+- Update Profile
+- Profile Image Upload
+- Cloudinary Integration
+- Redis Profile Cache
 
 ---
 
 ## ✅ Post System
 
-* Create Post
-* Update Post
-* Delete Post
-* Get Single Post
-* User Posts
-* Feed API
-* Pagination
-* Search
-* Sorting
-* Ownership Validation
-* Image Upload Support
+- Create Post
+- Update Post
+- Delete Post
+- Get Single Post
+- User Posts
+- Feed API
+- Pagination
+- Search
+- Sorting
+- Ownership Validation
+- Image Upload Support
 
 ---
 
 ## ✅ Feed System
 
-* Global Feed
-* Cursor Pagination
-* Redis Feed Cache
-* Feed Cache Invalidation
+- Global Feed
+- Cursor Pagination
+- Redis Feed Cache
+- Feed Cache Invalidation
 
 ---
 
 ## ✅ Like System
 
-* Like Post
-* Unlike Post
-* Duplicate Like Prevention
+- Like Post
+- Unlike Post
+- Duplicate Like Prevention
 
 ---
 
 ## ✅ Comment System
 
-* Add Comment
-* Update Comment
-* Delete Comment
-* Get Post Comments
+- Add Comment
+- Update Comment
+- Delete Comment
+- Get Post Comments
 
 ---
 
 ## ✅ Follow System
 
-* Follow User
-* Unfollow User
-* Get Followers
-* Get Following
-* Self Follow Prevention
+- Follow User
+- Unfollow User
+- Get Followers
+- Get Following
+- Self Follow Prevention
 
 ---
 
 ## ✅ Security
 
-* Helmet
-* Rate Limiting
-* HPP Protection
-* MongoDB Sanitization
-* Secure Cookies
-* Request Compression
+- Helmet
+- Rate Limiting
+- HPP Protection
+- MongoDB Sanitization
+- Secure Cookies
+- Request Compression
 
 ---
 
 ## ✅ Testing
 
-* Jest
-* Supertest
-* Integration Testing
-* Authentication Tests
-* Follow Tests
-* Comment Tests
-* Like Tests
-* Feed Tests
+- Jest
+- Supertest
+- Integration Testing
+- Authentication Tests
+- Follow Tests
+- Comment Tests
+- Like Tests
+- Feed Tests
+
+## Docker Setup
+
+### Build Containers
+
+```bash
+docker compose build
+```
+
+### Start Containers
+
+```bash
+docker compose up
+```
+
+### Run in Background
+
+```bash
+docker compose up -d
+```
+
+### Stop Containers
+
+```bash
+docker compose down
+```
+
+### View Running Containers
+
+```bash
+docker ps
+```
+
+### View Logs
+
+```bash
+docker compose logs -f
+```
+
+### Services
+
+- Backend (Node.js + Express + TypeScript)
+- Redis Cache
+- MongoDB Atlas
+
+### Exposed Ports
+
+- Backend → 8000
+- Redis → 6379
+
+### Health Checks
+
+- Backend Health Endpoint
+- Redis Ping Check
 
 ---
 

@@ -4,7 +4,7 @@ services:
     container_name: social-media-backend
 
     ports:
-      - "8000:8000"
+      - '8000:8000'
 
     env_file:
       - .env
@@ -14,17 +14,29 @@ services:
 
     restart: unless-stopped
 
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', 'http://localhost:8000/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   redis:
     image: redis:7-alpine
     container_name: social-media-redis
 
     ports:
-      - "6379:6379"
+      - '6379:6379'
 
     restart: unless-stopped
 
     volumes:
       - redis-data:/data
+
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   redis-data:
