@@ -9,6 +9,3 @@ coverage
 .env.test
 
 npm-debug.log
-
-Dockerfile
-docker-compose.yml
