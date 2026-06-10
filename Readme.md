@@ -1,548 +1,338 @@
 # 🚀 Social Media Backend API
 
-### Production-Style Scalable Backend using Node.js, Express, MongoDB & TypeScript
+Production-Grade Social Media Backend built using Node.js, Express.js, TypeScript, MongoDB and Redis.
 
 ---
 
 # 🌍 Overview
 
-A professionally structured and scalable social media backend built with modern backend engineering practices.
+This project focuses on real-world backend engineering practices used in modern scalable applications.
 
-This project focuses heavily on:
+Inspired by architectures used in:
 
-- Scalable Architecture
-- Backend Engineering Principles
-- Production Authentication Systems
-- Security Architecture
-- Performance Optimization
-- Reusable Backend Patterns
-- Clean Code Organization
-- Real-world API Design
+* Instagram
+* Twitter/X
+* LinkedIn
+* Threads
 
-Inspired by backend architectures used in:
+Focus Areas:
 
-- Instagram
-- Twitter/X
-- LinkedIn
-- Threads
+* Authentication Architecture
+* Security Engineering
+* Scalable Backend Design
+* Redis Caching
+* API Documentation
+* Testing
+* Dockerization
+* CI/CD Automation
 
 ---
 
 # ⚡ Tech Stack
 
-## 🖥️ Backend
+## Backend
 
-- Node.js
-- Express.js
-- TypeScript
-- MongoDB
-- Mongoose
+* Node.js
+* Express.js
+* TypeScript
+* MongoDB
+* Mongoose
 
----
+## Authentication
 
-# 🔐 Authentication & Security
+* JWT Access Tokens
+* JWT Refresh Tokens
+* Refresh Token Rotation
+* Session Management
+* Cookie Authentication
 
-## ✅ Production Authentication System
+## Validation
 
-- JWT Access Token
-- JWT Refresh Token
-- Refresh Token Rotation
-- Session Rotation
-- Refresh Token Revocation
-- Database-based Session Management
-- Protected Routes
-- Authentication Middleware
-- Secure Logout Architecture
-- Current User Endpoint
+* Zod
 
----
+## Caching
 
-## ✅ Security Middleware
+* Redis
 
-- Helmet
-- Express Rate Limit
-- HPP Protection
-- MongoDB Injection Protection
-- Secure Error Responses
+## Media
 
----
+* Cloudinary
+* Multer
 
-# ✅ Validation
+## Security
 
-- Zod Validation
-- Request Validation Middleware
-- Params Validation
-- Query Validation
-- MongoDB ObjectId Validation
-- Structured Validation Errors
+* Helmet
+* HPP
+* Mongo Sanitize
+* Rate Limiting
+* Compression
 
----
+## Logging
 
-# 🧠 Backend Architecture
+* Winston
+* Morgan
 
-- Controller Layer
-- Service Layer
-- Middleware Layer
-- Validation Layer
-- Utility Layer
-- Centralized Error Handling
+## Testing
 
----
+* Jest
+* Supertest
 
-# 📂 Project Structure
+## Documentation
 
-```bash
-server/
-│
-├── src/
-│   │
-│   ├── controllers/
-│   ├── services/
-│   ├── models/
-│   ├── routes/
-│   ├── middlewares/
-│   ├── validators/
-│   ├── utils/
-│   ├── types/
-│   ├── db/
-│   │
-│   └── app.ts
-│
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+* Swagger
+* OpenAPI
+
+## DevOps
+
+* Docker
+* Docker Compose
+* GitHub Actions
 
 ---
 
-# 🧱 Architecture Flow
+# 🏗️ Architecture
 
-```text
-Client Request
-      ↓
+Client
+↓
 Security Middleware
-      ↓
+↓
 Validation Middleware
-      ↓
+↓
 Authentication Middleware
-      ↓
+↓
 Controller Layer
-      ↓
+↓
 Service Layer
-      ↓
+↓
 Database Layer
-      ↓
+↓
 Centralized Response
+
+---
+
+# ✨ Features
+
+## Authentication
+
+* User Registration
+* User Login
+* User Logout
+* JWT Authentication
+* Refresh Token Rotation
+* Session Management
+* Cookie Authentication
+* Current User Endpoint
+
+---
+
+## User Profile
+
+* Get Profile
+* Update Profile
+* Profile Image Upload
+* Cloudinary Integration
+* Redis Profile Cache
+
+---
+
+## Posts
+
+* Create Post
+* Update Post
+* Delete Post
+* Get Single Post
+* User Posts
+* Search
+* Sorting
+* Pagination
+
+---
+
+## Feed System
+
+* Global Feed
+* Cursor Pagination
+* Redis Feed Cache
+* Feed Cache Invalidation
+
+---
+
+## Follow System
+
+* Follow User
+* Unfollow User
+* Get Followers
+* Get Following
+
+---
+
+## Like System
+
+* Like Post
+* Unlike Post
+* Duplicate Prevention
+
+---
+
+## Comment System
+
+* Create Comment
+* Update Comment
+* Delete Comment
+* Get Comments
+
+---
+
+## Security Features
+
+* Helmet
+* Rate Limiting
+* HPP Protection
+* Mongo Sanitization
+* Compression
+* Secure Cookies
+
+---
+
+## Testing
+
+* Jest
+* Supertest
+* Integration Tests
+
+---
+
+## API Documentation
+
+Swagger UI available at:
+
+```http
+/api/docs
 ```
 
 ---
 
-# 🔐 AUTHENTICATION FLOW
+## Docker
 
-# LOGIN FLOW
-
-```text
-User Login
-   ↓
-Verify Credentials
-   ↓
-Generate Access Token
-   ↓
-Generate Refresh Token
-   ↓
-Store Refresh Token In Database
-   ↓
-Return Tokens To Client
-```
-
----
-
-# REFRESH TOKEN FLOW
-
-```text
-Access Token Expired
-   ↓
-Frontend Calls /auth/refresh
-   ↓
-Backend Verifies Refresh Token
-   ↓
-Check Token In Database
-   ↓
-Check isRevoked Flag
-   ↓
-Check Expiry Time
-   ↓
-Generate New Access Token
-```
-
----
-
-# LOGOUT FLOW
-
-```text
-User Clicks Logout
-   ↓
-Frontend Sends Refresh Token
-   ↓
-Backend Revokes Session
-   ↓
-Token Becomes Invalid
-```
-
----
-
-# SESSION ROTATION FLOW
-
-```text
-User Logs In Again
-   ↓
-Old Refresh Tokens Revoked
-   ↓
-New Refresh Token Generated
-   ↓
-Only Latest Session Remains Active
-```
-
----
-
-# 🧠 Backend Engineering Concepts Applied
-
-Implemented concepts include:
-
-- Layered Architecture
-- Separation of Concerns
-- Centralized Error Handling
-- Production Authentication Architecture
-- Refresh Token Rotation
-- Session Revocation
-- Reusable Middleware Design
-- Production-style API Responses
-- Pagination Architecture
-- Search & Sorting Utilities
-- Scalable MongoDB Relationship Modeling
-- Denormalization Concepts
-- Indexing Strategies
-
----
-
-# ✨ Features Implemented
-
-## ✅ Authentication System
-
-- User Registration
-- User Login
-- JWT Access Tokens
-- JWT Refresh Tokens
-- Refresh Token Rotation
-- Session Rotation
-- Session Revocation
-- Account Locking Protection
-- Secure Logout
-- Protected Routes
-- Current User Endpoint
-- Cookie-based Authentication
-
----
-
-## ✅ User Profile System
-
-- Get Profile
-- Update Profile
-- Profile Image Upload
-- Cloudinary Integration
-- Redis Profile Cache
-
----
-
-## ✅ Post System
-
-- Create Post
-- Update Post
-- Delete Post
-- Get Single Post
-- User Posts
-- Feed API
-- Pagination
-- Search
-- Sorting
-- Ownership Validation
-- Image Upload Support
-
----
-
-## ✅ Feed System
-
-- Global Feed
-- Cursor Pagination
-- Redis Feed Cache
-- Feed Cache Invalidation
-
----
-
-## ✅ Like System
-
-- Like Post
-- Unlike Post
-- Duplicate Like Prevention
-
----
-
-## ✅ Comment System
-
-- Add Comment
-- Update Comment
-- Delete Comment
-- Get Post Comments
-
----
-
-## ✅ Follow System
-
-- Follow User
-- Unfollow User
-- Get Followers
-- Get Following
-- Self Follow Prevention
-
----
-
-## ✅ Security
-
-- Helmet
-- Rate Limiting
-- HPP Protection
-- MongoDB Sanitization
-- Secure Cookies
-- Request Compression
-
----
-
-## ✅ Testing
-
-- Jest
-- Supertest
-- Integration Testing
-- Authentication Tests
-- Follow Tests
-- Comment Tests
-- Like Tests
-- Feed Tests
-
-## Docker Setup
-
-### Build Containers
+Build:
 
 ```bash
 docker compose build
 ```
 
-### Start Containers
+Run:
 
 ```bash
 docker compose up
 ```
 
-### Run in Background
+Background:
 
 ```bash
 docker compose up -d
 ```
 
-### Stop Containers
+Stop:
 
 ```bash
 docker compose down
 ```
 
-### View Running Containers
+---
 
-```bash
-docker ps
-```
+## CI/CD
 
-### View Logs
+GitHub Actions Pipeline:
 
-```bash
-docker compose logs -f
-```
-
-### Services
-
-- Backend (Node.js + Express + TypeScript)
-- Redis Cache
-- MongoDB Atlas
-
-### Exposed Ports
-
-- Backend → 8000
-- Redis → 6379
-
-### Health Checks
-
-- Backend Health Endpoint
-- Redis Ping Check
+* Install Dependencies
+* Build Application
+* Run Tests
+* Validate Production Readiness
 
 ---
 
-# 🔍 Example Validation Error
+# 📦 API Endpoints
 
-```json
-{
-  "success": false,
-  "message": "Validation Error",
-  "errors": [
-    {
-      "field": "body.email",
-      "message": "Invalid email address"
-    }
-  ]
-}
-```
-
----
-
-# 📦 API Response Standardization
-
-## ✅ Success Response
-
-```json
-{
-  "success": true,
-  "message": "Success",
-  "data": {}
-}
-```
-
----
-
-# ❌ Error Response
-
-```json
-{
-  "success": false,
-  "message": "Internal Server Error"
-}
-```
-
----
-
-# 🧪 Example API Endpoints
-
-# 🔐 Auth
+## Authentication
 
 ```http
-POST   /api/auth/register
-POST   /api/auth/login
-POST   /api/auth/refresh
-POST   /api/auth/logout
-GET    /api/auth/me
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+POST /api/auth/refresh
+GET  /api/auth/me
 ```
 
 ---
 
-# 📝 Posts
+## Posts
 
 ```http
-POST   /api/posts/create
-GET    /api/posts/feed
-GET    /api/posts/:postId
-PUT    /api/posts/:postId
-DELETE /api/posts/:postId
+POST   /api/posts
+GET    /api/posts
+GET    /api/posts/:id
+PUT    /api/posts/:id
+DELETE /api/posts/:id
 ```
 
 ---
 
-# 🚀 Getting Started
+## Follow
 
-## 1️⃣ Install Dependencies
-
-```bash
-npm install
+```http
+POST /api/follows/:userId
+DELETE /api/follows/:userId
 ```
 
 ---
 
-## 2️⃣ Setup Environment Variables
+## Likes
 
-```env
-PORT=3000
-
-MONGODB_URI=your_mongodb_uri
-
-JWT_ACCESS_SECRET=your_access_secret
-JWT_ACCESS_EXPIRES_IN=15m
-
-JWT_REFRESH_SECRET=your_refresh_secret
-JWT_REFRESH_EXPIRES_IN=7d
+```http
+POST /api/likes/:postId
+DELETE /api/likes/:postId
 ```
 
 ---
 
-## 3️⃣ Run Development Server
+## Comments
 
-```bash
-npm run dev
+```http
+POST /api/comments
+PUT  /api/comments/:commentId
+DELETE /api/comments/:commentId
 ```
 
 ---
 
 # 🚀 Upcoming Features
 
-## Authorization System
+## AWS Deployment
 
-- Role Based Access Control (RBAC)
-- Admin Authorization
-- User Authorization
-- Ownership-based Permissions
-- Protected Admin Routes
+* EC2
+* PM2
+* Nginx
+* MongoDB Atlas
+* Redis Cloud
 
----
+## Monitoring
 
-## 🔐 Advanced Security
+* Health Check APIs
+* Request Monitoring
+* Structured Logging
 
-- Authorization Middleware
-- Role-based Permissions
-- Ownership Validation
+## Realtime Notifications
 
----
-
-## ⚡ Scalability
-
-- Redis Caching
-- Feed Optimization
-- Queue Systems
-
----
-
-## 📦 Media Features
-
-- Multer Uploads
-- Cloudinary Integration
-
----
-
-## 🔔 Realtime Features
-
-- Socket.IO
-- Live Notifications
-- Real-time Chat
-
----
-
-## 🚀 DevOps
-
-- Docker
-- CI/CD
-- AWS Deployment
-- Nginx
+* Socket.IO
+* Follow Notifications
+* Like Notifications
+* Comment Notifications
 
 ---
 
 # 👨‍💻 Author
 
-## Bhanu Pratap Patkar
-
-Backend Developer | MERN Stack Developer
+Bhanu Pratap Patkar
 
 GitHub:
 https://github.com/Bppatkar
@@ -551,13 +341,4 @@ https://github.com/Bppatkar
 
 # ⭐ Vision
 
-Build a production-style backend system while deeply learning:
-
-- Backend Engineering
-- Security Architecture
-- Scalable System Design
-- Authentication Systems
-- Performance Optimization
-- Production Workflows
-
-through practical implementation.
+Build scalable, secure and production-grade backend systems while mastering backend engineering, system design and DevOps practices.
