@@ -3,13 +3,13 @@ import type { IFollowDocument } from '../types/follow.types.js';
 
 const followSchema = new mongoose.Schema(
   {
-    // follower ka matlab jo user follow kar raha hai
+    // follower ka matlab jo user follow kar raha hai [jo hamko follow kar raha hai]
     follower: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    // following ka matlab jo user follow ho raha hai
+    // following ka matlab jo user follow ho raha hai [jise ham follow kar rahe hai]
     following: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
