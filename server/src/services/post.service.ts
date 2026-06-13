@@ -6,7 +6,6 @@ import buildSortQuery from '../utils/sort.js';
 import { invalidateFeedCacheService } from './feed.service.js';
 import User from '../models/user.model.js';
 
-//? Basic Structure of a service function
 export const createPostService = async (
   content: string,
   image: string,
