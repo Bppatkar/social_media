@@ -17,6 +17,7 @@ import {
 } from '../utils/authCookies.js';
 import { uploadSingleImageService } from '../services/media.service.js';
 import { COOKIE_NAMES } from '../constants/auth.constants.js';
+import { logAuditEvent } from '../utils/logger.util.js';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -24,6 +25,11 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   setAccessTokenCookie(res, data.accessToken);
   setRefreshTokenCookie(res, data.refreshToken);
+
+  logAuditEvent('User Registered', {
+    userId: data.user._id.toString(),
+    email: data.user.email,
+  });
 
   res.status(201).json(
     new ApiResponse(true, 'User registered successfully', {
@@ -38,6 +44,12 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   setAccessTokenCookie(res, data.accessToken);
   setRefreshTokenCookie(res, data.refreshToken);
+
+  logAuditEvent('User Login', {
+    userId: data.user._id.toString(),
+    email: data.user.email,
+  });
+
   res.status(200).json(
     new ApiResponse(true, 'user logged in successfully', {
       user: data.user,
@@ -50,6 +62,9 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
   const refreshToken = req.cookies[COOKIE_NAMES.REFRESH_TOKEN];
   await logoutUserService(refreshToken);
 
+  logAuditEvent('User Logout', {
+    userId: req.user?.userId,
+  });
   clearAuthCookies(res);
 
   res.status(200).json(new ApiResponse(true, 'Logged out successfully', null));
@@ -128,6 +143,10 @@ export const updateProfile = asyncHandler(
       req.user!.userId,
       updateData
     );
+
+    logAuditEvent('Profile Updated', {
+      userId: req.user?.userId,
+    });
 
     res.status(200).json({
       success: true,

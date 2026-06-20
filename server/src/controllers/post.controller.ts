@@ -2,6 +2,7 @@ import type { Response } from 'express';
 import type { AuthRequest } from '../types/auth.types.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import getPagination from '../utils/pagination.js';
+import { logAuditEvent } from '../utils/logger.util.js';
 
 import {
   createPostService,
@@ -26,7 +27,10 @@ export const createPost = asyncHandler(
     let imagePublicId = '';
 
     if (file) {
-      const uploadedImage = await uploadSingleImageService(file.buffer, 'posts');
+      const uploadedImage = await uploadSingleImageService(
+        file.buffer,
+        'posts'
+      );
       imageUrl = uploadedImage.imageUrl;
       imagePublicId = uploadedImage.imagePublicId;
     }
@@ -39,6 +43,12 @@ export const createPost = asyncHandler(
       imagePublicId,
       ownerId
     );
+
+    logAuditEvent('Post Created', {
+      userId: req.user?.userId,
+      postId: post._id.toString(),
+    });
+
     res
       .status(201)
       .json(new ApiResponse(true, 'Post created successfully', post));
@@ -74,7 +84,12 @@ export const deletePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const postId = req.params.postId as string;
     const userId = req.user!.userId;
-    const result = await deletePostService(postId, userId);
+    await deletePostService(postId, userId);
+
+    logAuditEvent('Post Deleted', {
+      userId: req.user?.userId,
+      postId: postId,
+    });
 
     res
       .status(200)
@@ -95,7 +110,10 @@ export const updatePost = asyncHandler(
     let imagePublicId: string | undefined;
 
     if (file) {
-      const uploadedImage = await uploadSingleImageService(file.buffer, 'posts');
+      const uploadedImage = await uploadSingleImageService(
+        file.buffer,
+        'posts'
+      );
       imageUrl = uploadedImage.imageUrl;
       imagePublicId = uploadedImage.imagePublicId;
     }
@@ -107,6 +125,11 @@ export const updatePost = asyncHandler(
       imageUrl,
       imagePublicId
     );
+
+    logAuditEvent('Post Updated', {
+      userId: req.user?.userId,
+      postId,
+    });
 
     res
       .status(200)
@@ -124,4 +147,4 @@ export const getUserPosts = asyncHandler(
       .status(200)
       .json(new ApiResponse(true, 'User posts fetched successfully', posts));
   }
-)
+);
