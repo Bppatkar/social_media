@@ -22,6 +22,7 @@ import likeRoutes from './routes/like.routes.js';
 import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import feedRoutes from './routes/feed.routes.js';
+import monitoringRoutes from './routes/monitoring.routes.js';
 import { setCache, getCache } from './services/redis.service.js';
 
 import swaggerUi from 'swagger-ui-express';
@@ -57,6 +58,9 @@ app.use(
     stream: loggerStream,
   })
 );
+
+// Monitoring routes
+app.use('/api/monitoring', monitoringRoutes);
 
 // health route
 app.get('/', (req, res) => {
