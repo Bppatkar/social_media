@@ -23,6 +23,7 @@ import followRoutes from './routes/follow.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import feedRoutes from './routes/feed.routes.js';
 import monitoringRoutes from './routes/monitoring.routes.js';
+import notificationRoutes from './routes/notification.routes.js';
 import { setCache, getCache } from './services/redis.service.js';
 
 import swaggerUi from 'swagger-ui-express';
@@ -94,6 +95,7 @@ app.use('/api/likes', likeRoutes);
 app.use('/api/follows', followRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/feed', feedRoutes);
+app.use('/api/notifications', notificationRoutes);
 app.use(errorMiddleware);
 
 export default app;

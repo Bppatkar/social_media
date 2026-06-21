@@ -6,6 +6,8 @@ import env from './config/env.js';
 import db from './db/db.js';
 
 import { connectRedis } from './config/redis.js';
+import http from 'http';
+import {initSocket} from './socket/socket.js';
 
 const startServer = async () => {
   try {
@@ -13,7 +15,11 @@ const startServer = async () => {
 
     await connectRedis();
 
-    app.listen(env.PORT, () => {
+    const server = http.createServer(app);
+
+    initSocket(server);
+
+    server.listen(env.PORT, () => {
       console.log(`Server is running on port http://localhost:${env.PORT}`);
     });
   } catch (error) {

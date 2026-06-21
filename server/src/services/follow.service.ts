@@ -5,6 +5,9 @@ import ApiError from '../utils/ApiError.js';
 
 import buildSortQuery from '../utils/sort.js';
 
+import { getIo } from '../socket/socket.js';
+import { createNotificationService } from './notification.service.js';
+
 export const followUserService = async (
   followerId: string,
   followingId: string
@@ -30,6 +33,19 @@ export const followUserService = async (
   const follow = await Follow.create({
     follower: followerId,
     following: followingId,
+  });
+
+  const notification = await createNotificationService(
+    followingId,
+    followerId,
+    'follow'
+  );
+
+  getIo().to(followingId).emit('notification', {
+    id: notification._id.toString(),
+    type: notification.type,
+    sender: followerId,
+    createdAt: notification.createdAt,
   });
 
   const populatedFollow = await Follow.findById(follow._id).populate(
