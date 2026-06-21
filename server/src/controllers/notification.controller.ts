@@ -31,3 +31,15 @@ export const markNotificationAsRead = async (
     data: notification,
   });
 };
+
+export const getUnreadCount = async (req: AuthRequest, res: Response) => {
+  const count = await Notification.countDocuments({
+    recipient: req.user!.userId,
+    isRead: false,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    count,
+  });
+};
