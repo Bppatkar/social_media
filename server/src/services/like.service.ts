@@ -2,6 +2,8 @@ import Post from '../models/post.model.js';
 import Like from '../models/like.model.js';
 
 import ApiError from '../utils/ApiError.js';
+import { createNotificationService } from './notification.service.js';
+import { getIo } from '../socket/socket.js';
 
 export const likePostService = async (postId: string, userId: string) => {
   const post = await Post.findById(postId);
@@ -20,7 +22,28 @@ export const likePostService = async (postId: string, userId: string) => {
   // const updatedPost = await Post.findById(postId);
 
   await Like.create({ post: postId, likedBy: userId });
-  const updatedPost = await Post.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } }, { new: true });
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    { $inc: { likeCount: 1 } },
+    { new: true }
+  );
+
+  if (post.owner.toString() !== userId) {
+    const notification = await createNotificationService(
+      post.owner.toString(),
+      userId,
+      'like',
+      postId
+    );
+
+    getIo().to(post.owner.toString()).emit('notification', {
+      id: notification._id.toString(),
+      type: notification.type,
+      sender: userId,
+      postId,
+      createdAt: notification.createdAt,
+    });
+  }
 
   return {
     likeCount: updatedPost?.likeCount || 0,
@@ -33,7 +56,11 @@ export const unlikePostService = async (postId: string, userId: string) => {
     throw new ApiError(400, 'You have not liked this post');
   }
   await Like.deleteOne({ post: postId, likedBy: userId });
-  const updatedPost = await Post.findByIdAndUpdate(postId, { $inc: { likeCount: -1 } }, { new: true });
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    { $inc: { likeCount: -1 } },
+    { new: true }
+  );
   return {
     likeCount: updatedPost?.likeCount || 0,
   };

@@ -5,6 +5,8 @@ import ApiError from '../utils/ApiError.js';
 
 import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
+import { createNotificationService } from './notification.service.js';
+import { getIo } from '../socket/socket.js';
 
 export const addCommentService = async (
   postId: string,
@@ -29,6 +31,23 @@ export const addCommentService = async (
     'commentedBy',
     'username profileImage'
   );
+
+  if (post.owner.toString() !== userId) {
+    const notification = await createNotificationService(
+      post.owner.toString(),
+      userId,
+      'comment',
+      postId
+    );
+
+    getIo().to(post.owner.toString()).emit('notification', {
+      id: notification._id.toString(),
+      type: notification.type,
+      sender: userId,
+      postId,
+      createdAt: notification.createdAt,
+    });
+  }
 
   return createdComment;
 };
