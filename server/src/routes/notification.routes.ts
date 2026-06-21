@@ -10,10 +10,8 @@ import {
 
 const router = Router();
 
-router.get('/', authMiddleware, getNotifications);
-
-router.patch('/:id/read', authMiddleware, markNotificationAsRead);
-
 router.get('/unread-count', authMiddleware, getUnreadCount);
+router.get('/', authMiddleware, getNotifications);
+router.patch('/:id/read', authMiddleware, markNotificationAsRead);
 
 export default router;
