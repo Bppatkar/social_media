@@ -41,11 +41,6 @@ export const followUserService = async (
     'follow'
   );
 
-  console.log('EMITTING TO ROOM', followingId);
-
-  const room = getIo().sockets.adapter.rooms.get(followingId);
-
-  console.log('ROOM MEMBERS:', room);
 
   getIo().to(followingId).emit('notification', {
     id: notification._id.toString(),
