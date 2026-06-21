@@ -423,15 +423,50 @@ GET /api/admin/dashboard
 
 ---
 
-# 🚧 Upcoming Feature
+## Real-Time Notifications
 
-## Socket.IO Notifications
+## Notification System
+
+### REST APIs
+
+```http
+GET    /api/notifications
+GET    /api/notifications/unread-count
+PATCH  /api/notifications/:id/read
+```
+
+### Real-Time Events
+
+Socket.IO
+
+Client joins personal room:
+
+```javascript
+socket.emit('join', userId);
+```
+
+Server emits:
+
+```javascript
+notification;
+```
+
+Supported Notifications:
 
 - Follow Notifications
 - Like Notifications
 - Comment Notifications
+
+Features:
+
 - Real-Time Delivery
-- Notification Persistence
+- Persistent Storage
+- Unread Notification Tracking
+- User-Specific Rooms
+
+```
+
+```
 
 ---
 
