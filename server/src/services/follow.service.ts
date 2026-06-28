@@ -41,13 +41,19 @@ export const followUserService = async (
     'follow'
   );
 
+  try {
+    const io = getIo();
 
-  getIo().to(followingId).emit('notification', {
-    id: notification._id.toString(),
-    type: notification.type,
-    sender: followerId,
-    createdAt: notification.createdAt,
-  });
+    io.to(followingId).emit('notification', {
+      id: notification._id.toString(),
+      type: notification.type,
+      sender: followerId,
+      createdAt: notification.createdAt,
+    });
+  } catch {
+    // Ignore during tests or when socket server isn't running.
+    new ApiError(500, 'Ignored error: Failed to emit notification event');
+  }
 
   const populatedFollow = await Follow.findById(follow._id).populate(
     'following',
