@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Production Grade Social Media Frontend
 
-## Getting Started
+## Tech Stack
 
-First, run the development server:
+* Next.js 16 (App Router)
+* React 19
+* TypeScript
+* Tailwind CSS v4
+* Shadcn/UI
+* Redux Toolkit
+* RTK Query
+* Axios
+* React Hook Form
+* Zod
+* Socket.IO Client
+* Framer Motion
+* Lucide React
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Project Goal
+
+Build a modern, production-grade social media frontend that integrates with an already completed backend.
+
+The objective is **not** to clone Instagram, but to demonstrate frontend engineering practices that impress interviewers.
+
+Focus Areas:
+
+* Clean Architecture
+* Reusable Components
+* Performance
+* Production Folder Structure
+* Authentication
+* RTK Query
+* Protected Routes
+* Socket.IO
+* Responsive UI
+* Dark Theme
+* Accessibility
+
+---
+
+## Backend Status
+
+Backend is already completed and deployed.
+
+Implemented features:
+
+* Authentication
+* JWT Cookie Authentication
+* Refresh Token Rotation
+* RBAC
+* Posts
+* Comments
+* Likes
+* Follow
+* Feed
+* Notifications
+* Socket.IO
+* Redis
+* Docker
+* AWS Deployment
+* Monitoring APIs
+* Swagger
+* CI/CD
+
+Frontend only needs to integrate with these APIs.
+
+---
+
+## Folder Structure
+
+```
+src/
+
+app/
+
+components/
+
+features/
+
+hooks/
+
+services/
+
+store/
+
+providers/
+
+utils/
+
+constants/
+
+types/
+
+lib/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development Rules
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Strict TypeScript
+* Feature-based architecture
+* One responsibility per file
+* Reusable components
+* RTK Query for API communication
+* Redux Toolkit for global state
+* React Hook Form + Zod
+* Server Components wherever possible
+* Client Components only when required
+* Dark mode first
+* Interview-focused implementation
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## UI Direction
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Design inspiration:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Linear
+* Vercel
+* Clerk
+* Raycast
+* Dub
 
-## Deploy on Vercel
+Characteristics:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Minimal
+* Premium
+* Modern
+* Fast
+* Responsive
+* Startup feel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Development Workflow
+
+1. Project Foundation
+2. UI Development
+3. API Integration
+4. Authentication
+5. Dashboard
+6. Feed
+7. Profile
+8. Notifications
+9. Socket.IO
+10. Performance Optimization
+11. Deployment Polish
+
+Every phase must end with a working application before moving to the next.
