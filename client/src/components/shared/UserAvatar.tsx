@@ -1,11 +1,33 @@
-type UserAvatarProps = {
-  name?: string;
-};
+'use client';
 
-export default function UserAvatar({ name = 'User' }: UserAvatarProps) {
+import Image from 'next/image';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
+interface UserAvatarProps {
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export default function UserAvatar({
+  src,
+  alt = 'User',
+  size = 'md',
+}: UserAvatarProps) {
+  const sizes = {
+    sm: 'h-9 w-9',
+    md: 'h-11 w-11',
+    lg: 'h-16 w-16',
+  };
+
   return (
-    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-sm font-medium text-secondary-foreground">
-      {name.slice(0, 1).toUpperCase()}
-    </div>
+    <Avatar className={sizes[size]}>
+      <AvatarImage src={src} />
+
+      <AvatarFallback className="bg-violet-600 text-white">
+        {alt.charAt(0).toUpperCase()}
+      </AvatarFallback>
+    </Avatar>
   );
 }

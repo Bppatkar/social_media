@@ -1,152 +1,185 @@
-# Production Grade Social Media Frontend
+# Social Media Application (Frontend)
 
-## Tech Stack
-
-* Next.js 16 (App Router)
-* React 19
-* TypeScript
-* Tailwind CSS v4
-* Shadcn/UI
-* Redux Toolkit
-* RTK Query
-* Axios
-* React Hook Form
-* Zod
-* Socket.IO Client
-* Framer Motion
-* Lucide React
+Production-grade Social Media frontend built using Next.js 16, React 19 and modern frontend architecture.
 
 ---
 
-## Project Goal
+# Stack
 
-Build a modern, production-grade social media frontend that integrates with an already completed backend.
-
-The objective is **not** to clone Instagram, but to demonstrate frontend engineering practices that impress interviewers.
-
-Focus Areas:
-
-* Clean Architecture
-* Reusable Components
-* Performance
-* Production Folder Structure
-* Authentication
-* RTK Query
-* Protected Routes
-* Socket.IO
-* Responsive UI
-* Dark Theme
-* Accessibility
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- shadcn/ui
+- Redux Toolkit
+- RTK Query
+- Axios
+- React Hook Form
+- Zod
+- Framer Motion
+- Socket.io Client
 
 ---
 
-## Backend Status
+# Folder Architecture
 
-Backend is already completed and deployed.
+src
 
-Implemented features:
+app
 
-* Authentication
-* JWT Cookie Authentication
-* Refresh Token Rotation
-* RBAC
-* Posts
-* Comments
-* Likes
-* Follow
-* Feed
-* Notifications
-* Socket.IO
-* Redis
-* Docker
-* AWS Deployment
-* Monitoring APIs
-* Swagger
-* CI/CD
+components
 
-Frontend only needs to integrate with these APIs.
+features
 
----
+providers
 
-## Folder Structure
+services
 
-```
-src/
+store
 
-app/
+hooks
 
-components/
+types
 
-features/
+constants
 
-hooks/
+utils
 
-services/
-
-store/
-
-providers/
-
-utils/
-
-constants/
-
-types/
-
-lib/
-```
+styles
 
 ---
 
-## Development Rules
+# Architecture
 
-* Strict TypeScript
-* Feature-based architecture
-* One responsibility per file
-* Reusable components
-* RTK Query for API communication
-* Redux Toolkit for global state
-* React Hook Form + Zod
-* Server Components wherever possible
-* Client Components only when required
-* Dark mode first
-* Interview-focused implementation
+UI
 
----
+↓
 
-## UI Direction
+React Components
 
-Design inspiration:
+↓
 
-* Linear
-* Vercel
-* Clerk
-* Raycast
-* Dub
+RTK Query
 
-Characteristics:
+↓
 
-* Minimal
-* Premium
-* Modern
-* Fast
-* Responsive
-* Startup feel
+Base API
+
+↓
+
+Axios Instance
+
+↓
+
+Express Backend
+
+↓
+
+MongoDB
 
 ---
 
-## Development Workflow
+# Features
 
-1. Project Foundation
-2. UI Development
-3. API Integration
-4. Authentication
-5. Dashboard
-6. Feed
-7. Profile
-8. Notifications
-9. Socket.IO
-10. Performance Optimization
-11. Deployment Polish
+Authentication
 
-Every phase must end with a working application before moving to the next.
+- Login
+- Register
+
+Feed
+
+- Create Post
+- Posts
+
+Profile
+
+Notifications
+
+Search
+
+Settings
+
+Admin Dashboard
+
+---
+
+# UI Strategy
+
+The frontend is developed in two phases.
+
+Phase 1
+
+Complete UI
+
+- Modern Design
+- Responsive
+- Placeholder Logic
+- Production Components
+
+Phase 2
+
+Logic
+
+- API Integration
+- Authentication
+- Socket.io
+- Optimistic Updates
+- Error Handling
+
+---
+
+# Design Goals
+
+- Production Ready
+- Resume Worthy
+- Interview Ready
+- Responsive
+- Dark Theme
+- Gen-Z Color Palette
+- Smooth Animations
+
+---
+
+# Development Rules
+
+- UI First
+- Logic Later
+- Production Code
+- Clean Folder Structure
+- Reusable Components
+- shadcn First
+- RTK Query for API
+- Axios for HTTP
+- TypeScript Strict Mode
+
+---
+
+# Backend
+
+Express
+
+MongoDB
+
+Redis
+
+JWT Authentication
+
+Socket.io
+
+Swagger
+
+Docker
+
+CI/CD
+
+AWS
+
+---
+
+# Current Status
+
+Frontend Foundation Completed
+
+Next Milestone
+
+Build Login UI
