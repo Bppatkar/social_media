@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import {
   Bookmark,
@@ -15,6 +16,8 @@ import TimeAgo from '@/components/shared/TimeAgo';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import DeletePostDialog from './DeletePostDialog';
+import CommentDrawer from './CommentDrawer';
 
 interface Owner {
   _id: string;
@@ -41,12 +44,11 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post }: PostCardProps) {
+  const [commentOpen, setCommentOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
   const handleLike = () => {
     // RTK Like Mutation
-  };
-
-  const handleComment = () => {
-    // Open Comment Drawer
   };
 
   const handleShare = () => {
@@ -55,10 +57,6 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleBookmark = () => {
     // Save Post
-  };
-
-  const handleMore = () => {
-    // Edit/Delete Dropdown
   };
 
   return (
@@ -100,7 +98,7 @@ export default function PostCard({ post }: PostCardProps) {
           <Button
             size="icon"
             variant="ghost"
-            onClick={handleMore}
+            onClick={() => setDeleteOpen(true)}
             className="rounded-full text-zinc-400 hover:bg-white/10 hover:text-white"
           >
             <MoreHorizontal className="h-5 w-5" />
@@ -117,7 +115,7 @@ export default function PostCard({ post }: PostCardProps) {
           {post.image && (
             <div className="overflow-hidden rounded-2xl border border-white/10">
               <Image
-                loading="eager"
+                loading="lazy"
                 src={post.image}
                 alt="Post"
                 width={900}
@@ -154,7 +152,7 @@ export default function PostCard({ post }: PostCardProps) {
 
           <Button
             variant="ghost"
-            onClick={handleComment}
+            onClick={() => setCommentOpen(true)}
             className="justify-center gap-2 text-zinc-300 hover:bg-sky-500/10 hover:text-sky-400"
           >
             <MessageCircle className="h-5 w-5" />
@@ -180,6 +178,8 @@ export default function PostCard({ post }: PostCardProps) {
           </Button>
         </div>
       </CardContent>
+      <CommentDrawer open={commentOpen} onOpenChange={setCommentOpen} />
+      <DeletePostDialog open={deleteOpen} onOpenChange={setDeleteOpen} />
     </Card>
   );
 }

@@ -28,19 +28,65 @@ export default function CreatePostCard() {
 
     if (!file) return;
 
-    setImage(file);
+    if (file.size > 5 * 1024 * 1024) {
+      // TODO: Replace with toast later
+      alert('Maximum image size is 5MB');
+      return;
+    }
 
-    setPreview(URL.createObjectURL(file));
+    // Remove previous preview if it exists
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+
+    setImage(file);
+    setPreview(objectUrl);
   };
 
   const removeImage = () => {
-    setImage(null);
+    if (preview) URL.revokeObjectURL(preview);
 
+    setImage(null);
     setPreview('');
   };
 
-  const handleCreatePost = () => {
-    // RTK Mutation
+  const handleCreatePost = async () => {
+    // ==========================
+    // Future RTK Query Flow
+    // ==========================
+
+    // 1. Validate content
+
+    // 2. Upload image to backend
+
+    // 3. Create Post Mutation
+
+    // 4. Show Success Toast
+
+    // 5. Reset Form
+
+    // 6. Refetch Feed
+
+    console.log({
+      content,
+      image,
+    });
+
+    // Temporary reset
+
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    setContent('');
+    setImage(null);
+    setPreview('');
+
+    if (fileRef.current) {
+      fileRef.current.value = '';
+    }
   };
 
   return (
@@ -78,7 +124,7 @@ export default function CreatePostCard() {
           hidden
           ref={fileRef}
           type="file"
-          accept="image/*"
+          accept=".png,.jpg,.jpeg,.webp"
           onChange={handleImageUpload}
         />
 
@@ -88,11 +134,12 @@ export default function CreatePostCard() {
               size="icon"
               variant="ghost"
               onClick={() => fileRef.current?.click()}
+              className="text-zinc-400 hover:bg-violet-500/10 hover:text-violet-400"
             >
               <ImagePlus className="h-5 w-5" />
             </Button>
 
-            <Button size="icon" variant="ghost">
+            <Button size="icon" variant="ghost"  className="text-zinc-400 hover:bg-violet-500/10 hover:text-violet-400">
               <SmilePlus className="h-5 w-5" />
             </Button>
           </div>
