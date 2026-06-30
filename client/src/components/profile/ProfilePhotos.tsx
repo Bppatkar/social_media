@@ -4,22 +4,20 @@ interface Props {
   images: string[];
 }
 
-export default function ProfilePhotos({
-  images,
-}: Props) {
+export default function ProfilePhotos({ images }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
       {images.map((image, index) => (
         <div
           key={index}
-          className="overflow-hidden rounded-xl border border-white/10"
+          className="group overflow-hidden rounded-2xl border border-white/10"
         >
           <Image
             src={image}
             alt="Post"
             width={400}
             height={400}
-            className="aspect-square object-cover transition hover:scale-105"
+            className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
         </div>
       ))}

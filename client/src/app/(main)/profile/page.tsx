@@ -1,73 +1,90 @@
-import ProfileHeader, {
-  type ProfileUser,
+import ProfileHeader from '@/components/profile/ProfileHeader';
+import ProfileTabs from '@/components/profile/ProfileTabs';
+import ProfilePhotos from '@/components/profile/ProfilePhotos';
+
+import PostCard from '@/components/post/PostCard';
+
+import type {
+  ProfileUser,
 } from '@/components/profile/ProfileHeader';
-import EmptyState from '@/components/feedback/EmptyState';
-import PostCard, { type Post } from '@/components/post/PostCard';
+
+import type {
+  Post,
+} from '@/components/post/PostCard';
 
 export default function ProfilePage() {
   const user: ProfileUser = {
     _id: '1',
+
     username: 'Bhanu',
+
     email: 'bhanu@gmail.com',
-    bio: 'Full Stack Developer | MERN | Next.js | Building production-grade applications 🚀',
+
+    bio: 'Building scalable backend systems using MERN, Next.js, Redis, Docker and AWS.',
+
     profileImage: '',
+
     role: 'user',
-    followersCount: 324,
-    followingCount: 188,
-    postsCount: 42,
+
+    followersCount: 180,
+
+    followingCount: 95,
+
+    postsCount: 24,
+
     isFollowing: false,
+
     isCurrentUser: true,
   };
 
   const posts: Post[] = [
     {
       _id: '1',
-      content:
-        'Finished building Feed UI for SocialSphere. Next step is RTK Query integration.',
+
+      content: 'Production Ready SocialSphere 🚀',
+
       image:
         'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200',
+
       createdAt: new Date().toISOString(),
+
       updatedAt: new Date().toISOString(),
-      likeCount: 142,
-      commentCount: 18,
+
+      likeCount: 85,
+
+      commentCount: 12,
+
       owner: {
-        _id: user._id,
-        username: user.username,
-        profileImage: user.profileImage,
-      },
-    },
-    {
-      _id: '2',
-      content:
-        'Backend is production ready with Redis, Docker, AWS, Swagger and Socket.IO.',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      likeCount: 87,
-      commentCount: 9,
-      owner: {
-        _id: user._id,
-        username: user.username,
-        profileImage: user.profileImage,
+        _id: '1',
+
+        username: 'Bhanu',
+
+        profileImage: '',
       },
     },
   ];
 
+  const images = posts
+    .filter((post) => post.image)
+    .map((post) => post.image!);
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
+    <div className="mx-auto flex max-w-5xl flex-col gap-8">
       <ProfileHeader user={user} />
 
-      <section className="space-y-6">
-        <h2 className="text-xl font-semibold text-white">Posts</h2>
-
-        {posts.length === 0 ? (
-          <EmptyState
-            title="No Posts Yet"
-            description="Posts created by this user will appear here."
-          />
-        ) : (
-          posts.map((post) => <PostCard key={post._id} post={post} />)
-        )}
-      </section>
+      <ProfileTabs
+        posts={
+          <div className="space-y-6">
+            {posts.map((post) => (
+              <PostCard
+                key={post._id}
+                post={post}
+              />
+            ))}
+          </div>
+        }
+        photos={<ProfilePhotos images={images} />}
+      />
     </div>
   );
 }
