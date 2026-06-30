@@ -1,12 +1,59 @@
+import EmptyState from '@/components/feedback/EmptyState';
+import UserSearchCard, {
+  type SearchUser,
+} from '@/components/search/UserSearchCard';
+
 export default function SearchPage() {
+  const users: SearchUser[] = [
+    {
+      _id: '1',
+      username: 'Alex',
+      bio: 'Backend Engineer | Node.js | AWS',
+      profileImage: '',
+      role: 'user',
+      followersCount: 218,
+      isFollowing: false,
+    },
+    {
+      _id: '2',
+      username: 'Rahul',
+      bio: 'Frontend Developer | React | Next.js',
+      profileImage: '',
+      role: 'user',
+      followersCount: 642,
+      isFollowing: true,
+    },
+    {
+      _id: '3',
+      username: 'Admin',
+      bio: 'Platform Administrator',
+      profileImage: '',
+      role: 'admin',
+      followersCount: 1200,
+      isFollowing: false,
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-background px-6 py-10 text-foreground">
-      <section className="mx-auto w-full max-w-5xl">
-        <h1 className="text-3xl font-semibold">Search</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Search page scaffold.
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+      <div>
+        <h1 className="text-3xl font-bold text-white">Search Users</h1>
+
+        <p className="mt-2 text-zinc-400">
+          Find developers, creators and friends.
         </p>
-      </section>
-    </main>
+      </div>
+
+      {users.length === 0 ? (
+        <EmptyState
+          title="No Users Found"
+          description="Try another keyword."
+        />
+      ) : (
+        users.map((user) => (
+          <UserSearchCard key={user._id} user={user} />
+        ))
+      )}
+    </div>
   );
 }

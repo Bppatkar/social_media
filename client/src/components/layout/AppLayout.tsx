@@ -10,7 +10,7 @@ type AppLayoutProps = {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div className="flex min-h-screen bg-neutral-950 text-white">
+    <div className="flex h-screen overflow-hidden bg-neutral-950 text-white">
       {/* Desktop Sidebar */}
 
       <AppSidebar />
@@ -18,7 +18,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <div className="flex min-w-0 flex-1 flex-col">
         <AppHeader />
 
-        <main>{children}</main>
+        <main className="flex-1 overflow-y-auto">
+          <div className="mx-auto max-w-6xl p-6">{children}</div>
+        </main>
       </div>
 
       {/* Mobile Bottom Navigation */}

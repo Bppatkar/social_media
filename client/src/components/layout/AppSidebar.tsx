@@ -50,16 +50,16 @@ export default function AppSidebar() {
   ];
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-white/10 bg-neutral-950/90 lg:flex lg:flex-col">
+    <aside className="sticky top-0 hidden h-screen w-72 border-r border-white/10 bg-neutral-950 lg:flex lg:flex-col">
       {/* Logo */}
 
-      <div className="border-b border-white/10 px-6 py-6">
+      <div className="shrink-0 border-t border-white/10 p-4">
         <Logo />
       </div>
 
       {/* Navigation */}
 
-      <nav className="flex-1 space-y-2 p-4">
+      <nav className="flex-1 overflow-y-auto p-4">
         {navigation.map((item) => {
           const Icon = item.icon;
 
@@ -91,7 +91,6 @@ export default function AppSidebar() {
             className="mt-4 flex h-12 w-full justify-start gap-3 rounded-xl text-zinc-300 hover:bg-white/5 hover:text-white"
           >
             <Shield className="h-5 w-5" />
-
             Admin
           </Button>
         </Link>
@@ -110,9 +109,7 @@ export default function AppSidebar() {
               Username
             </p>
 
-            <p className="truncate text-xs text-zinc-400">
-              email@example.com
-            </p>
+            <p className="truncate text-xs text-zinc-400">email@example.com</p>
           </div>
         </div>
 
@@ -121,7 +118,6 @@ export default function AppSidebar() {
           className="flex h-11 w-full justify-start gap-3 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300"
         >
           <LogOut className="h-5 w-5" />
-
           Logout
         </Button>
 

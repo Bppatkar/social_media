@@ -40,9 +40,7 @@ interface PostCardProps {
   post: Post;
 }
 
-export default function PostCard({
-  post,
-}: PostCardProps) {
+export default function PostCard({ post }: PostCardProps) {
   const handleLike = () => {
     // RTK Like Mutation
   };
@@ -112,13 +110,14 @@ export default function PostCard({
         {/* Content */}
 
         <div className="space-y-4">
-          <p className="whitespace-pre-wrap leading-7 text-zinc-200">
+          <p className="leading-7 whitespace-pre-wrap text-zinc-200">
             {post.content}
           </p>
 
           {post.image && (
             <div className="overflow-hidden rounded-2xl border border-white/10">
               <Image
+                loading="eager"
                 src={post.image}
                 alt="Post"
                 width={900}
@@ -133,17 +132,11 @@ export default function PostCard({
 
         <div className="flex items-center gap-6 border-y border-white/10 py-3 text-sm text-zinc-400">
           <span>
-            <strong className="text-white">
-              {post.likeCount}
-            </strong>{' '}
-            Likes
+            <strong className="text-white">{post.likeCount}</strong> Likes
           </span>
 
           <span>
-            <strong className="text-white">
-              {post.commentCount}
-            </strong>{' '}
-            Comments
+            <strong className="text-white">{post.commentCount}</strong> Comments
           </span>
         </div>
 

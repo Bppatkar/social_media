@@ -43,7 +43,7 @@ export default function AppHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+      <div className="mx-auto flex h-16 w-full items-center justify-between px-8">
         {/* Left */}
         <div className="flex items-center gap-3">
           {/* Mobile Menu */}
@@ -56,7 +56,13 @@ export default function AppHeader() {
             <Menu className="h-5 w-5" />
           </Button>
 
-          <Link href="/feed">
+          {/* Desktop */}
+
+          <div className="hidden md:block" />
+
+          {/* Mobile */}
+
+          <Link href="/feed" className="md:hidden">
             <Logo />
           </Link>
         </div>

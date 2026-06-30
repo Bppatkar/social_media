@@ -10,6 +10,7 @@ export default function ImagePreview({ src }: ImagePreviewProps) {
   return (
     <div className="overflow-hidden rounded-xl border border-white/10">
       <Image
+        loading="eager"
         src={src}
         alt="Preview"
         width={800}
