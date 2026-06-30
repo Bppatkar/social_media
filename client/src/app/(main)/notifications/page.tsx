@@ -1,63 +1,49 @@
-import EmptyState from '@/components/feedback/EmptyState';
+'use client';
 
-import NotificationCard, {
-  type Notification,
-} from '@/components/notification/NotificationCard';
+import NotificationList from '@/components/notification/NotificationList';
+
+import type { Notification } from '@/components/notification/NotificationCard';
 
 export default function NotificationsPage() {
   const notifications: Notification[] = [
     {
       _id: '1',
       type: 'follow',
+      title: 'New Follower',
+      message: 'Alex started following you.',
       createdAt: new Date().toISOString(),
       isRead: false,
-
-      sender: {
-        username: 'Rahul',
-        profileImage: '',
-      },
+      link: '/profile/2',
     },
     {
       _id: '2',
       type: 'like',
+      title: 'New Like',
+      message: 'Sarah liked your latest post.',
       createdAt: new Date().toISOString(),
-      isRead: false,
-
-      sender: {
-        username: 'Alex',
-        profileImage: '',
-      },
+      isRead: true,
+      link: '/feed',
     },
     {
       _id: '3',
       type: 'comment',
+      title: 'New Comment',
+      message: 'John commented on your post.',
       createdAt: new Date().toISOString(),
-      isRead: true,
-
-      sender: {
-        username: 'John',
-        profileImage: '',
-      },
+      isRead: false,
+      link: '/feed',
     },
   ];
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-      <h1 className="text-3xl font-bold text-white mt-2">Notifications</h1>
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
+      <div>
+        <h1 className="text-3xl font-bold text-white">Notifications</h1>
 
-      {notifications.length === 0 ? (
-        <EmptyState
-          title="No Notifications"
-          description="You're all caught up."
-        />
-      ) : (
-        notifications.map((notification) => (
-          <NotificationCard
-            key={notification._id}
-            notification={notification}
-          />
-        ))
-      )}
+        <p className="mt-2 text-zinc-400">Stay updated with recent activity.</p>
+      </div>
+
+      <NotificationList notifications={notifications} />
     </div>
   );
 }
