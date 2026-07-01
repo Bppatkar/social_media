@@ -1,49 +1,108 @@
 'use client';
 
-import NotificationList from '@/components/notification/NotificationList';
+import NotificationCard, {
+  type Notification,
+} from '@/components/notification/NotificationCard';
 
-import type { Notification } from '@/components/notification/NotificationCard';
+import EmptyState from '@/components/feedback/EmptyState';
+import ErrorState from '@/components/feedback/ErrorState';
+import LoadingState from '@/components/feedback/LoadingState';
 
 export default function NotificationsPage() {
+  // ==========================
+  // Future RTK Query
+  // ==========================
+  //
+  // const {
+  //     data,
+  //     isLoading,
+  //     isError
+  // } = useGetNotificationsQuery();
+
+  const isLoading = false;
+
+  const isError = false;
+
   const notifications: Notification[] = [
     {
       _id: '1',
-      type: 'follow',
-      title: 'New Follower',
-      message: 'Alex started following you.',
+
+      type: 'like',
+
+      username: 'Alex',
+
       createdAt: new Date().toISOString(),
+
       isRead: false,
-      link: '/profile/2',
+
+      postId: '1',
     },
+
     {
       _id: '2',
-      type: 'like',
-      title: 'New Like',
-      message: 'Sarah liked your latest post.',
+
+      type: 'comment',
+
+      username: 'John',
+
       createdAt: new Date().toISOString(),
+
       isRead: true,
-      link: '/feed',
+
+      postId: '1',
     },
+
     {
       _id: '3',
-      type: 'comment',
-      title: 'New Comment',
-      message: 'John commented on your post.',
+
+      type: 'follow',
+
+      username: 'Sophia',
+
       createdAt: new Date().toISOString(),
+
       isRead: false,
-      link: '/feed',
     },
   ];
 
+  if (isLoading) {
+    return <LoadingState />;
+  }
+
+  if (isError) {
+    return (
+      <ErrorState
+        title="Unable to load notifications"
+        description="Please try again."
+      />
+    );
+  }
+
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
+    <div className="mx-auto max-w-4xl space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-white">Notifications</h1>
 
-        <p className="mt-2 text-zinc-400">Stay updated with recent activity.</p>
+        <p className="mt-2 text-zinc-400">
+          Stay updated with likes, comments and followers.
+        </p>
       </div>
 
-      <NotificationList notifications={notifications} />
+      {notifications.length === 0 ? (
+        <EmptyState
+          title="No Notifications"
+          description="Everything is quiet for now."
+        />
+      ) : (
+        <div className="space-y-4">
+          {notifications.map((notification) => (
+            <NotificationCard
+              key={notification._id}
+              notification={notification}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
