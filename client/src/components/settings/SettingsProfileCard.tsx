@@ -24,7 +24,7 @@ export default function SettingsProfileCard() {
           </p>
         </div>
 
-        <Button>
+        <Button variant="outline" className="w-full md:w-auto">
           Edit Profile
         </Button>
       </div>
