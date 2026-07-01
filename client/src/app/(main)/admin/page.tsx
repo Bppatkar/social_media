@@ -1,38 +1,31 @@
-import { Card } from '@/components/ui/card';
+import AdminActivity from '@/components/admin/AdminActivity';
+import AdminCharts from '@/components/admin/AdminCharts';
+import AdminStats from '@/components/admin/AdminStats';
+import RecentReports from '@/components/admin/RecentReports';
+import UserTable from '@/components/admin/UserTable';
 
 export default function AdminPage() {
-  const stats = {
-    users: 1248,
-    posts: 9231,
-    comments: 38129,
-    likes: 120321,
-  };
-
   return (
-    <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-4">
-      <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-        <p className="text-zinc-400">Users</p>
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+      <div>
+        <h1 className="text-4xl font-bold text-white">Admin Dashboard</h1>
 
-        <h2 className="mt-3 text-4xl font-bold text-white">{stats.users}</h2>
-      </Card>
+        <p className="mt-2 text-zinc-400">
+          Monitor users, posts, reports and platform activity.
+        </p>
+      </div>
 
-      <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-        <p className="text-zinc-400">Posts</p>
+      <AdminStats />
 
-        <h2 className="mt-3 text-4xl font-bold text-white">{stats.posts}</h2>
-      </Card>
+      <AdminCharts />
 
-      <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-        <p className="text-zinc-400">Comments</p>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <RecentReports />
 
-        <h2 className="mt-3 text-4xl font-bold text-white">{stats.comments}</h2>
-      </Card>
+        <AdminActivity />
+      </div>
 
-      <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-        <p className="text-zinc-400">Likes</p>
-
-        <h2 className="mt-3 text-4xl font-bold text-white">{stats.likes}</h2>
-      </Card>
+      <UserTable />
     </div>
   );
 }
