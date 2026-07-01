@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import {
   Bookmark,
-  Copy,
+ Copy,
   Flag,
   MoreHorizontal,
   Pencil,
@@ -37,77 +37,96 @@ export default function PostActionsMenu({
 
   const handleEdit = () => {
     // TODO:
-    // Open Edit Post Dialog
+    // Open Edit Dialog
   };
 
   const handleCopyLink = async () => {
-    // TODO:
-    // Replace with actual post URL later
-
     await navigator.clipboard.writeText(window.location.href);
   };
 
   const handleBookmark = () => {
-    // RTK Mutation
+    // TODO:
   };
 
   const handleReport = () => {
-    // RTK Mutation
+    // TODO:
   };
 
   return (
-    {variant === 'feed' && isOwner && (
-  <>
-    <DropdownMenuItem onClick={handleEdit}>
-      <Pencil className="mr-2 h-4 w-4" />
-      Edit Post
-    </DropdownMenuItem>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="rounded-full text-zinc-400 hover:bg-white/10 hover:text-white"
+          >
+            <MoreHorizontal className="h-5 w-5" />
+          </Button>
+        </DropdownMenuTrigger>
 
-    <DropdownMenuSeparator />
-  </>
-)}
+        <DropdownMenuContent
+          align="end"
+          className="w-52 border-white/10 bg-neutral-900 text-white"
+        >
+          {/* Feed → Owner */}
 
-{variant === 'profile' && isOwner && (
-  <>
-    <DropdownMenuItem onClick={handleEdit}>
-      <Pencil className="mr-2 h-4 w-4" />
-      Edit Post
-    </DropdownMenuItem>
+          {variant === 'feed' && isOwner && (
+            <>
+              <DropdownMenuItem onClick={handleEdit}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit Post
+              </DropdownMenuItem>
 
-    <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
+            </>
+          )}
 
-    <DropdownMenuItem
-      onClick={() => setDeleteOpen(true)}
-      className="text-red-500"
-    >
-      <Trash2 className="mr-2 h-4 w-4" />
-      Delete Post
-    </DropdownMenuItem>
+          {/* Profile → Owner */}
 
-    <DropdownMenuSeparator />
-  </>
-)}
+          {variant === 'profile' && isOwner && (
+            <>
+              <DropdownMenuItem onClick={handleEdit}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit Post
+              </DropdownMenuItem>
 
-{!isOwner && (
-  <>
-    <DropdownMenuItem onClick={handleBookmark}>
-      <Bookmark className="mr-2 h-4 w-4" />
-      Bookmark
-    </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setDeleteOpen(true)}
+                className="text-red-500 focus:text-red-500"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Post
+              </DropdownMenuItem>
 
-    <DropdownMenuItem onClick={handleReport}>
-      <Flag className="mr-2 h-4 w-4" />
-      Report
-    </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
 
-    <DropdownMenuSeparator />
-  </>
-)}
+          {/* Other Users */}
 
-<DropdownMenuItem onClick={handleCopyLink}>
-  <Copy className="mr-2 h-4 w-4" />
-  Copy Link
-</DropdownMenuItem>
+          {!isOwner && (
+            <>
+              <DropdownMenuItem onClick={handleBookmark}>
+                <Bookmark className="mr-2 h-4 w-4" />
+                Bookmark
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={handleReport}>
+                <Flag className="mr-2 h-4 w-4" />
+                Report
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+            </>
+          )}
+
+          <DropdownMenuItem onClick={handleCopyLink}>
+            <Copy className="mr-2 h-4 w-4" />
+            Copy Link
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <DeletePostDialog
         postId={postId}
@@ -115,6 +134,5 @@ export default function PostActionsMenu({
         onOpenChange={setDeleteOpen}
       />
     </>
-
   );
 }

@@ -41,11 +41,15 @@ export interface Post {
 
 interface PostCardProps {
   post: Post;
-  variants: 'feed' | 'profile';
-  isOwner?: boolean;
+  variants?: 'feed' | 'profile';
+  isOwner: boolean;
 }
 
-export default function PostCard({ post, variants = 'feed', isOwner }: PostCardProps) {
+export default function PostCard({
+  post,
+  variants = 'feed',
+  isOwner,
+}: PostCardProps) {
   const [commentOpen, setCommentOpen] = useState(false);
 
   const handleLike = () => {
