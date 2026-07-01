@@ -5,20 +5,20 @@ import { ApiResponse, AuthResponse } from '../types/authResponse.types';
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<ApiResponse<AuthResponse>, LoginRequest>({
-      query: (credentials) => ({
+      query: (body) => ({
         url: '/auth/login',
         method: 'POST',
-        data: credentials,
+        data: body,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ['Auth', 'User'],
     }),
     register: builder.mutation<ApiResponse<AuthResponse>, RegisterRequest>({
-      query: (userData) => ({
+      query: (body) => ({
         url: '/auth/register',
         method: 'POST',
-        data: userData,
+        data: body,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ['Auth', 'User'],
     }),
   }),
 });

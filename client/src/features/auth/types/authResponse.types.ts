@@ -6,5 +6,7 @@ export interface ApiResponse<T> {
   data: T;
 }
 export interface AuthResponse {
+  message: string;
+  token: string;
   user: User;
 }
