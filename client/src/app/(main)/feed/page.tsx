@@ -61,7 +61,14 @@ export default function FeedPage() {
           description="Be the first one to share something."
         />
       ) : (
-        posts.map((post) => <PostCard key={post._id} post={post} />)
+        posts.map((post) => (
+          <PostCard
+            key={post._id}
+            post={post}
+            variants="feed"
+            isOwner={post.owner._id === '101'} // TODO: Replace with logged-in user id
+          />
+        ))
       )}
     </div>
   );

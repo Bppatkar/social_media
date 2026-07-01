@@ -11,14 +11,24 @@ import {
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
 
-interface Props {
+interface DeletePostDialogProps {
   open: boolean;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange: (open: boolean) => void;
+  postId: string;
+  onConfirm?: (postId: string) => void;
 }
 
-export default function DeletePostDialog({ open, onOpenChange }: Props) {
+export default function DeletePostDialog({
+  open,
+  onOpenChange,
+  postId,
+  onConfirm,
+}: DeletePostDialogProps) {
   const handleDelete = () => {
     // Delete Mutation
+    if (onConfirm) {
+      onConfirm(postId);
+    }
   };
 
   return (

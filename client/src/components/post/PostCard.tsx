@@ -16,8 +16,8 @@ import TimeAgo from '@/components/shared/TimeAgo';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import DeletePostDialog from './DeletePostDialog';
 import CommentDrawer from './CommentDrawer';
+import PostActionsMenu from './PostActionsMenu';
 
 interface Owner {
   _id: string;
@@ -41,11 +41,12 @@ export interface Post {
 
 interface PostCardProps {
   post: Post;
+  variants: 'feed' | 'profile';
+  isOwner?: boolean;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, variants = 'feed', isOwner }: PostCardProps) {
   const [commentOpen, setCommentOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const handleLike = () => {
     // RTK Like Mutation
@@ -95,14 +96,11 @@ export default function PostCard({ post }: PostCardProps) {
             </div>
           </div>
 
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => setDeleteOpen(true)}
-            className="rounded-full text-zinc-400 hover:bg-white/10 hover:text-white"
-          >
-            <MoreHorizontal className="h-5 w-5" />
-          </Button>
+          <PostActionsMenu
+            postId={post._id}
+            isOwner={isOwner}
+            variant={variants}
+          />
         </div>
 
         {/* Content */}
@@ -179,7 +177,6 @@ export default function PostCard({ post }: PostCardProps) {
         </div>
       </CardContent>
       <CommentDrawer open={commentOpen} onOpenChange={setCommentOpen} />
-      <DeletePostDialog open={deleteOpen} onOpenChange={setDeleteOpen} />
     </Card>
   );
 }
