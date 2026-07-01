@@ -1,67 +1,36 @@
-import { Card } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
+import SettingsAccount from '@/components/settings/SettingsAccount';
+import SettingsDangerZone from '@/components/settings/SettingsDangerZone';
+import SettingsPreferences from '@/components/settings/SettingsPreferences';
+import SettingsProfileCard from '@/components/settings/SettingsProfileCard';
 
 export default function SettingsPage() {
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+      {/* Page Heading */}
+
       <div>
-        <h1 className="text-3xl font-bold text-white">
-          Settings
-        </h1>
+        <h1 className="text-4xl font-bold text-white">Settings</h1>
 
         <p className="mt-2 text-zinc-400">
-          Manage your account preferences.
+          Manage your account, preferences and security settings.
         </p>
       </div>
 
-      <Card className="space-y-6 border-white/10 bg-white/5 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium text-white">
-              Email Notifications
-            </h3>
+      {/* Profile */}
 
-            <p className="text-sm text-zinc-400">
-              Receive updates by email.
-            </p>
-          </div>
+      <SettingsProfileCard />
 
-          <Switch />
-        </div>
+      {/* Account */}
 
-        <Separator />
+      <SettingsAccount />
 
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium text-white">
-              Push Notifications
-            </h3>
+      {/* Preferences */}
 
-            <p className="text-sm text-zinc-400">
-              Receive browser notifications.
-            </p>
-          </div>
+      <SettingsPreferences />
 
-          <Switch />
-        </div>
+      {/* Danger */}
 
-        <Separator />
-
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium text-white">
-              Private Account
-            </h3>
-
-            <p className="text-sm text-zinc-400">
-              Only followers can view posts.
-            </p>
-          </div>
-
-          <Switch />
-        </div>
-      </Card>
+      <SettingsDangerZone />
     </div>
   );
 }
