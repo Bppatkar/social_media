@@ -1,45 +1,15 @@
+'use client';
+
 import CreatePostCard from '@/components/post/CreatePostCard';
 import EmptyState from '@/components/feedback/EmptyState';
 import ErrorState from '@/components/feedback/ErrorState';
 import LoadingState from '@/components/feedback/LoadingState';
 import PostCard from '@/components/post/PostCard';
-import type { Post } from '@/components/post/PostCard';
+import { useGetFeedPostsQuery } from '@/features/feed/postApi';
 
 export default function FeedPage() {
-  const isLoading = false;
-  const isError = false;
-
-  const posts: Post[] = [
-    {
-      _id: '1',
-      content:
-        'Building a production-ready Social Media Platform using Next.js 15 🚀',
-      image:
-        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      likeCount: 120,
-      commentCount: 35,
-      owner: {
-        _id: '101',
-        username: 'Bhanu',
-        profileImage: '',
-      },
-    },
-    {
-      _id: '2',
-      content: 'Today completed Socket.IO Notifications + Redis Cache 🔥',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      likeCount: 82,
-      commentCount: 14,
-      owner: {
-        _id: '102',
-        username: 'Alex',
-        profileImage: '',
-      },
-    },
-  ];
+  const { data, isLoading, isError } = useGetFeedPostsQuery();
+  const posts = data?.data ?? [];
 
   if (isLoading) {
     return <LoadingState />;

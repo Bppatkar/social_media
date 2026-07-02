@@ -1,16 +1,19 @@
 'use client';
 
 import { useRef, useState } from 'react';
-
 import { ImagePlus, Loader2, SmilePlus, Trash2 } from 'lucide-react';
 
 import UserAvatar from '@/components/shared/UserAvatar';
-
 import ImagePreview from '@/components/shared/ImagePreview';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+
+import { toast } from 'sonner';
+import { useCreatePostMutation } from '@/features/feed/postApi';
+import { getApiError } from '@/utils/getApiError';
+
 
 export default function CreatePostCard() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -21,7 +24,7 @@ export default function CreatePostCard() {
 
   const [preview, setPreview] = useState('');
 
-  const [loading] = useState(false);
+  const [createPost, { isLoading }] = useCreatePostMutation();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -29,8 +32,7 @@ export default function CreatePostCard() {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      // TODO: Replace with toast later
-      alert('Maximum image size is 5MB');
+      toast.error('Maximum image size is 5MB');
       return;
     }
 
@@ -53,39 +55,32 @@ export default function CreatePostCard() {
   };
 
   const handleCreatePost = async () => {
-    // ==========================
-    // Future RTK Query Flow
-    // ==========================
-
-    // 1. Validate content
-
-    // 2. Upload image to backend
-
-    // 3. Create Post Mutation
-
-    // 4. Show Success Toast
-
-    // 5. Reset Form
-
-    // 6. Refetch Feed
-
-    console.log({
-      content,
-      image,
-    });
-
-    // Temporary reset
-
-    if (preview) {
-      URL.revokeObjectURL(preview);
+    if (!content.trim() && !image) {
+      toast.error('Post content or image is required');
+      return;
     }
+    try {
+      const formData = new FormData();
+      formData.append('content', content);
+      if (image) {
+        formData.append('image', image);
+      }
+      const response = await createPost(formData).unwrap();
+      toast.success(response.message);
+      if (preview) {
+        // URL means that the image is being displayed in the browser, so we need to revoke it to free up memory
+        // so we use URL.revokeObjectURL to revoke the object URL
+        URL.revokeObjectURL(preview);
+      }
+      setContent('');
+      setImage(null);
+      setPreview('');
 
-    setContent('');
-    setImage(null);
-    setPreview('');
-
-    if (fileRef.current) {
-      fileRef.current.value = '';
+      if (fileRef.current) {
+        fileRef.current.value = '';
+      }
+    } catch (error) {
+      toast.error(getApiError(error));
     }
   };
 
@@ -139,7 +134,11 @@ export default function CreatePostCard() {
               <ImagePlus className="h-5 w-5" />
             </Button>
 
-            <Button size="icon" variant="ghost"  className="text-zinc-400 hover:bg-violet-500/10 hover:text-violet-400">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="text-zinc-400 hover:bg-violet-500/10 hover:text-violet-400"
+            >
               <SmilePlus className="h-5 w-5" />
             </Button>
           </div>
@@ -148,10 +147,10 @@ export default function CreatePostCard() {
             <span className="text-sm text-zinc-500">{content.length}/500</span>
 
             <Button
-              disabled={loading || (!content.trim() && !image)}
+              disabled={isLoading || (!content.trim() && !image)}
               onClick={handleCreatePost}
             >
-              {loading ? (
+              {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : null}
               Post

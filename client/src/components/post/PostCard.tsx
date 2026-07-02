@@ -18,32 +18,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import CommentDrawer from './CommentDrawer';
 import PostActionsMenu from './PostActionsMenu';
+import { PostCardProps } from '@/types/post.types';
 
-interface Owner {
-  _id: string;
-  username: string;
-  email?: string;
-  profileImage?: string;
-}
 
-export interface Post {
-  _id: string;
-  content: string;
-  image?: string;
-  imagePublicId?: string;
-  createdAt: string;
-  updatedAt: string;
-  likeCount: number;
-  commentCount: number;
-
-  owner: Owner;
-}
-
-interface PostCardProps {
-  post: Post;
-  variants?: 'feed' | 'profile';
-  isOwner: boolean;
-}
 
 export default function PostCard({
   post,

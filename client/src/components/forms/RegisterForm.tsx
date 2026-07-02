@@ -50,7 +50,7 @@ export default function RegisterForm() {
         email: values.email,
         password: values.password,
       }).unwrap();
-      toast.success(response.message);
+      toast.success(response.message || 'Registered successfully');
       router.replace('/login');
     } catch (error) {
       toast.error(getApiError(error));

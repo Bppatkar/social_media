@@ -42,7 +42,7 @@ export default function LoginForm() {
     try {
       const response = await loginMutation(values).unwrap();
       login(response.data.user, response.data.token);
-      toast.success(response.message);
+      toast.success(response.message || 'Logged in successfully');
       router.replace('/feed');
     } catch (error) {
       toast.error(getApiError(error));
