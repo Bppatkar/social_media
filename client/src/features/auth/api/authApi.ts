@@ -1,6 +1,7 @@
 import { baseApi } from '@/services/api/baseApi';
 import type { LoginRequest, RegisterRequest } from '../types/auth.types';
 import { ApiResponse, AuthResponse } from '../types/authResponse.types';
+import { MeResponse } from '../types/meResponse.types';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,7 +21,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Auth', 'User'],
     }),
+    me: builder.query<ApiResponse<MeResponse>, void>({
+      query: () => ({
+        url: '/auth/me',
+        method: 'GET',
+      }),
+      providesTags: ['Auth', 'User'],
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useMeQuery } = authApi;
