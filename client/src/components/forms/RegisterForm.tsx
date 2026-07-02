@@ -45,12 +45,12 @@ export default function RegisterForm() {
 
   const onSubmit = async (values: RegisterSchema) => {
     try {
-      await registerUser({
+      const response = await registerUser({
         username: values.username,
         email: values.email,
         password: values.password,
       }).unwrap();
-      toast.success('Account created successfully! Please log in.');
+      toast.success(response.message);
       router.replace('/login');
     } catch (error) {
       toast.error(getApiError(error));
@@ -92,7 +92,7 @@ export default function RegisterForm() {
               <Input
                 id="username"
                 type="text"
-                required
+
                 autoComplete="username"
                 autoCapitalize="none"
                 autoCorrect="off"
@@ -102,6 +102,11 @@ export default function RegisterForm() {
                 className="h-12 border-white/10 bg-white/5 pl-10 text-white transition-all placeholder:text-zinc-500 focus-visible:border-violet-500 focus-visible:ring-2 focus-visible:ring-violet-500/30"
               />
             </div>
+            {errors.username && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.username.message}
+              </p>
+            )}
           </div>
 
           {/* Email */}
@@ -122,7 +127,7 @@ export default function RegisterForm() {
               <Input
                 id="email"
                 type="email"
-                required
+
                 autoComplete="email"
                 autoCapitalize="none"
                 spellCheck={false}
@@ -131,6 +136,11 @@ export default function RegisterForm() {
                 className="h-12 border-white/10 bg-white/5 pl-10 text-white transition-all placeholder:text-zinc-500 focus-visible:border-violet-500 focus-visible:ring-2 focus-visible:ring-violet-500/30"
               />
             </div>
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password */}
@@ -152,7 +162,7 @@ export default function RegisterForm() {
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                required
+
                 autoComplete="new-password"
                 autoCorrect="off"
                 spellCheck={false}
@@ -163,6 +173,7 @@ export default function RegisterForm() {
 
               <button
                 type="button"
+                disabled={isLoading}
                 onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                 aria-pressed={showPassword}
@@ -171,6 +182,11 @@ export default function RegisterForm() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Confirm Password */}
@@ -192,7 +208,7 @@ export default function RegisterForm() {
               <Input
                 id="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
-                required
+
                 autoComplete="new-password"
                 autoCorrect="off"
                 spellCheck={false}
@@ -203,6 +219,7 @@ export default function RegisterForm() {
 
               <button
                 type="button"
+                disabled={isLoading}
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                 aria-label={
                   showConfirmPassword ? 'Hide password' : 'Show password'
@@ -213,13 +230,15 @@ export default function RegisterForm() {
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           {/* Register Button */}
-          <SubmitButton
-            type="submit"
-            loading={isLoading}
-          >
+          <SubmitButton type="submit" loading={isLoading}>
             Create Account
           </SubmitButton>
 
