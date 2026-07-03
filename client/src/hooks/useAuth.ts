@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { User } from '@/types/user.types';
+import type { User } from '@/types';
 import {
   selectUser,
   selectToken,

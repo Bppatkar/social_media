@@ -6,10 +6,13 @@ import ErrorState from '@/components/feedback/ErrorState';
 import LoadingState from '@/components/feedback/LoadingState';
 import PostCard from '@/components/post/PostCard';
 import { useGetFeedPostsQuery } from '@/features/feed/postApi';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/features/auth/authSelectors';
 
 export default function FeedPage() {
   const { data, isLoading, isError } = useGetFeedPostsQuery();
-  const posts = data?.data ?? [];
+  const posts = data?.data.posts ?? [];
+  const currentUser = useAppSelector(selectUser);
 
   if (isLoading) {
     return <LoadingState />;
@@ -36,7 +39,7 @@ export default function FeedPage() {
             key={post._id}
             post={post}
             variants="feed"
-            isOwner={post.owner._id === '101'} // TODO: Replace with logged-in user id
+            isOwner={post.owner._id === currentUser?._id}
           />
         ))
       )}

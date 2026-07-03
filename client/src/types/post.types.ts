@@ -14,7 +14,7 @@ export interface Post {
   updatedAt: string;
   likeCount: number;
   commentCount: number;
-
+  likedByCurrentUser: boolean;
   owner: Owner;
 }
 
@@ -23,3 +23,4 @@ export interface PostCardProps {
   variants?: 'feed' | 'profile';
   isOwner: boolean;
 }
+

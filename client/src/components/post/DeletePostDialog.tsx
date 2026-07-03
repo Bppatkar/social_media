@@ -11,6 +11,10 @@ import {
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
 
+import { useDeletePostMutation } from '@/features/feed/postApi';
+import { toast } from 'sonner';
+import { getApiError } from '@/utils/getApiError';
+
 interface DeletePostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -22,12 +26,16 @@ export default function DeletePostDialog({
   open,
   onOpenChange,
   postId,
-  onConfirm,
 }: DeletePostDialogProps) {
-  const handleDelete = () => {
-    // Delete Mutation
-    if (onConfirm) {
-      onConfirm(postId);
+  const [deletePost, { isLoading }] = useDeletePostMutation();
+
+  const handleDelete = async () => {
+    try {
+      await deletePost(postId).unwrap();
+      toast.success('Post deleted successfully');
+      onOpenChange(false);
+    } catch (error) {
+      toast.error(getApiError(error));
     }
   };
 
@@ -49,9 +57,10 @@ export default function DeletePostDialog({
 
           <AlertDialogAction
             onClick={handleDelete}
-            className="bg-red-600 text-white hover:bg-red-700"
+            disabled={isLoading}
+            className="bg-red-600 hover:bg-red-700"
           >
-            Delete
+            {isLoading ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

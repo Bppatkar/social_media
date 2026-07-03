@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import {
   Bookmark,
- Copy,
+  Copy,
   Flag,
   MoreHorizontal,
   Pencil,
@@ -21,9 +21,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import EditPostDialog from './EditPostDialog';
+import { toast } from 'sonner';
 
 interface PostActionsMenuProps {
   postId: string;
+  // post:Post
   isOwner: boolean;
   variant: 'feed' | 'profile';
 }
@@ -34,14 +37,17 @@ export default function PostActionsMenu({
   variant,
 }: PostActionsMenuProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleEdit = () => {
-    // TODO:
-    // Open Edit Dialog
+    setEditOpen(true);
   };
 
   const handleCopyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href);
+    await navigator.clipboard.writeText(
+      `${window.location.origin}/post/${postId}`
+    );
+    toast.success('Link copied to clipboard');
   };
 
   const handleBookmark = () => {
@@ -127,6 +133,12 @@ export default function PostActionsMenu({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <EditPostDialog
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        postId={postId}
+      />
 
       <DeletePostDialog
         postId={postId}

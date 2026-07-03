@@ -18,9 +18,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import CommentDrawer from './CommentDrawer';
 import PostActionsMenu from './PostActionsMenu';
-import { PostCardProps } from '@/types/post.types';
+import type {PostCardProps} from '@/types'
 
-
+import {
+  useLikePostMutation,
+  useUnlikePostMutation,
+} from '@/features/feed/likeApi';
+import { getApiError } from '@/utils/getApiError';
+import { toast } from 'sonner';
 
 export default function PostCard({
   post,
@@ -28,9 +33,29 @@ export default function PostCard({
   isOwner,
 }: PostCardProps) {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [liked, setLiked] = useState(post.likedByCurrentUser ?? false);
+  const [count, setCount] = useState(post.likeCount);
+  const [likePost] = useLikePostMutation();
+  const [unlikePost] = useUnlikePostMutation();
 
-  const handleLike = () => {
-    // RTK Like Mutation
+  const handleLike = async () => {
+    try {
+      if (liked) {
+        const response = await unlikePost(post._id).unwrap();
+
+        setLiked(false);
+
+        setCount(response.data.likeCount);
+      } else {
+        const response = await likePost(post._id).unwrap();
+
+        setLiked(true);
+
+        setCount(response.data.likeCount);
+      }
+    } catch (error) {
+      toast.error(getApiError(error));
+    }
   };
 
   const handleShare = () => {
@@ -109,7 +134,7 @@ export default function PostCard({
 
         <div className="flex items-center gap-6 border-y border-white/10 py-3 text-sm text-zinc-400">
           <span>
-            <strong className="text-white">{post.likeCount}</strong> Likes
+            <strong className="text-white">{count}</strong> Likes
           </span>
 
           <span>
@@ -125,7 +150,9 @@ export default function PostCard({
             onClick={handleLike}
             className="justify-center gap-2 text-zinc-300 hover:bg-red-500/10 hover:text-red-400"
           >
-            <Heart className="h-5 w-5" />
+            <Heart
+              className={`h-5 w-5 ${liked ? 'fill-red-500 text-red-500' : ''}`}
+            />
             Like
           </Button>
 
