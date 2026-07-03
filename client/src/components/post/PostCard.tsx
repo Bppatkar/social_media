@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
   Bookmark,
@@ -37,6 +37,11 @@ export default function PostCard({
   const [count, setCount] = useState(post.likeCount);
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
+
+  useEffect(() => {
+    setLiked(post.likedByCurrentUser ?? false);
+    setCount(post.likeCount);
+  }, [post]);
 
   const handleLike = async () => {
     try {

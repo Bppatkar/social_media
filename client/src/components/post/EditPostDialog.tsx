@@ -32,17 +32,17 @@ export default function EditPostDialog({
   post,
 }: EditPostDialogProps) {
   const [content, setContent] = useState(post.content);
-
-  const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
-
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState('');
+
+  const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
   useEffect(() => {
     setContent(post.content);
     setImage(null);
   }, [post]);
 
+  // Create and cleanup preview URL
   useEffect(() => {
     if (!image) {
       setPreview('');
@@ -58,6 +58,11 @@ export default function EditPostDialog({
   }, [image]);
 
   const handleSubmit = async () => {
+    if (!content.trim() && !image) {
+      toast.error('Post cannot be empty');
+      return;
+    }
+
     try {
       const formData = new FormData();
 

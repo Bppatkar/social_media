@@ -19,7 +19,6 @@ interface DeletePostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   postId: string;
-  onConfirm?: (postId: string) => void;
 }
 
 export default function DeletePostDialog({
