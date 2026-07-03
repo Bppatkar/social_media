@@ -40,12 +40,6 @@ export const postApi = baseApi.injectEndpoints({
       invalidatesTags: ['Post'],
     }),
 
-    getSinglePost: builder.query<ApiResponse<Post>, string>({
-      query: (id) => ({
-        url: `/posts/${id}`,
-      }),
-    }),
-
     getUserPosts: builder.query<ApiResponse<FeedResponse>, string>({
       query: (userId) => ({
         url: `/posts/user/${userId}`,
@@ -60,6 +54,5 @@ export const {
   useCreatePostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,
-  useGetSinglePostQuery,
   useGetUserPostsQuery,
 } = postApi;

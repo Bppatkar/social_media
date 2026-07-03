@@ -14,39 +14,48 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
-import {
-  useGetSinglePostQuery,
-  useUpdatePostMutation,
-} from '@/features/feed/postApi';
+import { useUpdatePostMutation } from '@/features/feed/postApi';
 
 import { getApiError } from '@/utils/getApiError';
 import { toast } from 'sonner';
+import type { Post } from '@/types';
 
 interface EditPostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  postId: string;
+  post: Post;
 }
 
 export default function EditPostDialog({
   open,
   onOpenChange,
-  postId,
+  post,
 }: EditPostDialogProps) {
-  const { data, isLoading } = useGetSinglePostQuery(postId, {
-    skip: !open,
-  });
+  const [content, setContent] = useState(post.content);
 
   const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
-  const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState('');
 
   useEffect(() => {
-    if (data?.data) {
-      setContent(data.data.content);
+    setContent(post.content);
+    setImage(null);
+  }, [post]);
+
+  useEffect(() => {
+    if (!image) {
+      setPreview('');
+      return;
     }
-  }, [data]);
+
+    const objectUrl = URL.createObjectURL(image);
+    setPreview(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [image]);
 
   const handleSubmit = async () => {
     try {
@@ -59,7 +68,7 @@ export default function EditPostDialog({
       }
 
       await updatePost({
-        id: postId,
+        id: post._id,
         body: formData,
       }).unwrap();
 
@@ -78,54 +87,50 @@ export default function EditPostDialog({
           <DialogTitle>Edit Post</DialogTitle>
         </DialogHeader>
 
-        {isLoading ? (
-          <p className="py-10 text-center text-zinc-400">Loading...</p>
-        ) : (
-          <div className="space-y-5">
-            <Textarea
-              rows={6}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="What's happening?"
+        <div className="space-y-5">
+          <Textarea
+            rows={6}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="What's happening?"
+          />
+
+          {post.image && !image && (
+            <Image
+              src={post.image}
+              alt="Current Post"
+              width={700}
+              height={500}
+              className="rounded-xl border border-white/10"
             />
+          )}
 
-            {data?.data.image && !image && (
-              <Image
-                src={data.data.image}
-                alt="Current Post"
-                width={700}
-                height={500}
-                className="rounded-xl border border-white/10"
-              />
-            )}
-
-            {image && (
-              <Image
-                src={URL.createObjectURL(image)}
-                alt="Preview"
-                width={700}
-                height={500}
-                className="rounded-xl border border-white/10"
-              />
-            )}
-
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+          {preview && (
+            <Image
+              src={preview}
+              alt="Preview"
+              width={700}
+              height={500}
+              className="rounded-xl border border-white/10"
             />
+          )}
 
-            <Button
-              className="w-full"
-              onClick={handleSubmit}
-              disabled={isUpdating}
-            >
-              <Pencil className="mr-2 h-4 w-4" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+          />
 
-              {isUpdating ? 'Updating...' : 'Update Post'}
-            </Button>
-          </div>
-        )}
+          <Button
+            className="w-full"
+            onClick={handleSubmit}
+            disabled={isUpdating}
+          >
+            <Pencil className="mr-2 h-4 w-4" />
+
+            {isUpdating ? 'Updating...' : 'Update Post'}
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

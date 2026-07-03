@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import CommentDrawer from './CommentDrawer';
 import PostActionsMenu from './PostActionsMenu';
-import type {PostCardProps} from '@/types'
+import type { PostCardProps } from '@/types';
 
 import {
   useLikePostMutation,
@@ -58,8 +58,23 @@ export default function PostCard({
     }
   };
 
-  const handleShare = () => {
-    // Share API
+  const handleShare = async () => {
+    const url = `${window.location.origin}/post/${post._id}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Social Media Post',
+          url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success('Link copied');
+      }
+    } catch {
+      if (!navigator.share) return;
+      // user cancelled the share action
+    }
   };
 
   const handleBookmark = () => {
@@ -102,11 +117,7 @@ export default function PostCard({
             </div>
           </div>
 
-          <PostActionsMenu
-            postId={post._id}
-            isOwner={isOwner}
-            variant={variants}
-          />
+          <PostActionsMenu post={post} isOwner={isOwner} variant={variants} />
         </div>
 
         {/* Content */}
@@ -184,7 +195,11 @@ export default function PostCard({
           </Button>
         </div>
       </CardContent>
-      <CommentDrawer open={commentOpen} onOpenChange={setCommentOpen} />
+      <CommentDrawer
+        postId={post._id}
+        open={commentOpen}
+        onOpenChange={setCommentOpen}
+      />
     </Card>
   );
 }

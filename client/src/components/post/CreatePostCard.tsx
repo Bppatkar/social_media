@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ImagePlus, Loader2, SmilePlus, Trash2 } from 'lucide-react';
 
 import UserAvatar from '@/components/shared/UserAvatar';
@@ -13,7 +13,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { useCreatePostMutation } from '@/features/feed/postApi';
 import { getApiError } from '@/utils/getApiError';
-
 
 export default function CreatePostCard() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -55,6 +54,7 @@ export default function CreatePostCard() {
   };
 
   const handleCreatePost = async () => {
+    
     if (!content.trim() && !image) {
       toast.error('Post content or image is required');
       return;
@@ -83,6 +83,13 @@ export default function CreatePostCard() {
       toast.error(getApiError(error));
     }
   };
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
   return (
     <Card className="border-white/10 bg-white/5 backdrop-blur-xl">

@@ -13,11 +13,12 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 interface Props {
+  postId: string;
   open: boolean;
   onOpenChange: (value: boolean) => void;
 }
 
-export default function CommentDrawer({ open, onOpenChange }: Props) {
+export default function CommentDrawer({ postId, open, onOpenChange }: Props) {
   const handleComment = () => {
     // Create Comment
   };

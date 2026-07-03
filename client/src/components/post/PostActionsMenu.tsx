@@ -23,16 +23,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import EditPostDialog from './EditPostDialog';
 import { toast } from 'sonner';
+import type { Post } from '@/types';
 
 interface PostActionsMenuProps {
-  postId: string;
-  // post:Post
+  post: Post;
   isOwner: boolean;
   variant: 'feed' | 'profile';
 }
 
 export default function PostActionsMenu({
-  postId,
+  post,
   isOwner,
   variant,
 }: PostActionsMenuProps) {
@@ -45,7 +45,7 @@ export default function PostActionsMenu({
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(
-      `${window.location.origin}/post/${postId}`
+      `${window.location.origin}/post/${post._id}`
     );
     toast.success('Link copied to clipboard');
   };
@@ -134,14 +134,10 @@ export default function PostActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <EditPostDialog
-        open={editOpen}
-        onOpenChange={setEditOpen}
-        postId={postId}
-      />
+      <EditPostDialog open={editOpen} onOpenChange={setEditOpen} post={post} />
 
       <DeletePostDialog
-        postId={postId}
+        postId={post._id}
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
       />
