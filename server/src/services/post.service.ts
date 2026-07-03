@@ -5,6 +5,8 @@ import buildSearchQuery from '../utils/search.js';
 import buildSortQuery from '../utils/sort.js';
 import { invalidateFeedCacheService } from './feed.service.js';
 import User from '../models/user.model.js';
+import Like from '../models/like.model.js';
+import { attachLikeStatus } from './post.util.js';
 
 export const createPostService = async (
   content: string,
@@ -23,6 +25,7 @@ export const createPostService = async (
 };
 
 export const getFeedPostsService = async (
+  userId: string,
   page: number,
   limit: number,
   search: string,
@@ -35,35 +38,44 @@ export const getFeedPostsService = async (
   // sorting
   const sortOption = buildSortQuery(sort);
 
-  // query
-  const posts = await Post.find(searchFilter)
-    .populate('owner', 'username email profileImage')
-    .sort(sortOption)
-    .skip(skip)
-    .limit(limit);
+  // we use promise.all to Fetch posts and total count in parallel
+  const [posts, totalPosts] = await Promise.all([
+    Post.find(searchFilter)
+      .populate('owner', 'username email profileImage')
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit),
+    Post.countDocuments(searchFilter),
+  ]);
 
-  // total count for pagination
-  const totalPosts = await Post.countDocuments(searchFilter); // countDocument is mongoose method to count the document
+  const postWithLikedStatus = await attachLikeStatus(posts, userId);
 
   return {
     currentPage: page,
     totalPages: totalPosts === 0 ? 1 : Math.ceil(totalPosts / limit),
     // Math.ciel = (12/5) = 2.4 => 3
     totalPosts,
-    posts,
+    posts: postWithLikedStatus,
   };
 };
 
-export const getSinglePostService = async (postId: string) => {
-  const post = await Post.findById(postId).populate(
-    'owner',
-    'username email profileImage'
-  );
+export const getSinglePostService = async (postId: string, userId: string) => {
+  const [post, liked] = await Promise.all([
+    Post.findById(postId).populate('owner', 'username email profileImage'),
+    Like.exists({
+      post: postId,
+      likedBy: userId,
+    }),
+  ]);
 
   if (!post) {
     throw new ApiError(404, 'Post not found');
   }
-  return post;
+
+  return {
+    ...post.toObject(),
+    likedByCurrentUser: Boolean(liked),
+  };
 };
 
 export const updatePostService = async (
@@ -125,6 +137,7 @@ export const deletePostService = async (postId: string, userId: string) => {
 
 export const getUserPostsService = async (
   userId: string,
+  requestingUserId: string,
   page: number,
   limit: number,
   skip: number
@@ -153,14 +166,16 @@ export const getUserPostsService = async (
     Post.countDocuments({ owner: userId }),
   ]);
 
-  if(!user) {
+  if (!user) {
     throw new ApiError(404, 'User not found');
   }
+
+  const postWithLikedStatus = await attachLikeStatus(posts, requestingUserId);
 
   return {
     currentPage: page,
     totalPages: totalPosts === 0 ? 1 : Math.ceil(totalPosts / limit),
     totalPosts,
-    posts,
+    posts: postWithLikedStatus,
   };
 };

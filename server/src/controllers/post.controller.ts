@@ -62,7 +62,14 @@ export const getFeedPosts = asyncHandler(
     const search = (req.query.search as string) || '';
     const sort = (req.query.sort as string) || 'latest';
 
-    const posts = await getFeedPostsService(page, limit, search, sort, skip);
+    const posts = await getFeedPostsService(
+      req.user!.userId,
+      page,
+      limit,
+      search,
+      sort,
+      skip
+    );
     res
       .status(200)
       .json(new ApiResponse(true, 'Posts fetched successfully', posts));
@@ -72,7 +79,7 @@ export const getFeedPosts = asyncHandler(
 export const getSinglePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const postId = req.params.postId as string;
-    const post = await getSinglePostService(postId);
+    const post = await getSinglePostService(postId, req.user!.userId);
 
     res
       .status(200)
@@ -141,7 +148,13 @@ export const getUserPosts = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const userId = req.params.userId as string;
     const { page, limit, skip } = getPagination(req.query);
-    const posts = await getUserPostsService(userId, page, limit, skip);
+    const posts = await getUserPostsService(
+      userId,
+      req.user!.userId,
+      page,
+      limit,
+      skip
+    );
 
     res
       .status(200)
