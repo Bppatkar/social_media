@@ -3,5 +3,5 @@ export * from './user.types';
 export * from './post.types';
 export * from './like.types';
 export * from './pagination.types';
-// export * from './comment.types';
-// export * from './notification.types';
+export * from './comment.types';
+export * from './notification.types';

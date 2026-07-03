@@ -5,8 +5,7 @@ import ProfilePhotos from '@/components/profile/ProfilePhotos';
 import PostCard from '@/components/post/PostCard';
 
 import type { ProfileUser } from '@/components/profile/ProfileHeader';
-
-import type { Post } from '@/components/post/PostCard';
+import type { Post } from '@/types';
 
 export default function ProfilePage() {
   const user: ProfileUser = {
@@ -31,8 +30,11 @@ export default function ProfilePage() {
         'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+
       likeCount: 85,
       commentCount: 12,
+      likedByCurrentUser: false,
+
       owner: {
         _id: '1',
         username: 'Bhanu',
@@ -51,7 +53,7 @@ export default function ProfilePage() {
         posts={
           <div className="space-y-6">
             {posts.map((post) => (
-              <PostCard key={post._id} post={post} />
+              <PostCard key={post._id} post={post} isOwner={user.isCurrentUser} />
             ))}
           </div>
         }
