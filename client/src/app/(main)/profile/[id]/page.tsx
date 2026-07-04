@@ -1,37 +1,46 @@
 'use client';
 
+import LoadingState from '@/components/feedback/LoadingState';
+import ErrorState from '@/components/feedback/ErrorState';
+
 import ProfileHeader from '@/components/profile/ProfileHeader';
-import ProfileTabs from '@/components/profile/ProfileTabs';
 import ProfilePhotos from '@/components/profile/ProfilePhotos';
+import ProfileTabs from '@/components/profile/ProfileTabs';
 
 import PostCard from '@/components/post/PostCard';
-import {
-  useGetMyProfileQuery,
-  useGetUserPostsQuery,
-} from '@/features/profile/profileApi';
-import ErrorState from '@/components/feedback/ErrorState';
-import LoadingState from '@/components/feedback/LoadingState';
 
-export default function ProfilePage() {
+import {
+  useGetUserProfileQuery,
+  useGetUserPostsQuery,
+  useGetMyProfileQuery,
+} from '@/features/profile/profileApi';
+
+export default function UserProfilePage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params;
+
   const {
-    data: me,
+    data: user,
     isLoading: userLoading,
     isError: userError,
-  } = useGetMyProfileQuery();
+  } = useGetUserProfileQuery(id);
+
+  const { data: me } = useGetMyProfileQuery();
 
   const {
     data: posts = [],
     isLoading: postLoading,
     isError: postError,
-  } = useGetUserPostsQuery(me?._id!, {
-    skip: !me,
-  });
+  } = useGetUserPostsQuery(id);
 
   if (userLoading || postLoading) {
     return <LoadingState />;
   }
 
-  if (userError || postError || !me) {
+  if (userError || postError || !user) {
     return (
       <ErrorState
         title="Profile not found"
@@ -39,17 +48,27 @@ export default function ProfilePage() {
       />
     );
   }
+
   const images = posts.filter((post) => post.image).map((post) => post.image!);
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-8">
-      <ProfileHeader user={me} />
+      <ProfileHeader
+        user={{
+          ...user,
+          isCurrentUser: me?._id === user._id,
+        }}
+      />
 
       <ProfileTabs
         posts={
           <div className="space-y-6">
             {posts.map((post) => (
-              <PostCard key={post._id} post={post} isOwner />
+              <PostCard
+                key={post._id}
+                post={post}
+                isOwner={me?._id === user._id}
+              />
             ))}
           </div>
         }

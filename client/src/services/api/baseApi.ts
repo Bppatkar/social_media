@@ -46,7 +46,16 @@ export const baseApi = createApi({
 
   baseQuery: axiosBaseQuery(),
 
-  tagTypes: ['Auth', 'User', 'Post', 'Comment', 'Follow', 'Notification'],
+  tagTypes: [
+    'Auth',
+    'User',
+    'Post',
+    'Posts',
+    'Comment',
+    'Follow',
+    'Notification',
+    'Profile',
+  ],
 
   endpoints: () => ({}),
 });

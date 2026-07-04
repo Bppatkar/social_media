@@ -15,6 +15,7 @@ import loggerStream from './utils/loggerStream.js';
 import compression from 'compression';
 
 // Import routes
+import searchRoutes from './routes/search.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import postRoutes from './routes/post.routes.js';
 import commentRoutes from './routes/comment.routes.js';
@@ -88,6 +89,7 @@ app.get('/cache-test', async (_req, res) => {
 });
 
 // Use routes
+app.use('/api/search', searchRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);

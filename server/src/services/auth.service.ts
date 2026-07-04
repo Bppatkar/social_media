@@ -317,3 +317,14 @@ export const updateUserProfileService = async (
   return updatedUser;
 };
 
+export const getMeService = async (userId: string) => {
+  const user = await User.findById(userId).select(
+    '-password -failedLoginAttempts -lockUntil -profileImagePublicId -__v'
+  );
+
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  return user;
+};

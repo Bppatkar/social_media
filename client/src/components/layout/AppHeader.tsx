@@ -68,7 +68,7 @@ export default function AppHeader() {
         </div>
 
         {/* Search */}
-        <div className="hidden w-full max-w-md px-8 md:block">
+        <div className="hidden flex-1 md:block">
           <div className="relative">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400" />
 

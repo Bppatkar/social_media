@@ -7,6 +7,7 @@ import {
   getUserProfileService,
   refreshAccessTokenService,
   updateUserProfileService,
+  getMeService,
 } from '../services/auth.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
@@ -71,7 +72,7 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getMe = asyncHandler(async (req: Request, res: Response) => {
-  const user = req.user!;
+  const user = await getMeService(req.user!.userId);
   res
     .status(200)
     .json(new ApiResponse(true, 'User retrieved successfully', user));

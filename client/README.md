@@ -1,27 +1,28 @@
 # SocialSphere
 
-Production-grade Social Media Platform built with modern full-stack architecture.
+Production-grade Social Media Platform built with modern enterprise architecture.
 
 ---
 
-# Frontend Stack
+# Tech Stack
+
+## Frontend
 
 - Next.js 16
 - React 19
 - TypeScript
 - Tailwind CSS v4
-- shadcn/ui
 - Redux Toolkit
 - RTK Query
 - Axios
 - React Hook Form
 - Zod
-- Framer Motion
 - Socket.IO Client
+- shadcn/ui
 
 ---
 
-# Backend Stack
+## Backend
 
 - Express.js
 - MongoDB
@@ -31,11 +32,11 @@ Production-grade Social Media Platform built with modern full-stack architecture
 - Docker
 - AWS
 - Swagger
-- GitHub Actions CI/CD
+- GitHub Actions
 
 ---
 
-# Project Architecture
+# Architecture
 
 ```
 Next.js
@@ -54,7 +55,7 @@ Axios
 
 ↓
 
-Express API
+Express
 
 ↓
 
@@ -63,49 +64,11 @@ MongoDB
 
 ---
 
-# Frontend Features
+# Project Goal
 
-## Authentication
+Build a production-ready social media application demonstrating real-world engineering practices suitable for interviews and a strong portfolio.
 
-- Login
-- Register
-
-## Feed
-
-- Create Post
-- Feed
-- Comments
-- Image Preview
-
-## Profile
-
-- User Profile
-- Edit Profile
-- Photos
-- User Posts
-
-## Search
-
-- Search Users
-- Search Cards
-
-## Notifications
-
-- Notification Center
-
-## Settings
-
-- Account
-- Preferences
-- Danger Zone
-
-## Admin Dashboard
-
-- Statistics
-- Analytics
-- User Table
-- Reports
-- Activity Timeline
+The project prioritizes scalability, clean architecture, and maintainability over unnecessary features.
 
 ---
 
@@ -117,42 +80,110 @@ Frontend UI
 
 ✅ Completed
 
-- Complete application UI
-- Production folder structure
-- Reusable components
-- Responsive layout
-- Placeholder business logic
+- Responsive UI
+- Reusable Components
+- Production Folder Structure
+- Placeholder Business Logic
 
 ---
 
-## Phase 2
+## Phase 2 (Current)
 
 Frontend Logic
 
-Next Steps
+### ✅ Authentication
 
+- Login
+- Register
+- JWT
+- Redux
 - RTK Query
-- Authentication
-- Protected Routes
-- Feed Integration
-- Post CRUD
-- Cloudinary Upload
-- Comments
-- Likes
-- Bookmarks
-- Follow System
-- Search
-- Notifications
-- Socket.IO
-- Admin
-- Settings
-- Optimistic Updates
-- Error Handling
-- Testing
+- Persist Login
+
+### ✅ Feed
+
+- Feed API
+- Create Post
+- Edit Post
+- Delete Post
+- Like / Unlike
+- Share
+- Copy Link
+
+### ✅ Profile
+
+- Profile APIs
+- Edit Profile
+- Upload Avatar
+- User Profile
+- My Posts
+
+### 🚧 Search
+
+- Backend API
+- RTK Query
+- Search Integration
+
+Remaining
+
+- Debounce
+- Pagination
+- Navigate to Profile
 
 ---
 
-# Current Progress
+# Upcoming Modules
+
+1. Comments
+2. Follow System
+3. Notifications
+4. Settings
+5. Admin Dashboard
+6. Socket.IO Integration
+7. Final Production Polish
+
+---
+
+# Features
+
+## Authentication
+
+- JWT Authentication
+- Protected Routes
+- Persist Login
+
+## Feed
+
+- Create Post
+- Edit Post
+- Delete Post
+- Like
+- Share
+
+## Profile
+
+- View Profile
+- Edit Profile
+- Upload Avatar
+
+## Search
+
+- Search Users
+- Follow Users
+
+## Notifications
+
+- Real-time Notifications
+
+## Admin
+
+- Dashboard
+- User Management
+- Analytics
+
+---
+
+# Project Status
 
 Backend
 
@@ -160,27 +191,46 @@ Backend
 
 Frontend UI
 
-✅ 98%
+✅ 100%
 
 Frontend Logic
 
-⬜ Not Started
+🚧 In Progress
 
-Overall Project
+Current Module
 
-≈82%
+**Search**
+
+Overall Progress
+
+**≈90%**
 
 ---
 
-# Goals
+# Design Principles
 
-- Production Ready
-- Resume Worthy
-- Interview Ready
-- Clean Architecture
-- Scalable Folder Structure
-- Modern UI/UX
-- Full TypeScript
-- RTK Query
-- Socket.IO
-- Enterprise Practices
+- Production-grade Architecture
+- Clean Code
+- Type Safety
+- Reusable Components
+- Feature-based Structure
+- Interview-focused Implementation
+- Enterprise Best Practices
+
+---
+
+# Deliberately Excluded
+
+To keep the project focused and interview-ready, the following features are intentionally excluded:
+
+- Stories
+- Reels
+- Live Streaming
+- Chat System
+- Marketplace
+- Groups
+- Video Upload
+- Overly complex recommendation systems
+- Unnecessary visual effects
+
+The emphasis is on demonstrating engineering quality rather than maximizing feature count.

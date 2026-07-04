@@ -4,46 +4,25 @@ import { useState } from 'react';
 import { Camera, Edit3, UserPlus, UserCheck } from 'lucide-react';
 
 import UserAvatar from '@/components/shared/UserAvatar';
+import { useFollow } from '@/hooks/useFollow';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 import EditProfileDialog from './EditProfileDialog';
-
-export interface ProfileUser {
-  _id: string;
-
-  username: string;
-
-  email: string;
-
-  bio?: string;
-
-  profileImage?: string;
-
-  role: 'user' | 'admin';
-
-  followersCount: number;
-
-  followingCount: number;
-
-  postsCount: number;
-
-  isFollowing: boolean;
-
-  isCurrentUser: boolean;
-}
+import type { User } from '@/types';
 
 interface ProfileHeaderProps {
-  user: ProfileUser;
+  user: User;
 }
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
   const [editOpen, setEditOpen] = useState(false);
+  const { toggleFollow, isLoading } = useFollow();
 
-  const handleFollow = () => {
-    // Follow Mutation
+  const handleFollow = async () => {
+    await toggleFollow(user._id, user.isFollowing);
   };
 
   const handleEditProfile = () => {
@@ -84,12 +63,13 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
             </div>
 
             {user.isCurrentUser ? (
-              <Button onClick={handleEditProfile} className="rounded-full">
+              <Button disabled={isLoading} onClick={handleEditProfile} className="rounded-full">
                 <Edit3 className="mr-2 h-4 w-4" />
                 Edit Profile
               </Button>
             ) : (
               <Button
+                disabled={isLoading}
                 onClick={handleFollow}
                 className="rounded-full"
                 variant={user.isFollowing ? 'secondary' : 'default'}
