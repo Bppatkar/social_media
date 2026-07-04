@@ -8,6 +8,7 @@ import UserAvatar from '@/components/shared/UserAvatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
+
 interface UserCardProps {
   username: string;
   profileImage?: string;

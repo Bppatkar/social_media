@@ -1,91 +1,67 @@
 'use client';
 
-import {
-  UserPlus,
-  UserCheck,
-} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { UserPlus, UserCheck } from 'lucide-react';
 
 import UserAvatar from '@/components/shared/UserAvatar';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-
-export interface SearchUser {
-  _id: string;
-
-  username: string;
-
-  email: string;
-
-  bio?: string;
-
-  profileImage?: string;
-
-  followers: number;
-
-  isFollowing: boolean;
-
-  role: 'user' | 'admin';
-}
+import type { SearchUser } from '@/features/search/searchApi';
+import { useFollow } from '@/hooks/useFollow';
 
 interface Props {
   user: SearchUser;
 }
 
-export default function UserSearchCard({
-  user,
-}: Props) {
-  const handleFollow = () => {
-    // TODO:
-    // RTK Follow Mutation
+export default function UserSearchCard({ user }: Props) {
+  const { toggleFollow, isLoading } = useFollow();
+  const router = useRouter();
+
+  const handleFollow = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    await toggleFollow(user._id, user.isFollowing);
+  };
+
+  const handleProfileClick = () => {
+    router.push(`/profile/${user._id}`);
   };
 
   return (
     <Card className="border-white/10 bg-white/5 p-5 transition hover:border-violet-500/30">
       <div className="flex items-center justify-between">
-        <div className="flex gap-4">
-          <UserAvatar
-            src={user.profileImage}
-            alt={user.username}
-          />
+        <div
+          role="button"
+          tabIndex={0}
+          className="flex cursor-pointer gap-4"
+          onClick={handleProfileClick}
+        >
+          <UserAvatar src={user.profileImage} alt={user.username} />
 
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-white">
-                {user.username}
-              </h3>
+              <h3 className="font-semibold text-white">{user.username}</h3>
 
               {user.role === 'admin' && (
-                <Badge className="bg-red-600">
-                  Admin
-                </Badge>
+                <Badge className="bg-red-600">Admin</Badge>
               )}
             </div>
 
-            <p className="text-sm text-zinc-400">
-              @{user.username}
-            </p>
+            <p className="text-sm text-zinc-400">@{user.username}</p>
 
             {user.bio && (
               <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-300">
                 {user.bio}
               </p>
             )}
-
-            <p className="mt-3 text-sm text-zinc-500">
-              {user.followers} Followers
-            </p>
           </div>
         </div>
 
         <Button
+          disabled={isLoading}
           onClick={handleFollow}
-          variant={
-            user.isFollowing
-              ? 'secondary'
-              : 'default'
-          }
+          variant={user.isFollowing ? 'secondary' : 'default'}
           className="rounded-full"
         >
           {user.isFollowing ? (
