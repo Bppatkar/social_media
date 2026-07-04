@@ -3,9 +3,11 @@
 import { useState } from 'react';
 
 import SearchBar from '@/components/search/SearchBar';
-import UserCard from '@/components/search/UserCard';
-import UserSearchCard from '@/components/search/UserSearchCard';
-import { useSearchUsersQuery } from '@/features/search/searchApi';
+import UserListCard from '@/components/search/UserListCard';
+import {
+  useGetSuggestedUsersQuery,
+  useSearchUsersQuery,
+} from '@/features/search/searchApi';
 
 import EmptyState from '@/components/feedback/EmptyState';
 import ErrorState from '@/components/feedback/ErrorState';
@@ -15,6 +17,9 @@ import { useDebounce } from '@/hooks/useDebounce';
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 500);
+
+  const { data: suggestedUsers, isLoading: suggestionsLoading } =
+    useGetSuggestedUsersQuery();
 
   const { data, isLoading, isError } = useSearchUsersQuery(debouncedQuery, {
     skip: debouncedQuery.trim().length < 2,
@@ -41,7 +46,7 @@ export default function SearchPage() {
         ) : (
           <div className="space-y-5">
             {data?.users?.map((user) => (
-              <UserSearchCard key={user._id} user={user} />
+              <UserListCard key={user._id} user={user} />
             ))}
           </div>
         )}
@@ -49,8 +54,14 @@ export default function SearchPage() {
 
       {/* Right Sidebar */}
 
-      <aside className="space-y-6 lg:col-span-4">
-        <EmptyState title="Suggestions" description="Suggested users will appear here." />
+      <aside className="space-y-4 lg:col-span-4">
+        <h2 className="text-lg font-semibold text-white">Suggested Users</h2>
+
+        {suggestionsLoading ? (
+          <LoadingState />
+        ) : (
+          suggestedUsers?.map((user) => <UserListCard key={user._id} user={user} />)
+        )}
       </aside>
     </div>
   );

@@ -1,31 +1,35 @@
 'use client';
 
+import { UserCheck, UserPlus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { UserPlus, UserCheck } from 'lucide-react';
 
 import UserAvatar from '@/components/shared/UserAvatar';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import type { SearchUser } from '@/features/search/searchApi';
+
 import { useFollow } from '@/hooks/useFollow';
+
+import { SearchUser } from '@/types';
 
 interface Props {
   user: SearchUser;
 }
 
-export default function UserSearchCard({ user }: Props) {
-  const { toggleFollow, isLoading } = useFollow();
+export default function UserListCard({ user }: Props) {
   const router = useRouter();
+
+  const { toggleFollow, isLoading } = useFollow();
+
+  const handleProfile = () => {
+    router.push(`/profile/${user._id}`);
+  };
 
   const handleFollow = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    await toggleFollow(user._id, user.isFollowing);
-  };
 
-  const handleProfileClick = () => {
-    router.push(`/profile/${user._id}`);
+    await toggleFollow(user._id, user.isFollowing);
   };
 
   return (
@@ -34,8 +38,8 @@ export default function UserSearchCard({ user }: Props) {
         <div
           role="button"
           tabIndex={0}
+          onClick={handleProfile}
           className="flex cursor-pointer gap-4"
-          onClick={handleProfileClick}
         >
           <UserAvatar src={user.profileImage} alt={user.username} />
 
@@ -51,9 +55,7 @@ export default function UserSearchCard({ user }: Props) {
             <p className="text-sm text-zinc-400">@{user.username}</p>
 
             {user.bio && (
-              <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-300">
-                {user.bio}
-              </p>
+              <p className="mt-2 max-w-xl text-sm text-zinc-300">{user.bio}</p>
             )}
           </div>
         </div>

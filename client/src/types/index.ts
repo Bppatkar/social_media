@@ -4,5 +4,6 @@ export * from './post.types';
 export * from './like.types';
 export * from './pagination.types';
 export * from './follow.types';
+export * from './search.types'
 export * from './comment.types';
 export * from './notification.types';

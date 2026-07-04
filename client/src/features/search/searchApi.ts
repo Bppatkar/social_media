@@ -1,22 +1,5 @@
 import { baseApi } from '@/services/api/baseApi';
-import { ApiResponse } from '@/types';
-
-export interface SearchUser {
-  _id: string;
-  username: string;
-  bio?: string;
-  profileImage?: string;
-  role: 'user' | 'admin';
-  isFollowing: boolean;
-}
-
-interface SearchResponse {
-  currentPage: number;
-  totalPages: number;
-  totalUsers: number;
-  users: SearchUser[];
-}
-
+import { ApiResponse, SearchResponse, SuggestedUser } from '@/types';
 
 export const searchApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,10 +8,21 @@ export const searchApi = baseApi.injectEndpoints({
         url: '/search',
         params: { q },
       }),
+      transformResponse: (response: ApiResponse<SearchResponse>) =>
+        response.data,
+      providesTags: ['Search'],
+    }),
+    getSuggestedUsers: builder.query<SuggestedUser[], void>({
+      query: () => ({
+        url: '/search/suggestions',
+      }),
 
-      transformResponse: (response: ApiResponse<SearchResponse>) => response.data,
+      transformResponse: (response: ApiResponse<SuggestedUser[]>) =>
+        response.data,
+
+      providesTags: ['Search'],
     }),
   }),
 });
 
-export const { useSearchUsersQuery } = searchApi;
+export const { useSearchUsersQuery, useGetSuggestedUsersQuery } = searchApi;

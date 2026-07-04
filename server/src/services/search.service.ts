@@ -30,17 +30,12 @@ export const searchUsersService = async (
     },
   });
 
-  const followingIds = new Set(
-    following.map((f) => f.following.toString())
-  );
+  const followingIds = new Set(following.map((f) => f.following.toString()));
 
   return {
     currentPage: page,
 
-    totalPages:
-      totalUsers === 0
-        ? 1
-        : Math.ceil(totalUsers / limit),
+    totalPages: totalUsers === 0 ? 1 : Math.ceil(totalUsers / limit),
 
     totalUsers,
 
@@ -50,4 +45,28 @@ export const searchUsersService = async (
       isFollowing: followingIds.has(user._id.toString()),
     })),
   };
+};
+
+export const suggestUsersService = async (currentUserId: string, limit = 5) => {
+  // user already followed
+
+  const following = await Follow.find({ follower: currentUserId }).select(
+    'following'
+  );
+
+  const excludingIds = [currentUserId, ...following.map((f) => f.following)];
+
+  const users = await User.aggregate([
+    {
+      $match: {
+        _id: { $nin: excludingIds },
+      },
+    },
+    {
+      $sample: { size: limit },
+    },
+    { $project: { username: 1, profileImage: 1, bio: 1, role: 1 } },
+  ]);
+
+  return users.map((user) => ({ ...user, isFollowing: false }));
 };

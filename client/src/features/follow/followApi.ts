@@ -22,6 +22,7 @@ export const followApi = baseApi.injectEndpoints({
         'Profile',
         'Follow',
         'Posts',
+        'Search',
       ],
     }),
 
@@ -39,6 +40,7 @@ export const followApi = baseApi.injectEndpoints({
         'Profile',
         'Follow',
         'Posts',
+        'Search',
       ],
     }),
 
