@@ -1,12 +1,10 @@
 # SocialSphere
 
-Production-grade Social Media Platform built with modern enterprise architecture.
+Production-ready social media platform built with modern enterprise architecture.
 
----
+## Tech Stack
 
-# Tech Stack
-
-## Frontend
+### Frontend
 
 - Next.js 16
 - React 19
@@ -20,9 +18,7 @@ Production-grade Social Media Platform built with modern enterprise architecture
 - Socket.IO Client
 - shadcn/ui
 
----
-
-## Backend
+### Backend
 
 - Express.js
 - MongoDB
@@ -34,201 +30,149 @@ Production-grade Social Media Platform built with modern enterprise architecture
 - Swagger
 - GitHub Actions
 
----
+## Architecture
 
-# Architecture
-
-```
-Next.js
-
-↓
-
-Redux Toolkit
-
-↓
-
-RTK Query
-
-↓
-
-Axios
-
-↓
-
-Express
-
-↓
-
-MongoDB
+```text
+Next.js -> Redux Toolkit -> RTK Query -> Axios -> Express -> MongoDB
 ```
 
----
-
-# Project Goal
+## Project Goal
 
 Build a production-ready social media application demonstrating real-world engineering practices suitable for interviews and a strong portfolio.
 
 The project prioritizes scalability, clean architecture, and maintainability over unnecessary features.
 
----
+## Development Strategy
 
-# Development Strategy
-
-## Phase 1
+### Phase 1
 
 Frontend UI
 
 ✅ Completed
 
 - Responsive UI
-- Reusable Components
-- Production Folder Structure
-- Placeholder Business Logic
+- Reusable components
+- Production folder structure
+- Placeholder business logic
 
----
-
-## Phase 2 (Current)
+### Phase 2 (Current)
 
 Frontend Logic
 
-### ✅ Authentication
+#### ✅ Authentication
 
 - Login
 - Register
 - JWT
 - Redux
 - RTK Query
-- Persist Login
+- Persist login
 
-### ✅ Feed
+#### ✅ Feed
 
 - Feed API
-- Create Post
-- Edit Post
-- Delete Post
+- Create post
+- Edit post
+- Delete post
 - Like / Unlike
 - Share
-- Copy Link
+- Copy link
 
-#### Profile
+#### ✅ Profile
 
-- View My Profile
-- View Other User Profiles
-- Edit Profile
-- Upload Avatar
+- View my profile
+- View other user profiles
+- Edit profile
+- Upload avatar
 - Follow / Unfollow
-- Followers List
-- Following List
-- User Posts
+- Followers list
+- Following list
+- User posts
 
-### 🚧 Search
+#### ✅ Search
 
-- Search Users
-- Debounced Search
-- Suggested Users
+- Search users
+- Debounced search
+- Suggested users
 - Follow / Unfollow
-- Navigate to User Profile
+- Navigate to user profile
 
----
-
-# Upcoming Modules
+## Upcoming Modules
 
 1. Comments
-2. Follow System
+2. Follow system
 3. Notifications
 4. Settings
-5. Admin Dashboard
-6. Socket.IO Integration
-7. Final Production Polish
+5. Admin dashboard
+6. Socket.IO integration
+7. Final production polish
 
----
+## Features
 
-# Features
+### Authentication
 
-## Authentication
+- JWT authentication
+- Protected routes
+- Persist login
 
-- JWT Authentication
-- Protected Routes
-- Persist Login
+### Feed
 
-## Feed
-
-- Create Post
-- Edit Post
-- Delete Post
+- Create post
+- Edit post
+- Delete post
 - Like
 - Share
 
-## Profile
+### Profile
 
-- View Profile
-- Edit Profile
-- Upload Avatar
+- View profile
+- Edit profile
+- Upload avatar
 
-## Search
+### Search
 
-- Search Users
-- Follow Users
+- Search users
+- Follow users
 
-## Notifications
+### Notifications
 
-- Real-time Notifications
+- Real-time notifications
 
-## Admin
+### Admin
 
 - Dashboard
-- User Management
+- User management
 - Analytics
 
----
+## Project Status
 
-# Project Status
+- Backend: ✅ 100%
+- Frontend UI: ✅ 100%
+- Frontend Logic: 🚧 In Progress
+- Current Module: **Profile (Final Polish)**
+- Overall Progress: **≈92%**
 
-Backend
+## Design Principles
 
-✅ 100%
+- Production-grade architecture
+- Clean code
+- Type safety
+- Reusable components
+- Feature-based structure
+- Interview-focused implementation
+- Enterprise best practices
 
-Frontend UI
-
-✅ 100%
-
-Frontend Logic
-
-🚧 In Progress
-
-Current Module
-
-**Search**
-
-Overall Progress
-
-**≈90%**
-
----
-
-# Design Principles
-
-- Production-grade Architecture
-- Clean Code
-- Type Safety
-- Reusable Components
-- Feature-based Structure
-- Interview-focused Implementation
-- Enterprise Best Practices
-
----
-
-# Deliberately Excluded
+## Deliberately Excluded
 
 To keep the project focused and interview-ready, the following features are intentionally excluded:
 
 - Stories
 - Reels
-- Live Streaming
-- Chat System
+- Live streaming
+- Chat system
 - Marketplace
 - Groups
-- Video Upload
+- Video upload
 - Overly complex recommendation systems
 - Unnecessary visual effects
 

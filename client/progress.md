@@ -2,17 +2,10 @@
 
 ## Current Status
 
-Backend
-✅ 100%
-
-Frontend UI
-✅ Completed
-
-Frontend Logic
-🚧 In Progress
-
-Overall Project
-≈90%
+- Backend: ✅ 100%
+- Frontend UI: ✅ Completed
+- Frontend Logic: 🚧 In Progress
+- Overall Project: ≈90%
 
 ---
 
@@ -36,15 +29,11 @@ Overall Project
 - AWS
 - CI/CD
 
-Status
-
-✅ Production Ready
+Status: ✅ Production Ready
 
 ---
 
 ## Frontend UI
-
-Completed
 
 - Authentication
 - Feed
@@ -57,17 +46,15 @@ Completed
 - Responsive Layout
 - Reusable Components
 
-Status
-
-✅ Completed
+Status: ✅ Completed
 
 ---
 
 # Frontend Logic Progress
 
-## ✅ Module 1 Authentication
+## ✅ Module 1 — Authentication
 
-Completed
+Completed:
 
 - Login
 - Register
@@ -83,27 +70,24 @@ Completed
 
 ---
 
-## ✅ Module 2 Feed
+## ✅ Module 2 — Feed
 
-Completed
+Completed:
 
 - Fetch Feed
 - Create Post
 - Edit Post
 - Delete Post
-- Like
-- Unlike
+- Like / Unlike
 - Share
 - Copy Link
-- Loading
-- Error
-- Empty State
+- Loading / Error / Empty States
 
 ---
 
-## ✅ Module 3 Profile
+## 🚧 Module 3 — Profile (Current)
 
-Completed
+Completed:
 
 - My Profile
 - User Profile
@@ -113,108 +97,69 @@ Completed
 - My Posts
 - Production API Integration
 
-Remaining
+Remaining:
 
-- Upload Avatar
-- Followers Dialog
-- Following Dialog
-
-Status
-
-≈95%
-
-## 🚧 Module 4 Search
-
-Completed
-
-- Search API
-- RTK Query
-- Debounce
-- Loading State
-- Error State
-- Empty State
-- Navigate to Profile
-- Follow / Unfollow
-
-Remaining
-
-- Suggested Users API
-- Pagination (if backend supports it)
-
-Status
-
-≈95%
----
-
-# Strict Roadmap
-
-## Phase 2 (Production Logic)
-
-### ✅ Authentication
-
-Completed
-
-### ✅ Feed
-
-Completed
-
-### ✅ Profile
-
-Completed
-
-### 🚧 Search
-
-Current Module
-
-### 🚧 Current Target
-
-1. Suggested Users API
+1. Upload Avatar
 2. Followers Dialog
 3. Following Dialog
-4. Upload Avatar
 
-After completion:
+Status: ≈95%
 
-✅ Profile 100%
-✅ Search 100%
+---
 
-Next:
+## ✅ Module 4 — Search
 
-1. Comments
-2. Notifications
-3. Settings
-4. Admin Dashboard
-5. Socket.IO Integration
-6. Final Production Polish
+Completed:
 
-Next
+- Search API
+- Suggested Users API
+- RTK Query
+- Debounce
+- Loading / Error / Empty States
+- Navigate to Profile
+- Follow / Unfollow
+- Shared UserListCard
+- Shared Search Types
+- Cache Invalidation
 
-1. Finish Search
-2. Comments
-3. Follow System
-4. Notifications
-5. Settings
-6. Admin Dashboard
-7. Socket.io Integration
-8. Final Production Polish
+Status: ✅ 100%
+
+---
+
+# Strict Roadmap (Production Modules)
+
+We complete one production module at a time until it is 100% finished.
+
+## Module Completion Order
+
+1. ✅ Authentication
+2. ✅ Feed
+3. 🚧 Profile (current)
+4. ⏳ Comments
+5. ⏳ Notifications
+6. ⏳ Settings
+7. ⏳ Admin Dashboard
+8. ⏳ Socket.IO Integration
+9. ⏳ Final Production Polish
+
+---
+
+## Project Philosophy
+
+Complete one production module at a time. Every completed module should be production ready, interview ready, fully tested, reusable, follow clean architecture, and be type safe. We avoid low-value or flashy features. Focus is engineering quality, not feature quantity.
 
 ---
 
 # Target
 
-Production Ready
-
-Interview Ready
-
-Resume Worthy
-
-No unnecessary features.
-
-Focus only on production engineering practices.
+- Production Ready
+- Interview Ready
+- Resume Worthy
+- No unnecessary features
+- Focus only on production engineering practices
 
 <!--
-Archived roadmap note
-
+Archived roadmap note:
 Current production logic order:
 1. Search
 2. Comments
@@ -225,9 +170,5 @@ Current production logic order:
 7. Socket.io Integration
 8. Final Production Polish
 
-Still intentionally skipped:
-Stories, Reels, Live Streaming, Chat System, Groups, Video Upload, Marketplace, Theme Switcher, heavy animations, and recommendation engine.
-
-The goal is a project that demonstrates engineering quality, not feature quantity.
-
+Still intentionally skipped: Stories, Reels, Live Streaming, Chat System, Groups, Video Upload, Marketplace, Theme Switcher, heavy animations, and recommendation engine.
  -->
