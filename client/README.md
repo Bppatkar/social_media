@@ -110,25 +110,24 @@ Frontend Logic
 - Share
 - Copy Link
 
-### ✅ Profile
+#### Profile
 
-- Profile APIs
+- View My Profile
+- View Other User Profiles
 - Edit Profile
 - Upload Avatar
-- User Profile
-- My Posts
+- Follow / Unfollow
+- Followers List
+- Following List
+- User Posts
 
 ### 🚧 Search
 
-- Backend API
-- RTK Query
-- Search Integration
-
-Remaining
-
-- Debounce
-- Pagination
-- Navigate to Profile
+- Search Users
+- Debounced Search
+- Suggested Users
+- Follow / Unfollow
+- Navigate to User Profile
 
 ---
 

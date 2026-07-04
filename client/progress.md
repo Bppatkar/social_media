@@ -108,28 +108,42 @@ Completed
 - My Profile
 - User Profile
 - Edit Profile
-- Upload Avatar
+- Update Profile API
+- Follow / Unfollow
 - My Posts
 - Production API Integration
 
----
+Remaining
 
-## 🚧 Module 4 Search (Current)
+- Upload Avatar
+- Followers Dialog
+- Following Dialog
+
+Status
+
+≈95%
+
+## 🚧 Module 4 Search
 
 Completed
 
-- Backend Search API
-- RTK Query Integration
-- Search Page Integration
+- Search API
+- RTK Query
+- Debounce
+- Loading State
+- Error State
+- Empty State
+- Navigate to Profile
+- Follow / Unfollow
 
 Remaining
 
-- Debounce
-- Pagination
-- Click User → Profile
-- Loading Polish
-- Error Polish
+- Suggested Users API
+- Pagination (if backend supports it)
 
+Status
+
+≈95%
 ---
 
 # Strict Roadmap
@@ -151,6 +165,27 @@ Completed
 ### 🚧 Search
 
 Current Module
+
+### 🚧 Current Target
+
+1. Suggested Users API
+2. Followers Dialog
+3. Following Dialog
+4. Upload Avatar
+
+After completion:
+
+✅ Profile 100%
+✅ Search 100%
+
+Next:
+
+1. Comments
+2. Notifications
+3. Settings
+4. Admin Dashboard
+5. Socket.IO Integration
+6. Final Production Polish
 
 Next
 
