@@ -9,27 +9,26 @@ import TimeAgo from '@/components/shared/TimeAgo';
 
 import { Card } from '@/components/ui/card';
 
-export interface Notification {
-  _id: string;
-
-  type: 'like' | 'comment' | 'follow';
-
-  username: string;
-
-  profileImage?: string;
-
-  createdAt: string;
-
-  postId?: string;
-
-  isRead: boolean;
-}
+import type { Notification } from '@/types';
+import { useMarkNotificationAsReadMutation } from '@/features/notification/notificationApi';
 
 interface Props {
   notification: Notification;
 }
 
 export default function NotificationCard({ notification }: Props) {
+  const [markRead] = useMarkNotificationAsReadMutation();
+
+  const handleClick = async () => {
+    if (!notification.isRead) {
+      try {
+        await markRead(notification._id).unwrap();
+      } catch {
+        //
+      }
+    }
+  };
+
   const renderIcon = () => {
     switch (notification.type) {
       case 'like':
@@ -43,7 +42,7 @@ export default function NotificationCard({ notification }: Props) {
     }
   };
 
-  const renderMessage = () => {
+  const renderText = () => {
     switch (notification.type) {
       case 'like':
         return 'liked your post';
@@ -56,19 +55,23 @@ export default function NotificationCard({ notification }: Props) {
     }
   };
 
+  const href = notification.post
+    ? '/feed'
+    : `/profile/${notification.sender._id}`;
+
   return (
-    <Link href={notification.postId ? '/feed' : '/profile'}>
+    <Link href={href} onClick={handleClick}>
       <Card
         className={`border-white/10 p-5 transition hover:border-violet-500/30 ${
           notification.isRead
             ? 'bg-white/5'
             : 'border-violet-500/40 bg-violet-500/10'
-        } `}
+        }`}
       >
         <div className="flex gap-4">
           <UserAvatar
-            src={notification.profileImage}
-            alt={notification.username}
+            src={notification.sender.profileImage}
+            alt={notification.sender.username}
           />
 
           <div className="flex flex-1 justify-between">
@@ -77,12 +80,14 @@ export default function NotificationCard({ notification }: Props) {
                 {renderIcon()}
 
                 <p className="text-white">
-                  <span className="font-semibold">{notification.username}</span>{' '}
-                  {renderMessage()}
+                  <span className="font-semibold">
+                    {notification.sender.username}
+                  </span>{' '}
+                  {renderText()}
                 </p>
               </div>
 
-              <div className="mt-2 text-sm text-zinc-500">
+              <div className="mt-2">
                 <TimeAgo date={notification.createdAt} />
               </div>
             </div>

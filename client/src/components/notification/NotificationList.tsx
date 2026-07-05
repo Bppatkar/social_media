@@ -4,16 +4,14 @@ import NotificationCard from './NotificationCard';
 
 import EmptyState from '@/components/feedback/EmptyState';
 
-import type { Notification } from './NotificationCard';
+import type { Notification } from '@/types';
 
-interface NotificationListProps {
+interface Props {
   notifications: Notification[];
 }
 
-export default function NotificationList({
-  notifications,
-}: NotificationListProps) {
-  if (notifications.length === 0) {
+export default function NotificationList({ notifications }: Props) {
+  if (!notifications.length) {
     return (
       <EmptyState
         title="No Notifications"
@@ -23,12 +21,9 @@ export default function NotificationList({
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {notifications.map((notification) => (
-        <NotificationCard
-          key={notification._id}
-          notification={notification}
-        />
+        <NotificationCard key={notification._id} notification={notification} />
       ))}
     </div>
   );

@@ -124,13 +124,25 @@ Frontend Logic
 - Owner-only actions
 - Live comment count updates
 
+### 🚧 Notifications (In Progress)
+
+- Notifications Page
+- Mark Notification Read
+- Unread Badge
+- Notification Card Navigation
+
+#### Remaining
+
+- Mark All Read
+- Notification Dropdown
+- Socket.IO Integration
+
 ## Upcoming Modules
 
-1. Notifications
-2. Settings
-3. Admin dashboard
-4. Socket.IO integration
-5. Final production polish
+1. Settings
+2. Admin dashboard
+3. Socket.IO integration
+4. Final production polish
 
 ## Features
 

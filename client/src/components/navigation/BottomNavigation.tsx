@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 import { House, Search, SquarePen, Bell, User } from 'lucide-react';
+import { useGetUnreadCountQuery } from '@/features/notification/notificationApi';
 
 type NavItem = {
   label: string;
@@ -41,13 +41,9 @@ const navigationItems: NavItem[] = [
 ];
 
 export default function BottomNavigation() {
-  // Dummy active state for UI phase
+  const { data: unread } = useGetUnreadCountQuery();
 
   const pathname = usePathname();
-
-  const handleNavigation = () => {
-    // Navigate to selected page
-  };
 
   const handleCreatePost = () => {
     // Open Create Post dialog
@@ -80,12 +76,19 @@ export default function BottomNavigation() {
             <Link
               key={item.label}
               href={item.href}
-              onClick={handleNavigation}
               className={`flex flex-col items-center justify-center gap-1 transition ${
                 isActive ? 'text-violet-500' : 'text-zinc-400 hover:text-white'
               }`}
             >
-              <Icon className="h-6 w-6" />
+              <div className="relative">
+                <Icon className="h-6 w-6" />
+
+                {item.label === 'Notifications' && (unread?.count ?? 0) > 0 && (
+                  <span className="absolute -top-1 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-semibold text-white">
+                    {unread!.count > 9 ? '9+' : unread!.count}
+                  </span>
+                )}
+              </div>
 
               <span className="text-[10px]">{item.label}</span>
             </Link>

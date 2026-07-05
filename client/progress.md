@@ -165,18 +165,32 @@ Status
 
 ---
 
-# Remaining Modules
+## 🚧 Module 6 — Notifications
 
-## ⏳ Module 6 — Notifications
+Completed
 
 - Notifications Page
-- Notification Dropdown
-- Mark Read
-- Mark All Read
+- Fetch Notifications
+- Notification Cards
+- Mark Notification as Read
 - Unread Badge
-- Pagination
+- RTK Query Integration
+- Cache Invalidation
+- Navigation to Post/Profile
+- Loading State
+- Empty State
+- Error State
 
----
+Remaining
+
+- Mark All Read
+- Notification Dropdown
+- Socket.IO Live Updates
+- Pagination (if required)
+
+Status
+
+≈70%
 
 ## ⏳ Module 7 — Settings
 
