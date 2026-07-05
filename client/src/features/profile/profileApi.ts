@@ -1,5 +1,5 @@
 import { baseApi } from '@/services/api/baseApi';
-import type { ApiResponse, User, Post } from '@/types';
+import type { ApiResponse, Post, User } from '@/types';
 
 export const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,14 +7,19 @@ export const profileApi = baseApi.injectEndpoints({
       query: () => ({
         url: '/auth/me',
       }),
+
       transformResponse: (response: ApiResponse<User>) => response.data,
+
       providesTags: ['Profile'],
     }),
+
     getUserProfile: builder.query<User, string>({
       query: (userId) => ({
         url: `/auth/${userId}`,
       }),
+
       transformResponse: (response: ApiResponse<User>) => response.data,
+
       providesTags: (_result, _error, id) => [{ type: 'Profile', id }],
     }),
 
@@ -22,17 +27,22 @@ export const profileApi = baseApi.injectEndpoints({
       query: (userId) => ({
         url: `/posts/user/${userId}`,
       }),
+
       transformResponse: (response: ApiResponse<Post[]>) => response.data,
+
       providesTags: (_result, _error, id) => [{ type: 'Posts', id }],
     }),
 
-    updateProfile: builder.mutation({
-      query: (formData: FormData) => ({
+    updateProfile: builder.mutation<User, FormData>({
+      query: (formData) => ({
         url: '/auth/update-profile',
         method: 'PATCH',
         data: formData,
       }),
-      invalidatesTags: ['Profile'],
+
+      transformResponse: (response: ApiResponse<User>) => response.data,
+
+      invalidatesTags: ['Profile', 'Posts', 'Search'],
     }),
   }),
 });

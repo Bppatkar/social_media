@@ -1,5 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
 import {
   Dialog,
   DialogContent,
@@ -7,21 +12,69 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+
+import SubmitButton from '@/components/shared/SubmitButton';
+
+import {
+  profileSchema,
+  type ProfileSchema,
+} from '@/lib/validations/profile.schema';
+
+import { getApiError } from '@/utils/getApiError';
+
+import {
+  useGetMyProfileQuery,
+  useUpdateProfileMutation,
+} from '@/features/profile/profileApi';
 
 interface Props {
   open: boolean;
   onOpenChange: (value: boolean) => void;
 }
 
-export default function EditProfileDialog({
-  open,
-  onOpenChange,
-}: Props) {
-  const handleSave = () => {
-    // RTK Update Profile Mutation
+export default function EditProfileDialog({ open, onOpenChange }: Props) {
+  const { data: me } = useGetMyProfileQuery();
+
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileSchema>({
+    resolver: zodResolver(profileSchema),
+  });
+
+  useEffect(() => {
+    if (!me) return;
+
+    reset({
+      username: me.username,
+      bio: me.bio ?? '',
+    });
+  }, [me, reset]);
+
+  const onSubmit = async (values: ProfileSchema) => {
+    try {
+      const formData = new FormData();
+
+      formData.append('username', values.username);
+
+      if (values.bio) {
+        formData.append('bio', values.bio);
+      }
+
+      await updateProfile(formData).unwrap();
+
+      toast.success('Profile updated successfully');
+
+      onOpenChange(false);
+    } catch (error) {
+      toast.error(getApiError(error));
+    }
   };
 
   return (
@@ -31,21 +84,27 @@ export default function EditProfileDialog({
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
-          <Input placeholder="Username" />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <Input placeholder="Username" {...register('username')} />
 
-          <Textarea
-            rows={4}
-            placeholder="Bio..."
-          />
+            {errors.username && (
+              <p className="text-sm text-red-500">{errors.username.message}</p>
+            )}
+          </div>
 
-          <Button
-            className="w-full"
-            onClick={handleSave}
-          >
+          <div className="space-y-2">
+            <Textarea rows={4} placeholder="Bio..." {...register('bio')} />
+
+            {errors.bio && (
+              <p className="text-sm text-red-500">{errors.bio.message}</p>
+            )}
+          </div>
+
+          <SubmitButton type="submit" loading={isLoading}>
             Save Changes
-          </Button>
-        </div>
+          </SubmitButton>
+        </form>
       </DialogContent>
     </Dialog>
   );
