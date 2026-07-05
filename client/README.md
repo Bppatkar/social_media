@@ -97,15 +97,24 @@ Frontend Logic
 - Follow / Unfollow
 - Navigate to user profile
 
+### ✅ Comments
+
+- View comments
+- Create comment
+- Edit own comment
+- Delete own comment
+- Owner-only actions
+- Live comment count updates
+
+
 ## Upcoming Modules
 
-1. Comments
-2. Follow system
-3. Notifications
-4. Settings
-5. Admin dashboard
-6. Socket.IO integration
-7. Final production polish
+
+1. Notifications
+2. Settings
+3. Admin dashboard
+4. Socket.IO integration
+5. Final production polish
 
 ## Features
 
@@ -134,6 +143,13 @@ Frontend Logic
 - Search users
 - Follow users
 
+### Comments
+
+- View comments
+- Create comment
+- Edit own comment
+- Delete own comment
+
 ### Notifications
 
 - Real-time notifications
@@ -149,8 +165,8 @@ Frontend Logic
 - Backend: ✅ 100%
 - Frontend UI: ✅ 100%
 - Frontend Logic: 🚧 In Progress
-- Current Module: **Profile (Final Polish)**
-- Overall Progress: **≈92%**
+- Current Module: **Notification**
+- Overall Progress: **≈94%**
 
 ## Design Principles
 

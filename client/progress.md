@@ -85,25 +85,22 @@ Completed:
 
 ---
 
-## 🚧 Module 3 — Profile (Current)
+## ✅ Module 3 — Profile
 
-Completed:
+Completed
 
 - My Profile
 - User Profile
 - Edit Profile
-- Update Profile API
+- Upload Avatar
 - Follow / Unfollow
-- My Posts
-- Production API Integration
+- Followers Dialog
+- Following Dialog
+- User Posts
+- RTK Query Integration
+- Cache Invalidation
 
-Remaining:
-
-1. Upload Avatar
-2. Followers Dialog
-3. Following Dialog
-
-Status: ≈95%
+Status: ✅ 100%
 
 ---
 
@@ -126,6 +123,26 @@ Status: ✅ 100%
 
 ---
 
+## ✅ Module 5 — Comments
+
+Completed
+
+- Fetch Comments
+- Create Comment
+- Edit Comment
+- Delete Comment
+- Owner-only Actions
+- Comment Drawer
+- Comment Count Sync
+- Loading State
+- Empty State
+- Error State
+- RTK Query Cache Invalidation
+- Toast Notifications
+
+Status: ✅ 100%
+---
+
 # Strict Roadmap (Production Modules)
 
 We complete one production module at a time until it is 100% finished.
@@ -134,13 +151,14 @@ We complete one production module at a time until it is 100% finished.
 
 1. ✅ Authentication
 2. ✅ Feed
-3. 🚧 Profile (current)
-4. ⏳ Comments
-5. ⏳ Notifications
-6. ⏳ Settings
-7. ⏳ Admin Dashboard
-8. ⏳ Socket.IO Integration
-9. ⏳ Final Production Polish
+3. ✅ Profile
+4. ✅ Search
+5. ✅ Comments
+6. ⏳ Notifications
+7. ⏳ Settings
+8. ⏳ Admin Dashboard
+9. ⏳ Socket.IO Integration
+10. ⏳ Final Production Polish
 
 ---
 

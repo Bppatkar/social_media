@@ -34,13 +34,15 @@ export default function PostCard({
 }: PostCardProps) {
   const [commentOpen, setCommentOpen] = useState(false);
   const [liked, setLiked] = useState(post.likedByCurrentUser ?? false);
-  const [count, setCount] = useState(post.likeCount);
+  const [likeCount, setLikeCount] = useState(post.likeCount);
+  const [commentCount, setCommentCount] = useState(post.commentCount);
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
 
   useEffect(() => {
     setLiked(post.likedByCurrentUser ?? false);
-    setCount(post.likeCount);
+    setLikeCount(post.likeCount);
+    setCommentCount(post.commentCount);
   }, [post]);
 
   const handleLike = async () => {
@@ -50,13 +52,13 @@ export default function PostCard({
 
         setLiked(false);
 
-        setCount(response.data.likeCount);
+        setLikeCount(response.data.likeCount);
       } else {
         const response = await likePost(post._id).unwrap();
 
         setLiked(true);
 
-        setCount(response.data.likeCount);
+        setLikeCount(response.data.likeCount);
       }
     } catch (error) {
       toast.error(getApiError(error));
@@ -150,11 +152,11 @@ export default function PostCard({
 
         <div className="flex items-center gap-6 border-y border-white/10 py-3 text-sm text-zinc-400">
           <span>
-            <strong className="text-white">{count}</strong> Likes
+            <strong className="text-white">{likeCount}</strong> Likes
           </span>
 
           <span>
-            <strong className="text-white">{post.commentCount}</strong> Comments
+            <strong className="text-white">{commentCount}</strong> Comments
           </span>
         </div>
 
@@ -204,6 +206,8 @@ export default function PostCard({
         postId={post._id}
         open={commentOpen}
         onOpenChange={setCommentOpen}
+        onCommentAdded={() => setCommentCount((c) => c + 1)}
+        onCommentDeleted={() => setCommentCount((c) => Math.max(0, c - 1))}
       />
     </Card>
   );

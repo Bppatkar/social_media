@@ -8,7 +8,7 @@ export const postApi = baseApi.injectEndpoints({
         url: '/posts/feed',
         method: 'GET',
       }),
-      providesTags: ['Post'],
+      providesTags: ['Posts'],
     }),
 
     createPost: builder.mutation<ApiResponse<Post>, FormData>({
@@ -17,7 +17,7 @@ export const postApi = baseApi.injectEndpoints({
         method: 'POST',
         data: body,
       }),
-      invalidatesTags: ['Post'],
+      invalidatesTags: ['Posts'],
     }),
 
     updatePost: builder.mutation<
@@ -29,7 +29,7 @@ export const postApi = baseApi.injectEndpoints({
         method: 'PUT',
         data: body,
       }),
-      invalidatesTags: ['Post'],
+      invalidatesTags: ['Posts'],
     }),
 
     deletePost: builder.mutation<ApiResponse<null>, string>({
@@ -37,14 +37,14 @@ export const postApi = baseApi.injectEndpoints({
         url: `/posts/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Post'],
+      invalidatesTags: ['Posts'],
     }),
 
     getUserPosts: builder.query<ApiResponse<FeedResponse>, string>({
       query: (userId) => ({
         url: `/posts/user/${userId}`,
       }),
-      providesTags: ['Post'],
+      providesTags: ['Posts'],
     }),
   }),
 });
