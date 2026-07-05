@@ -32,15 +32,33 @@ Production-ready social media platform built with modern enterprise architecture
 
 ## Architecture
 
-```text
-Next.js -> Redux Toolkit -> RTK Query -> Axios -> Express -> MongoDB
+```
+┌─────────────────────────────────────┐
+│          Next.js + React            │
+│        (TypeScript, Tailwind)       │
+└────────────────┬────────────────────┘
+                 │
+┌────────────────▼────────────────────┐
+│      Redux Toolkit + RTK Query      │
+│      (State Management & Cache)     │
+└────────────────┬────────────────────┘
+                 │
+┌────────────────▼────────────────────┐
+│       Axios + Socket.IO Client      │
+│      (HTTP & Real-time Comms)       │
+└────────────────┬────────────────────┘
+                 │
+┌────────────────▼────────────────────┐
+│  Express.js + MongoDB + Redis       │
+│   (Backend API & Data Persistence)  │
+└─────────────────────────────────────┘
 ```
 
 ## Project Goal
 
-Build a production-ready social media application demonstrating real-world engineering practices suitable for interviews and a strong portfolio.
+Build a production-ready social media platform demonstrating real-world engineering practices suitable for interviews and a strong portfolio.
 
-The project prioritizes scalability, clean architecture, and maintainability over unnecessary features.
+The focus is engineering quality, scalability, maintainability and clean architecture rather than unnecessary features.
 
 ## Development Strategy
 
@@ -106,9 +124,7 @@ Frontend Logic
 - Owner-only actions
 - Live comment count updates
 
-
 ## Upcoming Modules
-
 
 1. Notifications
 2. Settings
