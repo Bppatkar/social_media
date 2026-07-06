@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { House, Search, SquarePen, Bell, User } from 'lucide-react';
 import { useGetUnreadCountQuery } from '@/features/notification/notificationApi';
@@ -42,11 +43,12 @@ const navigationItems: NavItem[] = [
 
 export default function BottomNavigation() {
   const { data: unread } = useGetUnreadCountQuery();
+  const router = useRouter();
 
   const pathname = usePathname();
 
   const handleCreatePost = () => {
-    // Open Create Post dialog
+    router.push('/feed');
   };
 
   return (

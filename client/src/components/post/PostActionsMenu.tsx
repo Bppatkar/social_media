@@ -51,11 +51,11 @@ export default function PostActionsMenu({
   };
 
   const handleBookmark = () => {
-    // TODO:
+    toast.info('Bookmarks are intentionally excluded from this interview edition.');
   };
 
   const handleReport = () => {
-    // TODO:
+    toast.info('Report feature coming soon.......');
   };
 
   return (

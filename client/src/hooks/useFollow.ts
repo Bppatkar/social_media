@@ -2,6 +2,8 @@ import {
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from '@/features/follow/followApi';
+import { getApiError } from '@/utils/getApiError';
+import { toast } from 'sonner';
 
 export function useFollow() {
   const [followUser, { isLoading: followLoading }] = useFollowUserMutation();
@@ -17,10 +19,7 @@ export function useFollow() {
         await followUser(userId).unwrap();
       }
     } catch (error) {
-      console.error(error);
-
-      // Later
-      // toast.error(getApiError(error));
+      toast.error(getApiError(error));
     }
   };
 

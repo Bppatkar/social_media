@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import {
-  Bookmark,
-  Heart,
-  MessageCircle,
-  MoreHorizontal,
-  Repeat2,
-} from 'lucide-react';
+import { Bookmark, Heart, MessageCircle, Repeat2 } from 'lucide-react';
 
 import UserAvatar from '@/components/shared/UserAvatar';
 import TimeAgo from '@/components/shared/TimeAgo';
@@ -85,7 +79,9 @@ export default function PostCard({
   };
 
   const handleBookmark = () => {
-    // Save Post
+    toast.info(
+      'Bookmarks are intentionally excluded from this interview edition.'
+    );
   };
 
   return (

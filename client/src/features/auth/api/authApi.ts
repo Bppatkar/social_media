@@ -31,7 +31,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ['Auth', 'User'],
     }),
+
+    logout: builder.mutation<ApiResponse<null>, void>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useMeQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useMeQuery, useLogoutMutation } = authApi;

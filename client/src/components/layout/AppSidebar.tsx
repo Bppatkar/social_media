@@ -70,10 +70,7 @@ export default function AppSidebar() {
 
           const Icon = item.icon;
 
-          // Future
-          // const active = pathname === item.href
-
-          return (
+                   return (
             <Link key={item.href} href={item.href}>
               <Button
                 variant="ghost"

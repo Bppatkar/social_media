@@ -14,18 +14,40 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useGetUnreadCountQuery } from '@/features/notification/notificationApi';
 
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+
+import { logout } from '@/features/auth/authSlice';
+import { useAppDispatch } from '@/store/hooks';
+import { useLogoutMutation } from '@/features/auth/api/authApi';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import { baseApi } from '@/services/api/baseApi';
+import NotificationDropdown from '@/components/notification/NotificationDropdown';
+
 export default function AppHeader() {
+  const { user } = useCurrentUser();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [logoutApi] = useLogoutMutation();
   const { data: unread } = useGetUnreadCountQuery();
 
   const handleMenuClick = () => {
     // Open mobile sidebar
   };
 
-  const handleLogout = () => {
-    // Logout user
+  const handleLogout = async () => {
+    try {
+      await logoutApi().unwrap();
+      dispatch(logout());
+      dispatch(baseApi.util.resetApiState());
+      toast.success('Logged out successfully');
+      router.replace('/login');
+    } catch (error) {
+      toast.error('Failed to logout');
+    }
   };
 
   return (
@@ -70,39 +92,48 @@ export default function AppHeader() {
         <div className="flex items-center gap-2">
           {/* Notifications */}
 
-          <Link href="/notifications">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative text-white hover:bg-white/10"
-            >
-              <Bell className="h-5 w-5" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative text-white hover:bg-white/10"
+              >
+                <Bell className="h-5 w-5" />
 
-              {(unread?.count ?? 0) > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
-                  {unread!.count > 99 ? '99+' : unread!.count}
-                </span>
-              )}
-            </Button>
-          </Link>
+                {(unread?.count ?? 0) > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+                    {unread!.count > 99 ? '99+' : unread!.count}
+                  </span>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              align="end"
+              className="border-white/10 bg-neutral-900 p-0"
+            >
+              <NotificationDropdown />
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Profile */}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full p-0"
-                >
-                  <Avatar className="h-9 w-9">
-                    <AvatarFallback className="bg-violet-600 text-white">
-                      BP
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 rounded-full p-0"
+              >
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={user?.profileImage} />
+
+                  <AvatarFallback className="bg-violet-600 text-white">
+                    {user?.username?.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent

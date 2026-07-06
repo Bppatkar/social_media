@@ -43,3 +43,25 @@ export const getUnreadCount = async (req: AuthRequest, res: Response) => {
     count,
   });
 };
+
+export const markAllNotificationsAsRead = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  await Notification.updateMany(
+    {
+      recipient: req.user!.userId,
+      isRead: false,
+    },
+    {
+      $set: {
+        isRead: true,
+      },
+    }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    message: 'All notifications marked as read',
+  });
+};
