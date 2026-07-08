@@ -23,7 +23,6 @@ export default function NotificationsPage() {
       await markAllRead().unwrap();
 
       toast.success('All notifications marked as read');
-
     } catch (error) {
       toast.error(getApiError(error));
     }
@@ -61,6 +60,7 @@ export default function NotificationsPage() {
           size="sm"
           onClick={handleMarkAllRead}
           disabled={marking || !hasUnread}
+          className="border-white/10 bg-neutral-900 text-white hover:bg-neutral-800 hover:text-white"
         >
           Mark all as read
         </Button>

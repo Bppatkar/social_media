@@ -10,17 +10,16 @@ interface Props {
 export default function ProfileTabs({ posts, photos }: Props) {
   return (
     <Tabs defaultValue="posts">
-      <TabsList className="grid w-full grid-cols-2 rounded-xl bg-white/5 p-1">
+      <TabsList className="grid w-full grid-cols-2 rounded-xl border border-white/10 bg-neutral-900 p-1">
         <TabsTrigger
           value="posts"
-          className="data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:shadow-none"
+          className="text-zinc-400 transition-all hover:text-white data-[state=active]:bg-violet-600 data-[state=active]:text-white"
         >
           Posts
         </TabsTrigger>
-
         <TabsTrigger
           value="photos"
-          className="data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:shadow-none"
+          className="text-zinc-400 transition-all hover:text-white data-[state=active]:bg-violet-600 data-[state=active]:text-white"
         >
           Photos
         </TabsTrigger>

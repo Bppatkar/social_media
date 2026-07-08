@@ -1,5 +1,3 @@
-import type { User } from '@/types/user.types';
+import { User } from "@/types";
 
-export interface MeResponse {
-  user: User;
-}
+export interface MeResponse extends User {}

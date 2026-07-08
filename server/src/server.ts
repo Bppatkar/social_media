@@ -7,7 +7,7 @@ import db from './db/db.js';
 
 import { connectRedis } from './config/redis.js';
 import http from 'http';
-import {initSocket} from './socket/socket.js';
+import { initSocket } from './socket/socket.js';
 
 const startServer = async () => {
   try {

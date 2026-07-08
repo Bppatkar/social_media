@@ -40,11 +40,16 @@ export const postApi = baseApi.injectEndpoints({
       invalidatesTags: ['Posts'],
     }),
 
-    getUserPosts: builder.query<ApiResponse<FeedResponse>, string>({
+    getUserPosts: builder.query<Post[], string>({
       query: (userId) => ({
         url: `/posts/user/${userId}`,
       }),
-      providesTags: ['Posts'],
+
+      transformResponse: (response: ApiResponse<FeedResponse>) => {
+        return response.data.posts;
+      },
+
+      providesTags: (_result, _error, id) => [{ type: 'Posts', id }],
     }),
   }),
 });

@@ -41,7 +41,8 @@ export default function LoginForm() {
   const onSubmit = async (values: LoginSchema) => {
     try {
       const response = await loginMutation(values).unwrap();
-      login(response.data.user, response.data.token);
+
+      login(response.data.user);
       toast.success(response.message || 'Logged in successfully');
       router.replace('/feed');
     } catch (error) {

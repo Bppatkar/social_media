@@ -48,7 +48,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: env.CLIENT_URL || 'http://localhost:5173', // Allow requests from the client URL
+    origin: env.CLIENT_URL || 'http://localhost:3000', // Allow requests from the client URL
     credentials: true, // Allow cookies to be sent with requests
   })
 );

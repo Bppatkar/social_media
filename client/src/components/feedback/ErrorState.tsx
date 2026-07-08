@@ -21,7 +21,7 @@ export default function ErrorState({
         <AlertTriangle className="h-10 w-10 text-red-400" />
       </div>
 
-      <h2 className="text-2xl font-semibold text-white">{title}</h2>
+      <h2 className="text-2xl font-semibold text-zinc-300">{title}</h2>
 
       <p className="mt-3 max-w-md text-zinc-400">{description}</p>
 

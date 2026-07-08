@@ -19,7 +19,7 @@ import UserAvatar from '@/components/shared/UserAvatar';
 import { useGetUnreadCountQuery } from '@/features/notification/notificationApi';
 import { cn } from '@/lib/utils';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/store/hooks';
 import { useLogoutMutation } from '@/features/auth/api/authApi';
 import { baseApi } from '@/services/api/baseApi';

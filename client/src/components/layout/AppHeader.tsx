@@ -27,6 +27,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import { baseApi } from '@/services/api/baseApi';
 import NotificationDropdown from '@/components/notification/NotificationDropdown';
 import HeaderSearch from '@/components/search/HeaderSearch';
+import { openMobileSidebar } from '@/features/ui/uiSlice';
 
 export default function AppHeader() {
   const { user } = useCurrentUser();
@@ -36,7 +37,7 @@ export default function AppHeader() {
   const { data: unread } = useGetUnreadCountQuery();
 
   const handleMenuClick = () => {
-    // Open mobile sidebar
+    dispatch(openMobileSidebar());
   };
 
   const handleLogout = async () => {
@@ -105,7 +106,8 @@ export default function AppHeader() {
 
             <DropdownMenuContent
               align="end"
-              className="border-white/10 bg-neutral-900 p-0"
+              sideOffset={8}
+              className="max-h-137.5 w-105 overflow-hidden border border-white/10 bg-neutral-900 p-0"
             >
               <NotificationDropdown />
             </DropdownMenuContent>

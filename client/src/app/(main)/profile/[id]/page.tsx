@@ -9,18 +9,19 @@ import ProfileTabs from '@/components/profile/ProfileTabs';
 
 import PostCard from '@/components/post/PostCard';
 
+import { useGetUserPostsQuery } from '@/features/feed/postApi';
 import {
   useGetUserProfileQuery,
-  useGetUserPostsQuery,
   useGetMyProfileQuery,
 } from '@/features/profile/profileApi';
+import { use } from 'react';
 
 export default function UserProfilePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = use(params);
 
   const {
     data: user,

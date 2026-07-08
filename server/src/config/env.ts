@@ -8,7 +8,7 @@ const env = {
 
   MONGO_URI: process.env.MONGO_URI || '',
 
-  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000',
 
   JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || '',
 

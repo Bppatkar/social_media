@@ -23,16 +23,6 @@ export const profileApi = baseApi.injectEndpoints({
       providesTags: (_result, _error, id) => [{ type: 'Profile', id }],
     }),
 
-    getUserPosts: builder.query<Post[], string>({
-      query: (userId) => ({
-        url: `/posts/user/${userId}`,
-      }),
-
-      transformResponse: (response: ApiResponse<Post[]>) => response.data,
-
-      providesTags: (_result, _error, id) => [{ type: 'Posts', id }],
-    }),
-
     updateProfile: builder.mutation<User, FormData>({
       query: (formData) => ({
         url: '/auth/update-profile',
@@ -50,6 +40,5 @@ export const profileApi = baseApi.injectEndpoints({
 export const {
   useGetMyProfileQuery,
   useGetUserProfileQuery,
-  useGetUserPostsQuery,
   useUpdateProfileMutation,
 } = profileApi;

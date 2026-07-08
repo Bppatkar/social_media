@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import AppHeader from './AppHeader';
 import AppSidebar from './AppSidebar';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
+import MobileSidebar from '@/components/layout/MobileSidebar';
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -14,6 +15,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
       {/* Desktop Sidebar */}
 
       <AppSidebar />
+
+      {/* Mobile Sidebar */}
+
+      <MobileSidebar />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <AppHeader />

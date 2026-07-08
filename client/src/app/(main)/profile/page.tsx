@@ -5,10 +5,8 @@ import ProfileTabs from '@/components/profile/ProfileTabs';
 import ProfilePhotos from '@/components/profile/ProfilePhotos';
 
 import PostCard from '@/components/post/PostCard';
-import {
-  useGetMyProfileQuery,
-  useGetUserPostsQuery,
-} from '@/features/profile/profileApi';
+import { useGetMyProfileQuery } from '@/features/profile/profileApi';
+import { useGetUserPostsQuery } from '@/features/feed/postApi';
 import ErrorState from '@/components/feedback/ErrorState';
 import LoadingState from '@/components/feedback/LoadingState';
 
@@ -20,7 +18,7 @@ export default function ProfilePage() {
   } = useGetMyProfileQuery();
 
   const {
-    data: posts = [],
+    data: posts,
     isLoading: postLoading,
     isError: postError,
   } = useGetUserPostsQuery(me?._id!, {
@@ -39,7 +37,7 @@ export default function ProfilePage() {
       />
     );
   }
-  const images = posts.filter((post) => post.image).map((post) => post.image!);
+  const images = posts?.filter((post) => post.image).map((post) => post.image!) ?? [];
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-8">
@@ -48,7 +46,7 @@ export default function ProfilePage() {
       <ProfileTabs
         posts={
           <div className="space-y-6">
-            {posts.map((post) => (
+            {posts?.map((post) => (
               <PostCard key={post._id} post={post} isOwner />
             ))}
           </div>
