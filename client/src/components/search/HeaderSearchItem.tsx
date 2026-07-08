@@ -5,18 +5,27 @@ import Link from 'next/link';
 import UserAvatar from '@/components/shared/UserAvatar';
 
 import type { SearchUser } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface Props {
   user: SearchUser;
   onSelect: () => void;
+  selected?: boolean;
 }
 
-export default function HeaderSearchItem({ user, onSelect }: Props) {
+export default function HeaderSearchItem({
+  user,
+  onSelect,
+  selected = false,
+}: Props) {
   return (
     <Link
       href={`/profile/${user._id}`}
       onClick={onSelect}
-      className="flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-white/5"
+      className={cn(
+        'flex items-center gap-3 rounded-lg px-3 py-2 transition',
+        selected ? 'bg-white/10' : 'hover:bg-white/5'
+      )}
     >
       <UserAvatar src={user.profileImage} alt={user.username} />
 
