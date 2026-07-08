@@ -26,6 +26,7 @@ import { useLogoutMutation } from '@/features/auth/api/authApi';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { baseApi } from '@/services/api/baseApi';
 import NotificationDropdown from '@/components/notification/NotificationDropdown';
+import HeaderSearch from '@/components/search/HeaderSearch';
 
 export default function AppHeader() {
   const { user } = useCurrentUser();
@@ -78,14 +79,7 @@ export default function AppHeader() {
 
         {/* Search */}
         <div className="hidden flex-1 md:block">
-          <div className="relative">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400" />
-
-            <Input
-              placeholder="Search users or posts..."
-              className="border-white/10 bg-white/5 pl-10 text-white placeholder:text-zinc-500 focus-visible:border-violet-500 focus-visible:ring-violet-500/30"
-            />
-          </div>
+          <HeaderSearch />
         </div>
 
         {/* Right */}
