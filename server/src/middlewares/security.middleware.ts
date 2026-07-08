@@ -7,7 +7,34 @@ import type { Express } from 'express';
 
 export const applySecurityMiddlewares = (app: Express) => {
   // Helment -> secure HTTP Headers
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+
+          scriptSrc: ["'self'"],
+
+          styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
+
+          imgSrc: [
+            "'self'",
+            'data:',
+            'https://res.cloudinary.com',
+            'https://images.unsplash.com',
+          ],
+
+          fontSrc: ["'self'", 'https:', 'data:'],
+
+          connectSrc: [
+            "'self'",
+            'http://localhost:8000',
+            'http://localhost:3000',
+          ],
+        },
+      },
+    })
+  );
 
   // Rate Limiting -> limit repeated requests to public APIs and endpoints
   // example = 100 requests per 15 minutes
