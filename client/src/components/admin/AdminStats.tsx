@@ -1,33 +1,59 @@
 'use client';
 
 import { Users, FileText, Flag, Shield } from 'lucide-react';
+import { useGetDashboardStatsQuery } from '@/features/admin/adminApi';
 
 import { Card } from '@/components/ui/card';
 
-const stats = [
-  {
-    title: 'Total Users',
-    value: '12,458',
-    icon: Users,
-  },
-  {
-    title: 'Posts',
-    value: '89,240',
-    icon: FileText,
-  },
-  {
-    title: 'Reports',
-    value: '36',
-    icon: Flag,
-  },
-  {
-    title: 'Admins',
-    value: '5',
-    icon: Shield,
-  },
-];
-
 export default function AdminStats() {
+  const { data, isLoading } = useGetDashboardStatsQuery();
+
+  const stats = [
+    {
+      title: 'Total Users',
+      value: data?.totalUsers ?? 0,
+      icon: Users,
+    },
+    {
+      title: 'Posts',
+      value: data?.totalPosts ?? 0,
+      icon: FileText,
+    },
+    {
+      title: 'Comments',
+      value: data?.totalComments ?? 0,
+      icon: Flag,
+    },
+    {
+      title: 'Likes',
+      value: data?.totalLikes ?? 0,
+      icon: Shield,
+    },
+  ];
+  if (isLoading) {
+    return (
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <Card
+            key={idx}
+            className="border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+          >
+            <div className="flex items-center justify-between">
+              <div className="w-3/4">
+                <div className="h-4 w-1/2 rounded bg-zinc-700/40 animate-pulse" />
+                <div className="mt-3 h-8 w-3/4 rounded bg-zinc-700/40 animate-pulse" />
+              </div>
+
+              <div className="rounded-xl bg-violet-500/10 p-4">
+                <div className="h-7 w-7 rounded bg-violet-400/30 animate-pulse" />
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
       {stats.map((item) => {

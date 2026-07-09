@@ -56,6 +56,7 @@ export const baseApi = createApi({
     'Notification',
     'Profile',
     'Search',
+    'Admin'
   ],
 
   endpoints: () => ({}),

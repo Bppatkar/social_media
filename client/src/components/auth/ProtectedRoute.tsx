@@ -2,9 +2,9 @@
 
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/features/auth/authSlice';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
+import { useAppDispatch } from '@/store/hooks';
 
 type ProtectedRouteProps = {
   children: ReactNode;
@@ -12,19 +12,20 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { data, error, isLoading, isSuccess } = useGetMeQuery();
 
-  useEffect(() => {
-    const status =
-      typeof error === 'object' && error && 'status' in error
-        ? (error as { status?: number }).status
-        : undefined;
+  const status =
+    typeof error === 'object' && error && 'status' in error
+      ? (error as { status?: number }).status
+      : undefined;
+  const unauthorized = status === 401;
 
-    if (status === 401) {
+  useEffect(() => {
+    if (unauthorized) {
       router.replace('/login');
     }
-  }, [error, router]);
+  }, [router, unauthorized]);
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -32,7 +33,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   }, [data, dispatch, isSuccess]);
 
-  if (isLoading) {
+  if (isLoading || unauthorized) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p>Loading...</p>
