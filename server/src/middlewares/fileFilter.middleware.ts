@@ -14,7 +14,6 @@ const fileFilter = (
     'image/png',
     'image/jpg',
     'image/webp',
-    'text/plain',
   ];
 
   if (!allowedMimeTypes.includes(file.mimetype)) {

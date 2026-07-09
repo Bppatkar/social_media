@@ -20,8 +20,8 @@ export const createPost = asyncHandler(
     const { content } = req.body;
     const file = req.file;
 
-    // console.log('Received file:', file);
-    // console.log('Received Body:', req.body);
+    console.log('Received file:', file);
+    console.log('Received Body:', req.body);
 
     let imageUrl = '';
     let imagePublicId = '';
