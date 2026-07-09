@@ -22,5 +22,6 @@ export interface PostCardProps {
   post: Post;
   variants?: 'feed' | 'profile';
   isOwner: boolean;
+  highlighted?: boolean;
 }
 

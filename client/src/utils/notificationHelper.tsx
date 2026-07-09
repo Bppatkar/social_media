@@ -32,5 +32,11 @@ export function getNotificationText(type: Notification['type']) {
 }
 
 export function getNotificationHref(notification: Notification) {
-  return notification.post ? '/feed' : `/profile/${notification.sender._id}`;
+  if (notification.post) {
+    const post = notification.post as string | { _id: string };
+    const postId = typeof post === 'string' ? post : post._id;
+    return `/feed?post=${postId}`;
+  }
+
+  return `/profile/${notification.sender._id}`;
 }

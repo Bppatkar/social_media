@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Bookmark, Heart, MessageCircle, Repeat2 } from 'lucide-react';
 
@@ -25,6 +25,7 @@ export default function PostCard({
   post,
   variants = 'feed',
   isOwner,
+  highlighted = false,
 }: PostCardProps) {
   const [commentOpen, setCommentOpen] = useState(false);
   const [liked, setLiked] = useState(post.likedByCurrentUser ?? false);
@@ -32,12 +33,19 @@ export default function PostCard({
   const [commentCount, setCommentCount] = useState(post.commentCount);
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setLiked(post.likedByCurrentUser ?? false);
     setLikeCount(post.likeCount);
     setCommentCount(post.commentCount);
   }, [post]);
+
+  useEffect(() => {
+    if (highlighted) {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlighted]);
 
   const handleLike = async () => {
     try {
@@ -85,7 +93,14 @@ export default function PostCard({
   };
 
   return (
-    <Card className="overflow-hidden border-white/10 bg-white/5 backdrop-blur-xl transition-all hover:border-violet-500/30">
+    <Card
+      ref={ref}
+      className={`overflow-hidden backdrop-blur-xl transition-all ${
+        highlighted
+          ? 'border-2 border-violet-500 bg-violet-500/10 shadow-lg shadow-violet-500/30'
+          : 'border-white/10 bg-white/5 hover:border-violet-500/30'
+      } `}
+    >
       <CardContent className="space-y-5 p-5">
         {/* Header */}
 
@@ -133,7 +148,8 @@ export default function PostCard({
           {post.image && (
             <div className="overflow-hidden rounded-2xl border border-white/10">
               <Image
-                loading="lazy"
+                loading="eager"
+                priority
                 src={post.image}
                 alt="Post"
                 width={900}

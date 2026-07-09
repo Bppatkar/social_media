@@ -8,11 +8,15 @@ import PostCard from '@/components/post/PostCard';
 import { useGetFeedPostsQuery } from '@/features/feed/postApi';
 import { useAppSelector } from '@/store/hooks';
 import { selectUser } from '@/features/auth/authSelectors';
+import {useSearchParams} from "next/navigation";
 
 export default function FeedPage() {
   const { data, isLoading, isError } = useGetFeedPostsQuery();
   const posts = data?.data.posts ?? [];
   const currentUser = useAppSelector(selectUser);
+  const searchParams = useSearchParams();
+  const highlightedPostId = searchParams.get('post');
+
 
   if (isLoading) {
     return <LoadingState />;
@@ -40,6 +44,7 @@ export default function FeedPage() {
             post={post}
             variants="feed"
             isOwner={post.owner._id === currentUser?._id}
+            highlighted={highlightedPostId === post._id}
           />
         ))
       )}

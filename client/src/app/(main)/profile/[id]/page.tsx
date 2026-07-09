@@ -10,11 +10,9 @@ import ProfileTabs from '@/components/profile/ProfileTabs';
 import PostCard from '@/components/post/PostCard';
 
 import { useGetUserPostsQuery } from '@/features/feed/postApi';
-import {
-  useGetUserProfileQuery,
-  useGetMyProfileQuery,
-} from '@/features/profile/profileApi';
+import { useGetUserProfileQuery } from '@/features/profile/profileApi';
 import { use } from 'react';
+import { useGetMeQuery } from '@/features/auth/api/authApi';
 
 export default function UserProfilePage({
   params,
@@ -29,7 +27,7 @@ export default function UserProfilePage({
     isError: userError,
   } = useGetUserProfileQuery(id);
 
-  const { data: me } = useGetMyProfileQuery();
+  const { data: me } = useGetMeQuery();
 
   const {
     data: posts = [],

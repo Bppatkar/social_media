@@ -3,16 +3,6 @@ import type { ApiResponse, Post, User } from '@/types';
 
 export const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMyProfile: builder.query<User, void>({
-      query: () => ({
-        url: '/auth/me',
-      }),
-
-      transformResponse: (response: ApiResponse<User>) => response.data,
-
-      providesTags: ['Profile'],
-    }),
-
     getUserProfile: builder.query<User, string>({
       query: (userId) => ({
         url: `/auth/${userId}`,
@@ -37,8 +27,4 @@ export const profileApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {
-  useGetMyProfileQuery,
-  useGetUserProfileQuery,
-  useUpdateProfileMutation,
-} = profileApi;
+export const { useGetUserProfileQuery, useUpdateProfileMutation } = profileApi;

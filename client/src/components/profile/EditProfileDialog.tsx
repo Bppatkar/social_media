@@ -24,10 +24,8 @@ import {
 
 import { getApiError } from '@/utils/getApiError';
 
-import {
-  useGetMyProfileQuery,
-  useUpdateProfileMutation,
-} from '@/features/profile/profileApi';
+import { useUpdateProfileMutation } from '@/features/profile/profileApi';
+import { useGetMeQuery } from '@/features/auth/api/authApi';
 
 interface Props {
   open: boolean;
@@ -35,7 +33,7 @@ interface Props {
 }
 
 export default function EditProfileDialog({ open, onOpenChange }: Props) {
-  const { data: me } = useGetMyProfileQuery();
+  const { data: me } = useGetMeQuery();
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 

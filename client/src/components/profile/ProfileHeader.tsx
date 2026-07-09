@@ -16,21 +16,19 @@ import { Card } from '@/components/ui/card';
 import { useFollow } from '@/hooks/useFollow';
 import { getApiError } from '@/utils/getApiError';
 
-import {
-  useUpdateProfileMutation,
-  useGetMyProfileQuery,
-} from '@/features/profile/profileApi';
+import { useUpdateProfileMutation } from '@/features/profile/profileApi';
 
 import FollowersDialog from './FollowersDialog';
 import FollowingDialog from './FollowingDialog';
 import UploadAvatarDialog from './UploadAvatarDialog';
+import { useGetMeQuery } from '@/features/auth/api/authApi';
 
 interface ProfileHeaderProps {
   user: User;
 }
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
-  const { refetch } = useGetMyProfileQuery(undefined);
+  const { refetch } = useGetMeQuery(undefined);
 
   const [editOpen, setEditOpen] = useState(false);
 

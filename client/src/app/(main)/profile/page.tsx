@@ -5,17 +5,17 @@ import ProfileTabs from '@/components/profile/ProfileTabs';
 import ProfilePhotos from '@/components/profile/ProfilePhotos';
 
 import PostCard from '@/components/post/PostCard';
-import { useGetMyProfileQuery } from '@/features/profile/profileApi';
 import { useGetUserPostsQuery } from '@/features/feed/postApi';
 import ErrorState from '@/components/feedback/ErrorState';
 import LoadingState from '@/components/feedback/LoadingState';
+import { useGetMeQuery } from '@/features/auth/api/authApi';
 
 export default function ProfilePage() {
   const {
     data: me,
     isLoading: userLoading,
     isError: userError,
-  } = useGetMyProfileQuery();
+  } = useGetMeQuery();
 
   const {
     data: posts,
