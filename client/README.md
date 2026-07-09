@@ -141,7 +141,6 @@ Frontend Logic
 
 ## Remaining Modules
 
-- Global Layout Logic
 - Settings Logic
 - Admin Logic
 - Socket.IO
@@ -209,11 +208,11 @@ Frontend Logic
 
 Current Module
 
-**Global Layout Logic**
+**Setting logic**
 
 Overall Progress
 
-**≈96%**
+**≈97%**
 
 ---
 
