@@ -1,12 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { Bell, Menu, Search, Settings, User, LogOut } from 'lucide-react';
+import { Bell, Menu, Settings, User, LogOut } from 'lucide-react';
 
 import Logo from '@/components/shared/Logo';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,7 +46,7 @@ export default function AppHeader() {
       dispatch(baseApi.util.resetApiState());
       toast.success('Logged out successfully');
       router.replace('/login');
-    } catch (error) {
+    } catch {
       toast.error('Failed to logout');
     }
   };
@@ -123,7 +122,7 @@ export default function AppHeader() {
                 className="h-10 w-10 rounded-full p-0"
               >
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={user?.profileImage} />
+                  <AvatarImage src={user?.profileImage} alt={user?.username} />
 
                   <AvatarFallback className="bg-violet-600 text-white">
                     {user?.username?.slice(0, 2).toUpperCase()}

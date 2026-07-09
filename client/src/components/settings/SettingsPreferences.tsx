@@ -17,7 +17,7 @@ export default function SettingsPreferences() {
           </p>
         </div>
 
-        <Switch defaultChecked />
+        <Switch defaultChecked disabled/>
       </div>
 
       <div className="flex items-center justify-between">
@@ -29,7 +29,7 @@ export default function SettingsPreferences() {
           </p>
         </div>
 
-        <Switch defaultChecked />
+        <Switch defaultChecked disabled/>
       </div>
 
       <div className="flex items-center justify-between">
@@ -37,11 +37,11 @@ export default function SettingsPreferences() {
           <p className="font-medium text-white">Dark Mode</p>
 
           <p className="text-sm text-zinc-500">
-            Theme toggle will be connected later.
+            Theme Prefereces will be available in a future update.
           </p>
         </div>
 
-        <Switch defaultChecked />
+        <Switch defaultChecked  disabled/>
       </div>
     </Card>
   );

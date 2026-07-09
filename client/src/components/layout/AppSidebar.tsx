@@ -71,7 +71,7 @@ export default function AppSidebar() {
       dispatch(baseApi.util.resetApiState());
       toast.success('Logged out successfully');
       router.replace('/login');
-    } catch (error) {
+    } catch {
       toast.error('Failed to logout');
     }
   };
@@ -144,8 +144,6 @@ export default function AppSidebar() {
           <UserAvatar src={user?.profileImage} alt={user?.username} />
 
           <div className="min-w-0 flex-1">
-            {/* Future */}
-
             <p className="truncate text-sm font-semibold text-white">
               {user?.username}
             </p>
@@ -162,13 +160,6 @@ export default function AppSidebar() {
           <LogOut className="h-5 w-5" />
           Logout
         </Button>
-
-        {/* Future */}
-
-        {/* Logout RTK Mutation */}
-        {/* Clear Redux */}
-        {/* Remove Tokens */}
-        {/* Redirect Login */}
       </div>
     </aside>
   );

@@ -9,7 +9,6 @@ import {
   Settings,
   Shield,
   User,
-  X,
 } from 'lucide-react';
 
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -28,18 +27,15 @@ import { logout } from '@/features/auth/authSlice';
 import { baseApi } from '@/services/api/baseApi';
 
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function MobileSidebar() {
   const { user } = useCurrentUser();
-
   const open = useAppSelector(selectMobileSidebarOpen);
-
   const dispatch = useAppDispatch();
-
   const router = useRouter();
-
   const [logoutApi] = useLogoutMutation();
+  const pathName = usePathname();
 
   const navigation = [
     {
@@ -74,15 +70,10 @@ export default function MobileSidebar() {
   const handleLogout = async () => {
     try {
       await logoutApi().unwrap();
-
       dispatch(logout());
-
       dispatch(baseApi.util.resetApiState());
-
       close();
-
       toast.success('Logged out successfully');
-
       router.replace('/login');
     } catch {
       toast.error('Failed to logout');
@@ -112,7 +103,12 @@ export default function MobileSidebar() {
               <Link key={item.href} href={item.href} onClick={close}>
                 <Button
                   variant="ghost"
-                  className="h-12 w-full justify-start gap-3 rounded-xl"
+                  className={`h-12 w-full justify-start gap-3 rounded-xl ${
+                    pathName === item.href ||
+                    pathName.startsWith(`${item.href}/`)
+                      ? 'bg-violet-600 text-white'
+                      : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                  }`}
                 >
                   <Icon className="h-5 w-5" />
 
@@ -126,7 +122,11 @@ export default function MobileSidebar() {
             <Link href="/admin" onClick={close}>
               <Button
                 variant="ghost"
-                className="h-12 w-full justify-start gap-3 rounded-xl"
+                className={`h-12 w-full justify-start gap-3 rounded-xl ${
+                  pathName === '/admin'
+                    ? 'bg-violet-600 text-white'
+                    : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                }`}
               >
                 <Shield className="h-5 w-5" />
                 Admin

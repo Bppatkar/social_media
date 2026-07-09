@@ -9,9 +9,12 @@ import { useUpdateProfileMutation } from '@/features/profile/profileApi';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { getApiError } from '@/utils/getApiError';
+import { setCredentials } from '@/features/auth/authSlice';
+import { useAppDispatch } from '@/store/hooks';
 
 export default function SettingsAccount() {
-  const { data: user, refetch } = useGetMeQuery();
+  const { data: user } = useGetMeQuery();
+  const dispatch = useAppDispatch();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -27,6 +30,10 @@ export default function SettingsAccount() {
 
   const onSaveChanges = async () => {
     if (!user) return;
+    if (!username.trim() || !email.trim()) {
+      toast.error('Username and email cannot be empty');
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -41,8 +48,7 @@ export default function SettingsAccount() {
       await updateProfile(formData).unwrap();
 
       toast.success('Profile updated successfully');
-
-      refetch();
+      dispatch(setCredentials({ user: { ...user, username, email } }));
     } catch (error) {
       toast.error(getApiError(error) || 'Failed to update profile');
     }

@@ -12,7 +12,7 @@ export default function SettingsDangerZone() {
         Permanently delete your account and all associated data.
       </p>
 
-      <Button variant="destructive">Delete Account</Button>
+      <Button variant="destructive" disabled>Delete Account (Coming soon)</Button>
     </Card>
   );
 }
