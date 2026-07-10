@@ -33,7 +33,7 @@ interface Props {
 }
 
 export default function EditProfileDialog({ open, onOpenChange }: Props) {
-  const { data: me } = useGetMeQuery();
+  const { data: me, refetch } = useGetMeQuery();
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
@@ -58,18 +58,15 @@ export default function EditProfileDialog({ open, onOpenChange }: Props) {
   const onSubmit = async (values: ProfileSchema) => {
     try {
       const formData = new FormData();
-
       formData.append('username', values.username);
-
       if (values.bio) {
         formData.append('bio', values.bio);
       }
 
       await updateProfile(formData).unwrap();
-
       toast.success('Profile updated successfully');
-
       onOpenChange(false);
+      await refetch();
     } catch (error) {
       toast.error(getApiError(error));
     }

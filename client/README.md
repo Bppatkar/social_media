@@ -52,15 +52,13 @@ MongoDB + Redis
 
 # Project Goal
 
-A production-grade social media platform focused on clean architecture, scalability and interview-quality engineering.
+A production-grade social media platform focused on clean architecture, scalability, performance, and interview-quality engineering.
 
 ---
 
 # Development Strategy
 
-## ✅ Phase 1
-
-Frontend UI
+## ✅ Phase 1 — Frontend UI
 
 Completed
 
@@ -76,9 +74,7 @@ Completed
 
 ---
 
-## 🚧 Phase 2
-
-Frontend Logic
+## 🚧 Phase 2 — Frontend Logic
 
 ### ✅ Authentication
 
@@ -104,12 +100,14 @@ Frontend Logic
 - My Profile
 - User Profile
 - Edit Profile
-- Upload Avatar
+- Avatar Upload
 - Follow
 - Unfollow
 - Followers
 - Following
 - User Posts
+- Profile Photos
+- Clickable User Navigation
 
 ### ✅ Search
 
@@ -134,17 +132,17 @@ Frontend Logic
 - Mark Single Read
 - Mark All Read
 - Navigation
-- Shared Components
 - RTK Query Cache
 
 ---
 
-## Remaining Modules
+## Remaining
 
 - Settings Logic
-- Admin Logic
-- Socket.IO
+- Admin Dashboard Logic
+- Socket.IO Integration
 - Production Polish
+- Final Testing
 
 ---
 
@@ -152,21 +150,25 @@ Frontend Logic
 
 ## Authentication
 
-- JWT
+- JWT Authentication
 - Protected Routes
 - Persist Login
 
 ## Feed
 
-- Create/Edit/Delete Post
+- Create/Edit/Delete Posts
 - Like
 - Share
+- Copy Link
 
 ## Profile
 
 - Edit Profile
 - Upload Avatar
 - Follow System
+- Followers
+- Following
+- User Profiles
 
 ## Search
 
@@ -176,7 +178,7 @@ Frontend Logic
 ## Comments
 
 - CRUD
-- Live Count
+- Live Counter
 
 ## Notifications
 
@@ -204,15 +206,15 @@ Frontend UI
 
 Frontend Logic
 
-🚧 In Progress
+🚧 Final Sprint
 
 Current Module
 
-**Setting logic**
+**Settings Logic**
 
 Overall Progress
 
-**≈97%**
+**≈98%**
 
 ---
 
@@ -220,12 +222,12 @@ Overall Progress
 
 - Production Architecture
 - Clean Code
-- Type Safety
-- Reusable Components
-- DRY
 - Feature-based Structure
-- Interview-focused
+- Type Safety
+- DRY
+- Reusable Components
 - Enterprise Practices
+- Interview-focused Development
 
 ---
 

@@ -9,6 +9,7 @@ import { useGetUserPostsQuery } from '@/features/feed/postApi';
 import ErrorState from '@/components/feedback/ErrorState';
 import LoadingState from '@/components/feedback/LoadingState';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
+import EmptyState from '@/components/feedback/EmptyState';
 
 export default function ProfilePage() {
   const {
@@ -37,7 +38,8 @@ export default function ProfilePage() {
       />
     );
   }
-  const images = posts?.filter((post) => post.image).map((post) => post.image!) ?? [];
+  const images =
+    posts?.filter((post) => post.image).map((post) => post.image!) ?? [];
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-8">
@@ -46,9 +48,16 @@ export default function ProfilePage() {
       <ProfileTabs
         posts={
           <div className="space-y-6">
-            {posts?.map((post) => (
-              <PostCard key={post._id} post={post} isOwner />
-            ))}
+            {posts?.length === 0 ? (
+              <EmptyState
+                title="No posts yet"
+                description="This user has not created any posts yet."
+              />
+            ) : (
+              posts?.map((post) => (
+                <PostCard key={post._id} post={post} isOwner />
+              ))
+            )}
           </div>
         }
         photos={<ProfilePhotos images={images} />}

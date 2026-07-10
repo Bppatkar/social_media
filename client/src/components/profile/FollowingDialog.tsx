@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import UserAvatar from '@/components/shared/UserAvatar';
 import { useGetFollowingQuery } from '@/features/follow/followApi';
-
+import Link from 'next/link';
 
 interface FollowingDialogProps {
   open: boolean;
@@ -59,19 +59,34 @@ export default function FollowingDialog({
                   key={item._id}
                   className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10"
                 >
-                  <UserAvatar
-                    src={item.following?.profileImage}
-                    alt={item.following?.username}
-                    size="md"
-                  />
+                  <Link
+                    href={`/profile/${item.following?._id}`}
+                    onClick={() => onOpenChange(false)}
+                  >
+                    <UserAvatar
+                      src={item.following?.profileImage}
+                      alt={item.following?.username}
+                      size="md"
+                    />
+                  </Link>
 
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate font-medium text-white">
-                      {item.following?.username}
+                      <Link
+                        href={`/profile/${item.following?._id}`}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        {item.following?.username}
+                      </Link>
                     </h3>
 
                     <p className="text-sm text-zinc-400">
-                      @{item.following?.username}
+                      <Link
+                        href={`/profile/${item.following?._id}`}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        @{item.following?.username}
+                      </Link>
                     </p>
                   </div>
                 </div>

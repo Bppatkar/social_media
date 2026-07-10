@@ -20,8 +20,8 @@ import { useUpdateProfileMutation } from '@/features/profile/profileApi';
 
 import FollowersDialog from './FollowersDialog';
 import FollowingDialog from './FollowingDialog';
-import UploadAvatarDialog from './UploadAvatarDialog';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
+import Link from 'next/link';
 
 interface ProfileHeaderProps {
   user: User;
@@ -29,22 +29,14 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
   const { refetch } = useGetMeQuery(undefined);
-
   const [editOpen, setEditOpen] = useState(false);
-
   const [followersOpen, setFollowersOpen] = useState(false);
-
   const [followingOpen, setFollowingOpen] = useState(false);
-
-  const [avatarOpen, setAvatarOpen] = useState(false);
-
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { toggleFollow, isLoading } = useFollow();
-
   const [updateProfile, { isLoading: uploadingAvatar }] =
     useUpdateProfileMutation();
-
   const handleFollow = async () => {
     await toggleFollow(user._id, user.isFollowing);
   };
@@ -57,23 +49,27 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
     const file = e.target.files?.[0];
 
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image.');
+      return;
+    }
 
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be under 5MB.');
+      return;
+    }
     const formData = new FormData();
-
     formData.append('username', user.username);
 
     if (user.bio) {
       formData.append('bio', user.bio);
     }
-
     formData.append('profileImage', file);
 
     try {
       await updateProfile(formData).unwrap();
-
       toast.success('Profile photo updated.');
-
-      refetch();
+      await refetch();
     } catch (error) {
       toast.error(getApiError(error));
     }
@@ -152,14 +148,18 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
           {/* User Info */}
           <div className="mt-6 space-y-3">
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-white">{user.username}</h1>
+              <h1 className="text-3xl font-bold text-white">
+                <Link href={`/profile/${user._id}`}>{user.username}</Link>
+              </h1>
 
               {user.role === 'admin' && (
                 <Badge className="bg-red-600">Admin</Badge>
               )}
             </div>
 
-            <p className="text-zinc-400">@{user.username}</p>
+            <p className="text-zinc-400 select-all">
+              <Link href={`/profile/${user._id}`}>@{user.username}</Link>
+            </p>
 
             {user.bio && (
               <p className="max-w-3xl leading-7 text-zinc-300">{user.bio}</p>
@@ -202,17 +202,13 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
               </div>
             </div>
           </div>{' '}
-          {/* <-- CLOSE mt-6 space-y-3 */}
         </div>{' '}
-        {/* <-- CLOSE relative px-8 pb-8 */}
       </Card>
 
       {/* Dialogs */}
 
       {user.isCurrentUser && (
         <>
-          <UploadAvatarDialog open={avatarOpen} onOpenChange={setAvatarOpen} />
-
           <EditProfileDialog open={editOpen} onOpenChange={setEditOpen} />
         </>
       )}

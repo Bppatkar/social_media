@@ -20,6 +20,7 @@ import {
 } from '@/features/feed/likeApi';
 import { getApiError } from '@/utils/getApiError';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 export default function PostCard({
   post,
@@ -106,15 +107,19 @@ export default function PostCard({
 
         <div className="flex items-start justify-between">
           <div className="flex gap-3">
-            <UserAvatar
-              src={post.owner.profileImage}
-              alt={post.owner.username}
-            />
+            <Link href={`/profile/${post.owner._id}`}>
+              <UserAvatar
+                src={post.owner.profileImage}
+                alt={post.owner.username}
+              />
+            </Link>
 
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-white">
-                  {post.owner.username}
+                  <Link href={`/profile/${post.owner._id}`}>
+                    {post.owner.username}
+                  </Link>
                 </h3>
 
                 <Badge
@@ -126,7 +131,9 @@ export default function PostCard({
               </div>
 
               <div className="flex items-center gap-2 text-sm text-zinc-400">
-                <span>@{post.owner.username}</span>
+                <Link href={`/profile/${post.owner._id}`}>
+                  <span>@{post.owner.username}</span>
+                </Link>
 
                 <span>•</span>
 

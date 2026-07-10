@@ -13,6 +13,7 @@ import { useGetUserPostsQuery } from '@/features/feed/postApi';
 import { useGetUserProfileQuery } from '@/features/profile/profileApi';
 import { use } from 'react';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
+import EmptyState from '@/components/feedback/EmptyState';
 
 export default function UserProfilePage({
   params,
@@ -62,13 +63,20 @@ export default function UserProfilePage({
       <ProfileTabs
         posts={
           <div className="space-y-6">
-            {posts.map((post) => (
-              <PostCard
-                key={post._id}
-                post={post}
-                isOwner={me?._id === user._id}
+            {posts.length === 0 ? (
+              <EmptyState
+                title="No posts yet"
+                description="This user has not created any posts yet."
               />
-            ))}
+            ) : (
+              posts.map((post) => (
+                <PostCard
+                  key={post._id}
+                  post={post}
+                  isOwner={me?._id === user._id}
+                />
+              ))
+            )}
           </div>
         }
         photos={<ProfilePhotos images={images} />}
