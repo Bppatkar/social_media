@@ -3,7 +3,9 @@ import Like from '../models/like.model.js';
 
 import ApiError from '../utils/ApiError.js';
 import { createNotificationService } from './notification.service.js';
-import { getIo } from '../socket/socket.js';
+import { emitNotification } from '../socket/emitNotification.js';
+import { buildNotificationSender } from '../utils/buildNotificationSender.js';
+import type { PopulatedNotificationSender } from '../types/notification.types.js';
 
 export const likePostService = async (postId: string, userId: string) => {
   const post = await Post.findById(postId);
@@ -36,12 +38,18 @@ export const likePostService = async (postId: string, userId: string) => {
       postId
     );
 
-    getIo().to(post.owner.toString()).emit('notification', {
-      id: notification._id.toString(),
-      type: notification.type,
-      sender: userId,
-      postId,
-      createdAt: notification.createdAt,
+    const populatedNotification = await notification.populate<{
+      sender: PopulatedNotificationSender;
+    }>('sender', 'username profileImage');
+
+    emitNotification({
+      recipientId: post.owner.toString(),
+      notification: {
+        id: populatedNotification._id.toString(),
+        type: populatedNotification.type,
+        sender: buildNotificationSender(populatedNotification.sender),
+        createdAt: populatedNotification.createdAt,
+      },
     });
   }
 

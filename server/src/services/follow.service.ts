@@ -5,8 +5,10 @@ import ApiError from '../utils/ApiError.js';
 
 import buildSortQuery from '../utils/sort.js';
 
-import { getIo } from '../socket/socket.js';
 import { createNotificationService } from './notification.service.js';
+import { emitNotification } from '../socket/emitNotification.js';
+import { buildNotificationSender } from '../utils/buildNotificationSender.js';
+import type { PopulatedNotificationSender } from '../types/notification.types.js';
 
 export const followUserService = async (
   followerId: string,
@@ -41,14 +43,19 @@ export const followUserService = async (
     'follow'
   );
 
-  try {
-    const io = getIo();
+  const populatedNotification = await notification.populate<{
+    sender: PopulatedNotificationSender;
+  }>('sender', 'username profileImage');
 
-    io.to(followingId).emit('notification', {
-      id: notification._id.toString(),
-      type: notification.type,
-      sender: followerId,
-      createdAt: notification.createdAt,
+  try {
+    emitNotification({
+      recipientId: followingId,
+      notification: {
+        id: populatedNotification._id.toString(),
+        type: populatedNotification.type,
+        sender: buildNotificationSender(populatedNotification.sender),
+        createdAt: populatedNotification.createdAt,
+      },
     });
   } catch {
     // Ignore during tests or when socket server isn't running.

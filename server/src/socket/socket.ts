@@ -1,12 +1,14 @@
 import { Server, Socket } from 'socket.io';
 import { registerNotificationEvents } from './notification.socket.js';
+import env from '../config/env.js';
 
 let io: Server;
 
 export const initSocket = (server: any) => {
   io = new Server(server, {
     cors: {
-      origin: '*',
+      origin: env.CLIENT_URL,
+      credentials: true,
     },
   });
 
