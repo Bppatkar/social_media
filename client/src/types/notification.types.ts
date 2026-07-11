@@ -11,6 +11,18 @@ export interface Notification {
   updatedAt: string;
 }
 
+export interface NotificationPayload {
+  id: string;
+  type: 'like' | 'comment' | 'follow';
+  sender: {
+    _id: string;
+    username: string;
+    profileImage?: string;
+  };
+  postId?: string;
+  createdAt: string;
+}
+
 export interface NotificationResponse {
   status: string;
   data: Notification[];

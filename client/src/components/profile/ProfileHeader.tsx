@@ -165,8 +165,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
               <p className="max-w-3xl leading-7 text-zinc-300">{user.bio}</p>
             )}
 
-            {/* Stats */}
-            {/* Stats */}
+           
 
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
               <button

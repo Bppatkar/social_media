@@ -49,21 +49,27 @@ export default function PostCard({
   }, [highlighted]);
 
   const handleLike = async () => {
+    const prevLiked = liked;
+    const prevLikeCount = likeCount;
+    const nextLiked = !liked;
+    const nextLikeCount = nextLiked ? likeCount + 1 : Math.max(0, likeCount - 1);
+
+    setLiked(nextLiked);
+    setLikeCount(nextLikeCount);
+
     try {
       if (liked) {
         const response = await unlikePost(post._id).unwrap();
-
-        setLiked(false);
 
         setLikeCount(response.data.likeCount);
       } else {
         const response = await likePost(post._id).unwrap();
 
-        setLiked(true);
-
         setLikeCount(response.data.likeCount);
       }
     } catch (error) {
+      setLiked(prevLiked);
+      setLikeCount(prevLikeCount);
       toast.error(getApiError(error));
     }
   };

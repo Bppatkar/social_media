@@ -9,7 +9,7 @@ export const likeApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
 
-      invalidatesTags: ['Post'],
+      invalidatesTags: ['Posts'],
     }),
 
     unlikePost: builder.mutation<ApiResponse<LikeResponse>, string>({
@@ -18,7 +18,7 @@ export const likeApi = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
 
-      invalidatesTags: ['Post'],
+      invalidatesTags: ['Posts'],
     }),
   }),
 });

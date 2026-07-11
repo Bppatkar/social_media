@@ -13,16 +13,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { useCreatePostMutation } from '@/features/feed/postApi';
 import { getApiError } from '@/utils/getApiError';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 export default function CreatePostCard() {
+  const {user}= useCurrentUser();
   const fileRef = useRef<HTMLInputElement>(null);
-
   const [content, setContent] = useState('');
-
   const [image, setImage] = useState<File | null>(null);
-
   const [preview, setPreview] = useState('');
-
   const [createPost, { isLoading }] = useCreatePostMutation();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +93,8 @@ export default function CreatePostCard() {
     <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
       <CardContent className="space-y-5 p-5">
         <div className="flex gap-4">
-          <UserAvatar />
+          <UserAvatar src={user?.profileImage} alt={user?.username}/>
+          
 
           <Textarea
             value={content}
