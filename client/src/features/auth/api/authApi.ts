@@ -31,6 +31,13 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
 
+    deleteAccount: builder.mutation<ApiResponse<null>, void>({
+      query: () => ({
+        url: '/users/me',
+        method: 'DELETE',
+      }),
+    }),
+
     getMe: builder.query<User, void>({
       query: () => ({
         url: '/auth/me',
@@ -48,6 +55,6 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
+  useDeleteAccountMutation,
   useGetMeQuery,
 } = authApi;
-

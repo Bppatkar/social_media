@@ -133,14 +133,22 @@ Completed
 - Mark All Read
 - Navigation
 - RTK Query Cache
+- Socket.IO Live Updates
+
+## ✅ Settings
+
+- Update Username
+- Update Email
+- Update Bio
+- Upload Avatar
+- Upload Cover
+- Delete Account
 
 ---
 
 ## Remaining
 
-- Settings Logic
 - Admin Dashboard Logic
-- Socket.IO Integration
 - Production Polish
 - Final Testing
 
@@ -210,7 +218,7 @@ Frontend Logic
 
 Current Module
 
-**Settings Logic**
+**Admin Dashboard Logic**
 
 Overall Progress
 

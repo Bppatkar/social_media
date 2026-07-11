@@ -8,6 +8,7 @@ import {
   refreshAccessTokenService,
   updateUserProfileService,
   getMeService,
+  deleteUserAccountService,
 } from '../services/auth.service.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
@@ -19,6 +20,22 @@ import {
 import { uploadSingleImageService } from '../services/media.service.js';
 import { COOKIE_NAMES } from '../constants/auth.constants.js';
 import { logAuditEvent } from '../utils/logger.util.js';
+
+export const deleteAccount = asyncHandler(
+  async (req: Request, res: Response) => {
+    await deleteUserAccountService(req.user!.userId);
+
+    clearAuthCookies(res);
+
+    logAuditEvent('User Account Deleted', {
+      userId: req.user?.userId,
+    });
+
+    res
+      .status(200)
+      .json(new ApiResponse(true, 'Account deleted successfully', null));
+  }
+);
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -81,7 +98,9 @@ export const getMe = asyncHandler(async (req: Request, res: Response) => {
 export const getUserProfile = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.params.userId as string;
-    const user = await getUserProfileService(userId);
+    const currentUserId = (req as Request & { user?: { userId: string } }).user!
+      .userId;
+    const user = await getUserProfileService(userId, currentUserId);
     res
       .status(200)
       .json(new ApiResponse(true, 'User profile retrieved successfully', user));
@@ -108,19 +127,39 @@ export const refreshAccessToken = asyncHandler(
 export const updateProfile = asyncHandler(
   async (req: Request, res: Response) => {
     const { username, email, bio } = req.body;
-    const file = req.file;
+    const files = req.files as
+      | {
+          profileImage?: Express.Multer.File[];
+          coverImage?: Express.Multer.File[];
+        }
+      | undefined;
 
     let profileImageUrl: string | undefined;
     let profileImagePublicId: string | undefined;
+    let coverImageUrl: string | undefined;
+    let coverImagePublicId: string | undefined;
 
-    if (file) {
+    const profileImageFile = files?.profileImage?.[0];
+    const coverImageFile = files?.coverImage?.[0];
+
+    if (profileImageFile) {
       const uploadImage = await uploadSingleImageService(
-        file.buffer,
+        profileImageFile.buffer,
         'avatars'
       );
 
       profileImageUrl = uploadImage.imageUrl;
       profileImagePublicId = uploadImage.imagePublicId;
+    }
+
+    if (coverImageFile) {
+      const uploadImage = await uploadSingleImageService(
+        coverImageFile.buffer,
+        'covers'
+      );
+
+      coverImageUrl = uploadImage.imageUrl;
+      coverImagePublicId = uploadImage.imagePublicId;
     }
 
     const updateData: {
@@ -129,6 +168,8 @@ export const updateProfile = asyncHandler(
       bio?: string;
       profileImage?: string;
       profileImagePublicId?: string;
+      coverImage?: string;
+      coverImagePublicId?: string;
     } = {};
 
     if (username) updateData.username = username;
@@ -138,6 +179,11 @@ export const updateProfile = asyncHandler(
     if (profileImageUrl && profileImagePublicId) {
       updateData.profileImage = profileImageUrl;
       updateData.profileImagePublicId = profileImagePublicId;
+    }
+
+    if (coverImageUrl && coverImagePublicId) {
+      updateData.coverImage = coverImageUrl;
+      updateData.coverImagePublicId = coverImagePublicId;
     }
 
     const updateUser = await updateUserProfileService(

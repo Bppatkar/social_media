@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Camera, Edit3, UserCheck, UserPlus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -29,20 +29,69 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
   const { refetch } = useGetMeQuery(undefined);
+  const [profileUser, setProfileUser] = useState(user);
   const [editOpen, setEditOpen] = useState(false);
   const [followersOpen, setFollowersOpen] = useState(false);
   const [followingOpen, setFollowingOpen] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const avatarRef = useRef<HTMLInputElement>(null);
+  const coverRef = useRef<HTMLInputElement>(null);
 
   const { toggleFollow, isLoading } = useFollow();
-  const [updateProfile, { isLoading: uploadingAvatar }] =
+  const [updateProfile, { isLoading: uploadingProfile }] =
     useUpdateProfileMutation();
+
+  useEffect(() => {
+    setProfileUser(user);
+  }, [user]);
+
   const handleFollow = async () => {
-    await toggleFollow(user._id, user.isFollowing);
+    const nextIsFollowing = !profileUser.isFollowing;
+    const previousUser = profileUser;
+
+    setProfileUser({
+      ...profileUser,
+      isFollowing: nextIsFollowing,
+      followersCount: Math.max(
+        0,
+        profileUser.followersCount + (nextIsFollowing ? 1 : -1)
+      ),
+    });
+
+    const success = await toggleFollow(
+      profileUser._id,
+      profileUser.isFollowing
+    );
+
+    if (!success) {
+      setProfileUser(previousUser);
+    }
   };
 
   const handleAvatarClick = () => {
-    fileRef.current?.click();
+    avatarRef.current?.click();
+  };
+
+  const handleCoverClick = () => {
+    coverRef.current?.click();
+  };
+
+  const uploadProfileImage = async (
+    file: File,
+    fieldName: 'profileImage' | 'coverImage',
+    successMessage: string
+  ) => {
+    const formData = new FormData();
+    formData.append('username', profileUser.username);
+
+    if (profileUser.bio) {
+      formData.append('bio', profileUser.bio);
+    }
+
+    formData.append(fieldName, file);
+
+    await updateProfile(formData).unwrap();
+    toast.success(successMessage);
+    await refetch();
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,18 +107,30 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
       toast.error('Image must be under 5MB.');
       return;
     }
-    const formData = new FormData();
-    formData.append('username', user.username);
-
-    if (user.bio) {
-      formData.append('bio', user.bio);
-    }
-    formData.append('profileImage', file);
 
     try {
-      await updateProfile(formData).unwrap();
-      toast.success('Profile photo updated.');
-      await refetch();
+      await uploadProfileImage(file, 'profileImage', 'Profile photo updated.');
+    } catch (error) {
+      toast.error(getApiError(error));
+    }
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image.');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be under 5MB.');
+      return;
+    }
+
+    try {
+      await uploadProfileImage(file, 'coverImage', 'Cover photo updated.');
     } catch (error) {
       toast.error(getApiError(error));
     }
@@ -79,14 +140,50 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
     <>
       <Card className="overflow-hidden border-white/10 bg-white/5 backdrop-blur-xl">
         {/* Cover */}
-        <div className="h-48 bg-linear-to-r from-violet-700 via-indigo-700 to-sky-700" />
+        <div className="relative h-48 overflow-hidden">
+          {profileUser.coverImage ? (
+            <div
+              className="h-full w-full bg-cover bg-center"
+              style={{ backgroundImage: `url(${profileUser.coverImage})` }}
+            />
+          ) : (
+            <div className="h-full w-full bg-linear-to-r from-violet-700 via-indigo-700 to-sky-700" />
+          )}
+
+          {user.isCurrentUser && (
+            <>
+              <input
+                hidden
+                ref={coverRef}
+                type="file"
+                accept="image/*"
+                onChange={handleCoverUpload}
+              />
+
+              <Button
+                size="sm"
+                variant="secondary"
+                disabled={uploadingProfile}
+                onClick={handleCoverClick}
+                className="absolute top-4 right-4 rounded-full bg-black/40 text-white hover:bg-black/60"
+              >
+                {uploadingProfile ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Camera className="mr-2 h-4 w-4" />
+                )}
+                Cover
+              </Button>
+            </>
+          )}
+        </div>
         <div className="relative px-8 pb-8">
           {/* Avatar + Buttons */}
           <div className="-mt-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="relative w-fit">
               <UserAvatar
-                src={user.profileImage}
-                alt={user.username}
+                src={profileUser.profileImage}
+                alt={profileUser.username}
                 size="lg"
               />
 
@@ -94,7 +191,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 <>
                   <input
                     hidden
-                    ref={fileRef}
+                    ref={avatarRef}
                     type="file"
                     accept="image/*"
                     onChange={handleAvatarUpload}
@@ -102,11 +199,11 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
 
                   <Button
                     size="icon"
-                    disabled={uploadingAvatar}
+                    disabled={uploadingProfile}
                     onClick={handleAvatarClick}
                     className="absolute right-0 bottom-0 rounded-full"
                   >
-                    {uploadingAvatar ? (
+                    {uploadingProfile ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <Camera className="h-4 w-4" />
@@ -129,9 +226,9 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 className="rounded-full"
                 disabled={isLoading}
                 onClick={handleFollow}
-                variant={user.isFollowing ? 'secondary' : 'default'}
+                variant={profileUser.isFollowing ? 'secondary' : 'default'}
               >
-                {user.isFollowing ? (
+                {profileUser.isFollowing ? (
                   <>
                     <UserCheck className="mr-2 h-4 w-4" />
                     Following
@@ -149,7 +246,9 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
           <div className="mt-6 space-y-3">
             <div className="flex items-center gap-3">
               <h1 className="text-3xl font-bold text-white">
-                <Link href={`/profile/${user._id}`}>{user.username}</Link>
+                <Link href={`/profile/${profileUser._id}`}>
+                  {profileUser.username}
+                </Link>
               </h1>
 
               {user.role === 'admin' && (
@@ -158,14 +257,16 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
             </div>
 
             <p className="text-zinc-400 select-all">
-              <Link href={`/profile/${user._id}`}>@{user.username}</Link>
+              <Link href={`/profile/${profileUser._id}`}>
+                @{profileUser.username}
+              </Link>
             </p>
 
-            {user.bio && (
-              <p className="max-w-3xl leading-7 text-zinc-300">{user.bio}</p>
+            {profileUser.bio && (
+              <p className="max-w-3xl leading-7 text-zinc-300">
+                {profileUser.bio}
+              </p>
             )}
-
-           
 
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
               <button
@@ -174,7 +275,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 className="rounded-xl p-3 text-center transition hover:bg-white/5"
               >
                 <h3 className="text-2xl font-bold text-white">
-                  {user.followersCount}
+                  {profileUser.followersCount}
                 </h3>
 
                 <p className="text-sm text-zinc-400">Followers</p>
@@ -186,19 +287,27 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 className="rounded-xl p-3 text-center transition hover:bg-white/5"
               >
                 <h3 className="text-2xl font-bold text-white">
-                  {user.followingCount}
+                  {profileUser.followingCount}
                 </h3>
 
                 <p className="text-sm text-zinc-400">Following</p>
               </button>
 
-              <div className="rounded-xl p-3 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  document
+                    .getElementById('profile-posts')
+                    ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="rounded-xl p-3 text-center transition hover:bg-white/5"
+              >
                 <h3 className="text-2xl font-bold text-white">
-                  {user.postsCount}
+                  {profileUser.postsCount}
                 </h3>
 
                 <p className="text-sm text-zinc-400">Posts</p>
-              </div>
+              </button>
             </div>
           </div>{' '}
         </div>{' '}

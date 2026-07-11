@@ -18,8 +18,12 @@ export function useFollow() {
       } else {
         await followUser(userId).unwrap();
       }
+
+      return true;
     } catch (error) {
       toast.error(getApiError(error));
+
+      return false;
     }
   };
 

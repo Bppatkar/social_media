@@ -4,9 +4,12 @@ import UserAvatar from '@/components/shared/UserAvatar';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
-import Link from 'next/link';
 
-export default function SettingsProfileCard() {
+interface Props {
+  onEditClick: () => void;
+}
+
+export default function SettingsProfileCard({ onEditClick }: Props) {
   const { data: user } = useGetMeQuery();
 
   return (
@@ -24,11 +27,13 @@ export default function SettingsProfileCard() {
           </p>
         </div>
 
-        <Link href="/profile">
-          <Button variant="outline" className="w-full md:w-auto">
-            Edit Profile
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          className="w-full md:w-auto"
+          onClick={onEditClick}
+        >
+          Edit Profile
+        </Button>
       </div>
     </Card>
   );

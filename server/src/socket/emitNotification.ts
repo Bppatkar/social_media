@@ -19,3 +19,17 @@ export const emitNotification = ({
     // Ignore when socket server is unavailable
   }
 };
+
+type FeedUpdatePayload = {
+  entity: 'post' | 'comment' | 'like';
+  action: 'created' | 'updated' | 'deleted';
+  postId?: string;
+};
+
+export const emitFeedUpdate = (payload: FeedUpdatePayload) => {
+  try {
+    getIo().emit('feed:update', payload);
+  } catch {
+    // Ignore when socket server is unavailable
+  }
+};

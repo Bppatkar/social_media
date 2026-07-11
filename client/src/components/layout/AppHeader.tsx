@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Bell, Menu, Settings, User, LogOut } from 'lucide-react';
 
@@ -22,6 +23,7 @@ import { toast } from 'sonner';
 import { logout } from '@/features/auth/authSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { useLogoutMutation } from '@/features/auth/api/authApi';
+import { useMarkAllNotificationsAsReadMutation } from '@/features/notification/notificationApi';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { baseApi } from '@/services/api/baseApi';
 import NotificationDropdown from '@/components/notification/NotificationDropdown';
@@ -33,10 +35,26 @@ export default function AppHeader() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [logoutApi] = useLogoutMutation();
-  const { data: unread } = useGetUnreadCountQuery();
+  const { data: unread, refetch: refetchUnread } = useGetUnreadCountQuery();
+  const [markAllRead] = useMarkAllNotificationsAsReadMutation();
+  const [notificationOpen, setNotificationOpen] = useState(false);
 
   const handleMenuClick = () => {
     dispatch(openMobileSidebar());
+  };
+
+  const handleNotificationOpenChange = async (open: boolean) => {
+    setNotificationOpen(open);
+
+    if (!open) return;
+
+    try {
+      await markAllRead().unwrap();
+    } catch {
+      // keep existing badge state if the request fails
+    } finally {
+      await refetchUnread();
+    }
   };
 
   const handleLogout = async () => {
@@ -86,7 +104,7 @@ export default function AppHeader() {
         <div className="flex items-center gap-2">
           {/* Notifications */}
 
-          <DropdownMenu>
+          <DropdownMenu onOpenChange={handleNotificationOpenChange}>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
@@ -95,7 +113,7 @@ export default function AppHeader() {
               >
                 <Bell className="h-5 w-5" />
 
-                {(unread?.count ?? 0) > 0 && (
+                {!notificationOpen && (unread?.count ?? 0) > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
                     {unread!.count > 99 ? '99+' : unread!.count}
                   </span>

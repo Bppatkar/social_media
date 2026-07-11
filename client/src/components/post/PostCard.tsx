@@ -52,7 +52,9 @@ export default function PostCard({
     const prevLiked = liked;
     const prevLikeCount = likeCount;
     const nextLiked = !liked;
-    const nextLikeCount = nextLiked ? likeCount + 1 : Math.max(0, likeCount - 1);
+    const nextLikeCount = nextLiked
+      ? likeCount + 1
+      : Math.max(0, likeCount - 1);
 
     setLiked(nextLiked);
     setLikeCount(nextLikeCount);

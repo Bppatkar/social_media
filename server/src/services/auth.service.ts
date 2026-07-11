@@ -13,6 +13,11 @@ import findRefreshTokenSession from '../utils/findRefreshTokenSession.js';
 import { logSecurityEvent, logInfo } from '../utils/logger.util.js';
 import { deleteCache, getCache, setCache } from './redis.service.js';
 import { deleteSingleImageService } from './media.service.js';
+import Post from '../models/post.model.js';
+import Comment from '../models/comment.model.js';
+import Like from '../models/like.model.js';
+import Notification from '../models/notification.model.js';
+import Follow from '../models/follow.model.js';
 
 export const registerUserService = async (
   username: string,
@@ -123,13 +128,6 @@ export const loginUserService = async (email: string, password: string) => {
     role: user.role,
   });
 
-  await RefreshToken.updateMany(
-    {
-      user: user._id,
-    },
-    { isRevoked: true }
-  );
-
   const refreshToken = generateRefreshToken({
     userId: user._id.toString(),
   });
@@ -169,22 +167,42 @@ export const logoutUserService = async (refreshToken: string) => {
   await existingToken.save();
 };
 
-export const getUserProfileService = async (userId: string) => {
+export const getUserProfileService = async (
+  userId: string,
+  currentUserId: string
+) => {
   const cacheKey = `user:${userId}`;
 
   const cachedUser = await getCache(cacheKey);
   if (cachedUser) {
     logInfo('Serving from Redis cache');
-    return cachedUser;
   }
 
-  const user = await User.findById(userId).select('-password');
+  const [user, followersCount, followingCount, postsCount, isFollowing] =
+    await Promise.all([
+      User.findById(userId).select('-password'),
+      Follow.countDocuments({ following: userId }),
+      Follow.countDocuments({ follower: userId }),
+      Post.countDocuments({ owner: userId }),
+      currentUserId === userId
+        ? Promise.resolve(false)
+        : Follow.exists({ follower: currentUserId, following: userId }),
+    ]);
+
   if (!user) {
     throw new ApiError(404, 'User not found');
   }
-  await setCache(cacheKey, user, 60);
+  const profile = {
+    ...user.toObject(),
+    followersCount,
+    followingCount,
+    postsCount,
+    isFollowing: Boolean(isFollowing),
+  };
+
+  await setCache(cacheKey, profile, 60);
   logInfo('Serving from MongoDB and caching in Redis');
-  return user;
+  return profile;
 };
 
 export const refreshAccessTokenService = async (refreshToken: string) => {
@@ -255,6 +273,8 @@ export const updateUserProfileService = async (
     bio?: string;
     profileImage?: string | undefined;
     profileImagePublicId?: string | undefined;
+    coverImage?: string | undefined;
+    coverImagePublicId?: string | undefined;
   }
 ) => {
   const user = await User.findById(userId);
@@ -302,6 +322,15 @@ export const updateUserProfileService = async (
     user.profileImagePublicId = updateData.profileImagePublicId;
   }
 
+  if (updateData.coverImage && updateData.coverImagePublicId) {
+    if (user.coverImagePublicId) {
+      await deleteSingleImageService(user.coverImagePublicId);
+    }
+
+    user.coverImage = updateData.coverImage;
+    user.coverImagePublicId = updateData.coverImagePublicId;
+  }
+
   await user.save();
 
   await deleteCache(`user:${userId}`);
@@ -315,6 +344,51 @@ export const updateUserProfileService = async (
   }
 
   return updatedUser;
+};
+
+export const deleteUserAccountService = async (userId: string) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  const userPosts = await Post.find({ owner: userId }).select(
+    '_id imagePublicId'
+  );
+  const postIds = userPosts.map((post) => post._id);
+
+  const publicIds = [
+    user.profileImagePublicId,
+    user.coverImagePublicId,
+    ...userPosts.map((post) => post.imagePublicId).filter(Boolean),
+  ].filter(Boolean) as string[];
+
+  await Promise.all(
+    publicIds.map((publicId) => deleteSingleImageService(publicId))
+  );
+
+  await Promise.all([
+    Post.deleteMany({ owner: userId }),
+    Comment.deleteMany({
+      $or: [{ commentedBy: userId }, { post: { $in: postIds } }],
+    }),
+    Like.deleteMany({ $or: [{ likedBy: userId }, { post: { $in: postIds } }] }),
+    Notification.deleteMany({
+      $or: [
+        { recipient: userId },
+        { sender: userId },
+        { post: { $in: postIds } },
+      ],
+    }),
+    Follow.deleteMany({ $or: [{ follower: userId }, { following: userId }] }),
+    RefreshToken.deleteMany({ user: userId }),
+    deleteCache(`user:${userId}`),
+  ]);
+
+  await user.deleteOne();
+
+  return { success: true };
 };
 
 export const getMeService = async (userId: string) => {

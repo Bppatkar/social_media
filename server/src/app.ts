@@ -25,12 +25,31 @@ import adminRoutes from './routes/admin.routes.js';
 import feedRoutes from './routes/feed.routes.js';
 import monitoringRoutes from './routes/monitoring.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
+import userRoutes from './routes/user.routes.js';
 import { setCache, getCache } from './services/redis.service.js';
 
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
+
+const allowedOrigins = new Set([
+  env.CLIENT_URL,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+]);
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: any) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+};
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -46,12 +65,7 @@ app.use(requestIdMiddleware);
 app.use(loggerMiddleware);
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: env.CLIENT_URL || 'http://localhost:3000', // Allow requests from the client URL
-    credentials: true, // Allow cookies to be sent with requests
-  })
-);
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '10kb' })); // attackers can only send small payloads to prevent DoS attacks
 
@@ -98,6 +112,7 @@ app.use('/api/follows', followRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/feed', feedRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/users', userRoutes);
 app.use(errorMiddleware);
 
 export default app;

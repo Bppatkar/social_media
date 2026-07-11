@@ -4,6 +4,7 @@ import {
   getUserProfile,
   login,
   logout,
+  deleteAccount,
   refreshAccessToken,
   register,
   updateProfile,
@@ -188,7 +189,7 @@ router.get('/me', authMiddleware, getMe);
  *                       example: admin
  *       400:
  *         description: Bad request - validation errors
- *       401: 
+ *       401:
  *         description: Unauthorized - invalid credentials
  */
 
@@ -233,7 +234,10 @@ router.get(
 router.patch(
   '/update-profile',
   authMiddleware,
-  upload.single('profileImage'),
+  upload.fields([
+    { name: 'profileImage', maxCount: 1 },
+    { name: 'coverImage', maxCount: 1 },
+  ]),
   validate(updateProfileSchema),
   updateProfile
 );
@@ -254,5 +258,7 @@ router.patch(
  *         description: Unauthorized
  */
 router.post('/logout', authMiddleware, logout);
+
+router.delete('/me', authMiddleware, deleteAccount);
 
 export default router;

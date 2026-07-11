@@ -7,6 +7,7 @@ import { invalidateFeedCacheService } from './feed.service.js';
 import User from '../models/user.model.js';
 import Like from '../models/like.model.js';
 import { attachLikeStatus } from './post.util.js';
+import { emitFeedUpdate } from '../socket/emitNotification.js';
 
 export const createPostService = async (
   content: string,
@@ -21,6 +22,11 @@ export const createPostService = async (
     owner: ownerId,
   });
   await invalidateFeedCacheService();
+  emitFeedUpdate({
+    entity: 'post',
+    action: 'created',
+    postId: post._id.toString(),
+  });
   return post;
 };
 
@@ -111,6 +117,7 @@ export const updatePostService = async (
 
   await post.save();
   await invalidateFeedCacheService();
+  emitFeedUpdate({ entity: 'post', action: 'updated', postId: postId });
   return post;
 };
 
@@ -132,6 +139,7 @@ export const deletePostService = async (postId: string, userId: string) => {
 
   await post.deleteOne();
   await invalidateFeedCacheService();
+  emitFeedUpdate({ entity: 'post', action: 'deleted', postId: postId });
   return post;
 };
 

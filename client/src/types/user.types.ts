@@ -5,6 +5,7 @@ export interface User {
   role: 'user' | 'admin';
   bio?: string;
   profileImage?: string;
+  coverImage?: string;
   followersCount: number;
   followingCount: number;
   postsCount: number;

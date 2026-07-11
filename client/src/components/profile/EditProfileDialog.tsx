@@ -14,6 +14,7 @@ import {
 
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 import SubmitButton from '@/components/shared/SubmitButton';
 
@@ -59,8 +60,24 @@ export default function EditProfileDialog({ open, onOpenChange }: Props) {
     try {
       const formData = new FormData();
       formData.append('username', values.username);
+
       if (values.bio) {
         formData.append('bio', values.bio);
+      }
+
+      const profileImageInput = (
+        document.getElementById('profileImage') as HTMLInputElement | null
+      )?.files?.[0];
+      const coverImageInput = (
+        document.getElementById('coverImage') as HTMLInputElement | null
+      )?.files?.[0];
+
+      if (profileImageInput) {
+        formData.append('profileImage', profileImageInput);
+      }
+
+      if (coverImageInput) {
+        formData.append('coverImage', coverImageInput);
       }
 
       await updateProfile(formData).unwrap();
@@ -94,6 +111,16 @@ export default function EditProfileDialog({ open, onOpenChange }: Props) {
             {errors.bio && (
               <p className="text-sm text-red-500">{errors.bio.message}</p>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="profileImage">Avatar</Label>
+            <Input id="profileImage" type="file" accept="image/*" />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="coverImage">Cover Photo</Label>
+            <Input id="coverImage" type="file" accept="image/*" />
           </div>
 
           <SubmitButton type="submit" loading={isLoading}>

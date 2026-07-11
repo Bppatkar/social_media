@@ -21,9 +21,11 @@ import {
 } from '@/lib/validations/register.schema';
 import { getApiError } from '@/utils/getApiError';
 import { useRegisterMutation } from '@/features/auth/api/authApi';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterForm() {
   const router = useRouter();
+  const { login } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -50,8 +52,10 @@ export default function RegisterForm() {
         email: values.email,
         password: values.password,
       }).unwrap();
+
+      login(response.data.user);
       toast.success(response.message || 'Registered successfully');
-      router.replace('/login');
+      router.replace('/feed');
     } catch (error) {
       toast.error(getApiError(error));
     }

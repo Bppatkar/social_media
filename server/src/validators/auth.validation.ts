@@ -1,4 +1,4 @@
-import {  z } from 'zod';
+import { z } from 'zod';
 import {
   emailSchema,
   passwordSchema,
@@ -31,7 +31,10 @@ export const updateProfileSchema = z.object({
   body: z
     .object({
       username: usernameSchema.optional(),
+      email: emailSchema.optional(),
       bio: z.string().max(200).optional(),
+      profileImage: z.string().optional(),
+      coverImage: z.string().optional(),
     })
     .strict(),
 });

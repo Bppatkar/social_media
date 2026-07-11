@@ -25,7 +25,7 @@ export default function ProfileTabs({ posts, photos }: Props) {
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="posts" className="mt-6">
+      <TabsContent value="posts" className="mt-6" id="profile-posts">
         {posts}
       </TabsContent>
 

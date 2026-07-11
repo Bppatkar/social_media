@@ -10,6 +10,8 @@ export const profileSchema = z.object({
   bio: z.string().max(200, 'Bio cannot exceed 200 characters.').optional(),
 
   profileImage: z.instanceof(File).optional().or(z.undefined()),
+
+  coverImage: z.instanceof(File).optional().or(z.undefined()),
 });
 
 export type ProfileSchema = z.infer<typeof profileSchema>;

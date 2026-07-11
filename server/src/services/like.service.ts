@@ -6,6 +6,7 @@ import { createNotificationService } from './notification.service.js';
 import { emitNotification } from '../socket/emitNotification.js';
 import { buildNotificationSender } from '../utils/buildNotificationSender.js';
 import type { PopulatedNotificationSender } from '../types/notification.types.js';
+import { emitFeedUpdate } from '../socket/emitNotification.js';
 
 export const likePostService = async (postId: string, userId: string) => {
   const post = await Post.findById(postId);
@@ -29,6 +30,8 @@ export const likePostService = async (postId: string, userId: string) => {
     { $inc: { likeCount: 1 } },
     { new: true }
   );
+
+  emitFeedUpdate({ entity: 'like', action: 'created', postId });
 
   if (post.owner.toString() !== userId) {
     const notification = await createNotificationService(
@@ -69,6 +72,8 @@ export const unlikePostService = async (postId: string, userId: string) => {
     { $inc: { likeCount: -1 } },
     { new: true }
   );
+
+  emitFeedUpdate({ entity: 'like', action: 'deleted', postId });
   return {
     likeCount: updatedPost?.likeCount || 0,
   };

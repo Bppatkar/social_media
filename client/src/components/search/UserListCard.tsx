@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { UserCheck, UserPlus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -19,8 +20,13 @@ interface Props {
 
 export default function UserListCard({ user }: Props) {
   const router = useRouter();
+  const [localUser, setLocalUser] = useState(user);
 
   const { toggleFollow, isLoading } = useFollow();
+
+  useEffect(() => {
+    setLocalUser(user);
+  }, [user]);
 
   const handleProfile = () => {
     router.push(`/profile/${user._id}`);
@@ -29,7 +35,19 @@ export default function UserListCard({ user }: Props) {
   const handleFollow = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    await toggleFollow(user._id, user.isFollowing);
+    const nextIsFollowing = !localUser.isFollowing;
+    const previousUser = localUser;
+
+    setLocalUser({
+      ...localUser,
+      isFollowing: nextIsFollowing,
+    });
+
+    const success = await toggleFollow(localUser._id, localUser.isFollowing);
+
+    if (!success) {
+      setLocalUser(previousUser);
+    }
   };
 
   return (
@@ -63,10 +81,10 @@ export default function UserListCard({ user }: Props) {
         <Button
           disabled={isLoading}
           onClick={handleFollow}
-          variant={user.isFollowing ? 'secondary' : 'default'}
+          variant={localUser.isFollowing ? 'secondary' : 'default'}
           className="rounded-full"
         >
-          {user.isFollowing ? (
+          {localUser.isFollowing ? (
             <>
               <UserCheck className="mr-2 h-4 w-4" />
               Following

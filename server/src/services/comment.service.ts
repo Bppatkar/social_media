@@ -9,6 +9,7 @@ import { createNotificationService } from './notification.service.js';
 import { emitNotification } from '../socket/emitNotification.js';
 import { buildNotificationSender } from '../utils/buildNotificationSender.js';
 import type { PopulatedNotificationSender } from '../types/notification.types.js';
+import { emitFeedUpdate } from '../socket/emitNotification.js';
 
 export const addCommentService = async (
   postId: string,
@@ -56,6 +57,8 @@ export const addCommentService = async (
       },
     });
   }
+
+  emitFeedUpdate({ entity: 'comment', action: 'created', postId });
 
   return createdComment;
 };
@@ -126,6 +129,12 @@ export const deleteCommentService = async (
 
   await comment.deleteOne();
 
+  emitFeedUpdate({
+    entity: 'comment',
+    action: 'deleted',
+    postId: comment.post.toString(),
+  });
+
   return { message: 'Comment deleted successfully' };
 };
 
@@ -152,5 +161,11 @@ export const updateCommentService = async (
     'commentedBy',
     'username profileImage'
   );
+
+  emitFeedUpdate({
+    entity: 'comment',
+    action: 'updated',
+    postId: comment.post.toString(),
+  });
   return updatedComment;
 };

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addNotification, setConnected } from './notificationSlice';
 import type { NotificationPayload } from '@/types';
 import { notificationApi } from './notificationApi';
+import { baseApi } from '@/services/api/baseApi';
 
 export default function NotificationListener() {
   const dispatch = useAppDispatch();
@@ -41,14 +42,20 @@ export default function NotificationListener() {
       dispatch(notificationApi.util.invalidateTags(['Notification']));
     };
 
+    const handleFeedUpdate = () => {
+      dispatch(baseApi.util.invalidateTags(['Posts', 'Comment']));
+    };
+
     socket.on('connect', handleConnect);
     socket.on('disconnect', handleDisconnect);
     socket.on('notification', handleNotification);
+    socket.on('feed:update', handleFeedUpdate);
 
     return () => {
       socket.off('connect', handleConnect);
       socket.off('disconnect', handleDisconnect);
       socket.off('notification', handleNotification);
+      socket.off('feed:update', handleFeedUpdate);
     };
   }, [dispatch, isAuthenticated, user?._id]);
 
