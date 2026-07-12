@@ -4,16 +4,17 @@ import UserAvatar from '@/components/shared/UserAvatar';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
+import { memo } from 'react';
 
 interface Props {
   onEditClick: () => void;
 }
 
-export default function SettingsProfileCard({ onEditClick }: Props) {
+function SettingsProfileCard({ onEditClick }: Props) {
   const { data: user } = useGetMeQuery();
 
   return (
-    <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+    <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-200 hover:border-violet-500/40 hover:shadow-lg">
       <div className="flex flex-col gap-5 md:flex-row md:items-center">
         <UserAvatar size="lg" src={user?.profileImage} alt={user?.username} />
 
@@ -38,3 +39,5 @@ export default function SettingsProfileCard({ onEditClick }: Props) {
     </Card>
   );
 }
+
+export default memo(SettingsProfileCard);

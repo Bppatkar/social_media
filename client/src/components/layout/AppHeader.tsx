@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Bell, Menu, Settings, User, LogOut } from 'lucide-react';
+import { Bell, Menu, Settings, User, LogOut, Shield } from 'lucide-react';
 
 import Logo from '@/components/shared/Logo';
 
@@ -80,7 +80,7 @@ export default function AppHeader() {
             size="icon"
             className="text-white md:hidden"
             onClick={handleMenuClick}
-            area-label="Open Navigation Menu"
+            aria-label="Open Navigation Menu"
           >
             <Menu aria-hidden="true" className="h-5 w-5" />
           </Button>
@@ -91,7 +91,7 @@ export default function AppHeader() {
 
           {/* Mobile */}
 
-          <Link href="/feed" className="md:hidden">
+          <Link href="/feed" className="md:hidden" aria-label="Go to Feed">
             <Logo />
           </Link>
         </div>
@@ -113,7 +113,7 @@ export default function AppHeader() {
                 className="relative text-white hover:bg-white/10"
                 aria-label="Open Notifications"
               >
-                <Bell  aria-hidden="true" className="h-5 w-5" />
+                <Bell aria-hidden="true" className="h-5 w-5" />
 
                 {!notificationOpen && (unread?.count ?? 0) > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
@@ -162,6 +162,15 @@ export default function AppHeader() {
                   Profile
                 </Link>
               </DropdownMenuItem>
+
+              {user?.role === 'admin' && (
+                <DropdownMenuItem asChild>
+                  <Link href="/admin">
+                    <Shield aria-hidden="true" className="mr-2 h-4 w-4" />
+                    Admin Dashboard
+                  </Link>
+                </DropdownMenuItem>
+              )}
 
               <DropdownMenuItem asChild>
                 <Link href="/settings">

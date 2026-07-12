@@ -21,7 +21,7 @@ export default function UserAvatar({
 
   return (
     <Avatar className={sizes[size]}>
-      <AvatarImage src={src} alt={src}/>
+      <AvatarImage src={src} alt={alt}/>
 
       <AvatarFallback className="bg-violet-600 text-white">
         {alt.charAt(0).toUpperCase()}

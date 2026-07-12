@@ -7,7 +7,8 @@ import UserTable from '@/components/admin/UserTable';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin',
+  title: 'Admin Dashboard',
+  description: 'Platform administration panel.',
 };
 
 export default function AdminPage() {

@@ -14,12 +14,13 @@ import {
   getNotificationText,
   getNotificationHref,
 } from '@/utils/notificationHelper';
+import { memo } from 'react';
 
 interface Props {
   notification: Notification;
 }
 
-export default function NotificationCard({ notification }: Props) {
+function NotificationCard({ notification }: Props) {
   const [markRead] = useMarkNotificationAsReadMutation();
 
   const handleClick = async () => {
@@ -35,7 +36,7 @@ export default function NotificationCard({ notification }: Props) {
   return (
     <Link href={getNotificationHref(notification)} onClick={handleClick}>
       <Card
-        className={`border-white/10 p-5 transition hover:border-violet-500/30 ${
+        className={`border-white/10 p-5 transition-all duration-200 hover:border-violet-500/40 hover:shadow-lg ${
           notification.isRead
             ? 'bg-white/5'
             : 'border-violet-500/40 bg-violet-500/10'
@@ -74,3 +75,5 @@ export default function NotificationCard({ notification }: Props) {
     </Link>
   );
 }
+
+export default memo(NotificationCard);

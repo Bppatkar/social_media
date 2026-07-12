@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { setCredentials } from '@/features/auth/authSlice';
 import { useGetMeQuery } from '@/features/auth/api/authApi';
 import { useAppDispatch } from '@/store/hooks';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 type ProtectedRouteProps = {
   children: ReactNode;
@@ -36,7 +37,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   if (isLoading || unauthorized) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+        <LoadingSpinner className="h-12 w-12 text-violet-500" />
       </div>
     );
   }

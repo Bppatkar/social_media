@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 
 export default function AdminCharts() {
   return (
-    <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+    <Card className="border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-200 hover:border-violet-500/40 hover:shadow-lg">
       <h2 className="mb-6 text-xl font-semibold text-white">
         Platform Analytics
       </h2>

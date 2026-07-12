@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Bookmark, Heart, MessageCircle, Repeat2 } from 'lucide-react';
 
@@ -22,7 +22,7 @@ import { getApiError } from '@/utils/getApiError';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
-export default function PostCard({
+function PostCard({
   post,
   variants = 'feed',
   isOwner,
@@ -76,7 +76,7 @@ export default function PostCard({
     }
   };
 
-  const handleShare = async () => {
+  const handleShare = useCallback(async () => {
     const url = `${window.location.origin}/post/${post._id}`;
 
     try {
@@ -93,18 +93,18 @@ export default function PostCard({
       if (!navigator.share) return;
       // user cancelled the share action
     }
-  };
+  }, [post._id]);
 
-  const handleBookmark = () => {
+  const handleBookmark = useCallback(() => {
     toast.info(
       'Bookmarks are intentionally excluded from this interview edition.'
     );
-  };
+  }, []);
 
   return (
     <Card
       ref={ref}
-      className={`overflow-hidden backdrop-blur-xl transition-all ${
+      className={`overflow-hidden backdrop-blur-xl transition-all duration-200 hover:border-violet-500/40 hover:shadow-lg ${
         highlighted
           ? 'border-2 border-violet-500 bg-violet-500/10 shadow-lg shadow-violet-500/30'
           : 'border-white/10 bg-white/5 hover:border-violet-500/30'
@@ -115,7 +115,10 @@ export default function PostCard({
 
         <div className="flex items-start justify-between">
           <div className="flex gap-3">
-            <Link href={`/profile/${post.owner._id}`}>
+            <Link
+              href={`/profile/${post.owner._id}`}
+              aria-label={`View ${post.owner.username}'s profile`}
+            >
               <UserAvatar
                 src={post.owner.profileImage}
                 alt={post.owner.username}
@@ -125,7 +128,10 @@ export default function PostCard({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-white">
-                  <Link href={`/profile/${post.owner._id}`}>
+                  <Link
+                    href={`/profile/${post.owner._id}`}
+                    aria-label={`View ${post.owner.username}'s profile`}
+                  >
                     {post.owner.username}
                   </Link>
                 </h3>
@@ -139,7 +145,10 @@ export default function PostCard({
               </div>
 
               <div className="flex items-center gap-2 text-sm text-zinc-400">
-                <Link href={`/profile/${post.owner._id}`}>
+                <Link
+                  href={`/profile/${post.owner._id}`}
+                  aria-label={`View ${post.owner.username}'s profile`}
+                >
                   <span>@{post.owner.username}</span>
                 </Link>
 
@@ -193,10 +202,11 @@ export default function PostCard({
           <Button
             variant="ghost"
             onClick={handleLike}
-            area-label={liked ? 'Unlike Post' : 'Like Post'}
+            aria-label={liked ? 'Unlike Post' : 'Like Post'}
             className="justify-center gap-2 text-zinc-300 hover:bg-red-500/10 hover:text-red-400"
           >
             <Heart
+              aria-hidden="true"
               className={`h-5 w-5 ${liked ? 'fill-red-500 text-red-500' : ''}`}
             />
             Like
@@ -205,30 +215,30 @@ export default function PostCard({
           <Button
             variant="ghost"
             onClick={() => setCommentOpen(true)}
-            area-label=" Open Comment"
+            aria-label="Open Comments"
             className="justify-center gap-2 text-zinc-300 hover:bg-sky-500/10 hover:text-sky-400"
           >
-            <MessageCircle className="h-5 w-5" />
+            <MessageCircle aria-hidden="true" className="h-5 w-5" />
             Comment
           </Button>
 
           <Button
             variant="ghost"
             onClick={handleShare}
-            area-label="Share Post"
-            className="justify-center gap-2 text-zinc-300 hover:bg-emerald-500/10 hover:text-emerald-400"
+            aria-label="Share Post"
+            className="justify-center gap-2 text-zinc-300 transition-all duration-200 hover:scale-[1.01] hover:bg-emerald-500/10 hover:text-emerald-400 active:scale-[0.99]"
           >
-            <Repeat2 className="h-5 w-5" />
+            <Repeat2 aria-hidden="true" className="h-5 w-5" />
             Share
           </Button>
 
           <Button
             variant="ghost"
             onClick={handleBookmark}
-            area-label="Save Post"
+            aria-label="Save Post"
             className="justify-center gap-2 text-zinc-300 hover:bg-violet-500/10 hover:text-violet-400"
           >
-            <Bookmark className="h-5 w-5" />
+            <Bookmark aria-hidden="true" className="h-5 w-5" />
             Save
           </Button>
         </div>
@@ -243,3 +253,5 @@ export default function PostCard({
     </Card>
   );
 }
+
+export default memo(PostCard);

@@ -11,7 +11,7 @@ import {
 import { MoreVertical } from 'lucide-react';
 
 import type { Comment } from '@/types';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import EditCommentDialog from './EditCommentDialog';
 import DeleteCommentDialog from './DeleteCommentDialog';
@@ -21,7 +21,7 @@ interface Props {
   onCommentDeleted: () => void;
 }
 
-export default function CommentCard({ comment, onCommentDeleted }: Props) {
+function CommentCard({ comment, onCommentDeleted }: Props) {
   const { user } = useCurrentUser();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -96,3 +96,5 @@ export default function CommentCard({ comment, onCommentDeleted }: Props) {
     </>
   );
 }
+
+export default memo(CommentCard);

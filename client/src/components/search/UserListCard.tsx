@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { UserCheck, UserPlus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -18,7 +18,7 @@ interface Props {
   user: SearchUser;
 }
 
-export default function UserListCard({ user }: Props) {
+ function UserListCard({ user }: Props) {
   const router = useRouter();
   const [localUser, setLocalUser] = useState(user);
 
@@ -51,7 +51,7 @@ export default function UserListCard({ user }: Props) {
   };
 
   return (
-    <Card className="border-white/10 bg-white/5 p-5 transition hover:border-violet-500/30">
+    <Card className="border-white/10 bg-white/5 p-5 transition-all duration-200 hover:border-violet-500/40 hover:shadow-lg">
       <div className="flex items-center justify-between">
         <div
           role="button"
@@ -100,3 +100,5 @@ export default function UserListCard({ user }: Props) {
     </Card>
   );
 }
+
+export default memo(UserListCard)
