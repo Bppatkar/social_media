@@ -18,7 +18,7 @@ export default function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 px-6 py-16 text-center">
+    <div role="status" className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 px-6 py-16 text-center">
       <div className="mb-5 rounded-full bg-violet-500/10 p-4">
         <Inbox className="h-10 w-10 text-violet-400" />
       </div>

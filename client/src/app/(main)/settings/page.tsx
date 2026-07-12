@@ -7,6 +7,8 @@ import SettingsPreferences from '@/components/settings/SettingsPreferences';
 import SettingsProfileCard from '@/components/settings/SettingsProfileCard';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
 
+
+
 export default function SettingsPage() {
   const [editOpen, setEditOpen] = useState(false);
 

@@ -12,6 +12,8 @@ import { getApiError } from '@/utils/getApiError';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
+
+
 export default function NotificationsPage() {
   const { data, isLoading, isError } = useGetNotificationsQuery();
 

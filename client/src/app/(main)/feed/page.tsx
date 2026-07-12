@@ -10,6 +10,8 @@ import { useAppSelector } from '@/store/hooks';
 import { selectUser } from '@/features/auth/authSelectors';
 import {useSearchParams} from "next/navigation";
 
+
+
 export default function FeedPage() {
   const { data, isLoading, isError } = useGetFeedPostsQuery();
   const posts = data?.data.posts ?? [];

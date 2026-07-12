@@ -14,6 +14,8 @@ import ErrorState from '@/components/feedback/ErrorState';
 import LoadingState from '@/components/feedback/LoadingState';
 import { useDebounce } from '@/hooks/useDebounce';
 
+
+
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 500);

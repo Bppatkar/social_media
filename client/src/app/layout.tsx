@@ -14,10 +14,32 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata = {
-  title: 'SocialSphere',
+export const metadata: Metadata = {
+  title: {
+    default: 'SocialSphere',
+    template: '%s | SocialSphere',
+  },
   description:
-    'Modern production-ready social media platform built using Next.js, Express.js, MongoDB, Redis, Docker and AWS.',
+    'Production-grade social media platform built with Next.js, Express.js, MongoDB, Redis, Socket.IO, Docker, and AWS.',
+  applicationName: 'SocialSphere',
+  keywords: [
+    'Social Media',
+    'Next.js',
+    'React',
+    'TypeScript',
+    'MongoDB',
+    'Express',
+    'Redis',
+    'Socket.IO',
+    'Docker',
+    'AWS',
+  ],
+  authors: [{ name: 'Bhanu Pratap Patkar' }],
+  creator: 'Bhanu Pratap Patkar',
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

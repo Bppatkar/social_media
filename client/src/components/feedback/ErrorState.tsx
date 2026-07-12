@@ -16,7 +16,7 @@ export default function ErrorState({
   onRetry,
 }: ErrorStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/5 px-6 py-16 text-center">
+    <div role="alert" className="flex flex-col items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/5 px-6 py-16 text-center">
       <div className="mb-5 rounded-full bg-red-500/10 p-4">
         <AlertTriangle className="h-10 w-10 text-red-400" />
       </div>
