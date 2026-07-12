@@ -1,0 +1,19 @@
+node_modules
+  .next
+
+  .git
+  .github
+  .vscode
+
+coverage
+
+  .env.local
+  .env.development.local
+  .env.test.local
+  .env.production.local
+
+npm - debug.log
+yarn - error.log
+
+README.md
+progress.md
