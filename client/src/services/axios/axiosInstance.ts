@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   timeout: 10000, // Set a timeout of 10 seconds
   withCredentials: true,
 });
-
+console.log('Axios Base URL:', axiosInstance.defaults.baseURL);
 // ================================
 // Response Interceptor
 // Handle Unauthorized
