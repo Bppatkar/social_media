@@ -33,11 +33,9 @@ import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
 
-const allowedOrigins = new Set([
-  env.CLIENT_URL,
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-]);
+const allowedOrigins = new Set(
+  env.CLIENT_URL.split(',').map((origin) => origin.trim())
+);
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: any) => {
