@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface UserAvatarProps {
@@ -23,7 +21,7 @@ export default function UserAvatar({
 
   return (
     <Avatar className={sizes[size]}>
-      <AvatarImage src={src} />
+      <AvatarImage src={src} alt={src}/>
 
       <AvatarFallback className="bg-violet-600 text-white">
         {alt.charAt(0).toUpperCase()}

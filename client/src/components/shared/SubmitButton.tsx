@@ -17,7 +17,9 @@ export default function SubmitButton({ loading, children, ...props }: Props) {
       disabled={loading || props.disabled}
       className={`h-12 w-full bg-linear-to-r from-violet-600 to-indigo-600 font-semibold ${props.className ?? ''}`}
     >
-      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {loading && (
+        <Loader2 area-hidden="true" className="mr-2 h-4 w-4 animate-spin" />
+      )}
       {children}
     </Button>
   );

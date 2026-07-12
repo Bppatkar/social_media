@@ -80,8 +80,9 @@ export default function AppHeader() {
             size="icon"
             className="text-white md:hidden"
             onClick={handleMenuClick}
+            area-label="Open Navigation Menu"
           >
-            <Menu className="h-5 w-5" />
+            <Menu aria-hidden="true" className="h-5 w-5" />
           </Button>
 
           {/* Desktop */}
@@ -110,8 +111,9 @@ export default function AppHeader() {
                 variant="ghost"
                 size="icon"
                 className="relative text-white hover:bg-white/10"
+                aria-label="Open Notifications"
               >
-                <Bell className="h-5 w-5" />
+                <Bell  aria-hidden="true" className="h-5 w-5" />
 
                 {!notificationOpen && (unread?.count ?? 0) > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
@@ -138,6 +140,7 @@ export default function AppHeader() {
                 variant="ghost"
                 size="icon"
                 className="h-10 w-10 rounded-full p-0"
+                aria-label="Open User Menu"
               >
                 <Avatar className="h-9 w-9">
                   <AvatarImage src={user?.profileImage} alt={user?.username} />
@@ -155,14 +158,14 @@ export default function AppHeader() {
             >
               <DropdownMenuItem asChild>
                 <Link href="/profile">
-                  <User className="mr-2 h-4 w-4" />
+                  <User aria-hidden="true" className="mr-2 h-4 w-4" />
                   Profile
                 </Link>
               </DropdownMenuItem>
 
               <DropdownMenuItem asChild>
                 <Link href="/settings">
-                  <Settings className="mr-2 h-4 w-4" />
+                  <Settings aria-hidden="true" className="mr-2 h-4 w-4" />
                   Settings
                 </Link>
               </DropdownMenuItem>
@@ -173,7 +176,7 @@ export default function AppHeader() {
                 onClick={handleLogout}
                 className="text-red-400 focus:text-red-400"
               >
-                <LogOut className="mr-2 h-4 w-4" />
+                <LogOut aria-hidden="true" className="mr-2 h-4 w-4" />
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

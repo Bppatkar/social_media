@@ -143,7 +143,7 @@ export default function PostCard({
                   <span>@{post.owner.username}</span>
                 </Link>
 
-                <span>•</span>
+                <span aria-hidden="true">•</span>
 
                 <TimeAgo date={post.createdAt} />
               </div>
@@ -166,7 +166,7 @@ export default function PostCard({
                 loading="eager"
                 priority
                 src={post.image}
-                alt="Post"
+                alt={`Post by ${post.owner.username}`}
                 width={900}
                 height={700}
                 className="h-auto w-full object-cover"
@@ -193,6 +193,7 @@ export default function PostCard({
           <Button
             variant="ghost"
             onClick={handleLike}
+            area-label={liked ? 'Unlike Post' : 'Like Post'}
             className="justify-center gap-2 text-zinc-300 hover:bg-red-500/10 hover:text-red-400"
           >
             <Heart
@@ -204,6 +205,7 @@ export default function PostCard({
           <Button
             variant="ghost"
             onClick={() => setCommentOpen(true)}
+            area-label=" Open Comment"
             className="justify-center gap-2 text-zinc-300 hover:bg-sky-500/10 hover:text-sky-400"
           >
             <MessageCircle className="h-5 w-5" />
@@ -213,6 +215,7 @@ export default function PostCard({
           <Button
             variant="ghost"
             onClick={handleShare}
+            area-label="Share Post"
             className="justify-center gap-2 text-zinc-300 hover:bg-emerald-500/10 hover:text-emerald-400"
           >
             <Repeat2 className="h-5 w-5" />
@@ -222,6 +225,7 @@ export default function PostCard({
           <Button
             variant="ghost"
             onClick={handleBookmark}
+            area-label="Save Post"
             className="justify-center gap-2 text-zinc-300 hover:bg-violet-500/10 hover:text-violet-400"
           >
             <Bookmark className="h-5 w-5" />
