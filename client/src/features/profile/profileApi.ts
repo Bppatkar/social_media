@@ -1,5 +1,5 @@
 import { baseApi } from '@/services/api/baseApi';
-import type { ApiResponse, Post, User } from '@/types';
+import type { ApiResponse, User } from '@/types';
 
 export const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

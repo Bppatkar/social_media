@@ -7,7 +7,7 @@ import {
   selectIsAuthenticated,
 } from '@/features/auth/authSelectors';
 import { setCredentials, logout } from '@/features/auth/authSlice';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 export function useAuth() {
   const dispatch = useAppDispatch();
@@ -15,12 +15,15 @@ export function useAuth() {
 
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
-  const login = (user: User) => {
-    dispatch(setCredentials({ user }));
-  };
-  const signOut = () => {
+  const login = useCallback(
+    (user: User) => {
+      dispatch(setCredentials({ user }));
+    },
+    [dispatch]
+  );
+  const signOut = useCallback(() => {
     dispatch(logout());
-  };
+  }, [dispatch]);
 
   return useMemo(
     () => ({
@@ -29,6 +32,6 @@ export function useAuth() {
       login,
       logout: signOut,
     }),
-    [user, isAuthenticated]
+    [user, isAuthenticated, login, signOut]
   );
 }

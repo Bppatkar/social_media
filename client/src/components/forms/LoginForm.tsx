@@ -157,7 +157,7 @@ export default function LoginForm() {
 
             <div className="relative flex justify-center">
               <span className="bg-transparent px-3 text-[11px] tracking-wider text-zinc-500 uppercase">
-                Don't have an account?
+                Don&apos;t have an account?
               </span>
             </div>
           </div>

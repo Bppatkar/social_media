@@ -1,4 +1,3 @@
-import { createElement } from 'react';
 import { Heart, MessageCircle, UserPlus } from 'lucide-react';
 import type { Notification } from '@/types';
 

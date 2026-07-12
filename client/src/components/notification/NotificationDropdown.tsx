@@ -61,7 +61,7 @@ export default function NotificationDropdown() {
       <div className="max-h-105 overflow-y-auto">
         {latest.length === 0 ? (
           <p className="p-6 text-center text-sm text-zinc-400">
-            You're all caught up.
+            You&apos;re all caught up.
           </p>
         ) : (
           latest.map((notification) => (

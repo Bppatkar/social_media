@@ -24,7 +24,7 @@ export default function ProfilePage() {
     data: posts,
     isLoading: postLoading,
     isError: postError,
-  } = useGetUserPostsQuery(me?._id!, {
+  } = useGetUserPostsQuery(me?._id ?? '', {
     skip: !me,
   });
 
