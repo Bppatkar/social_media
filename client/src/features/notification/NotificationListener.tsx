@@ -23,7 +23,7 @@ export default function NotificationListener() {
     const socket = connectSocket();
 
     const handleConnect = () => {
-      console.log('Socket connected', socket.id);
+      // console.log('Socket connected', socket.id);
       dispatch(setConnected(true));
 
       if (user?._id) {
@@ -32,12 +32,12 @@ export default function NotificationListener() {
     };
 
     const handleDisconnect = () => {
-      console.log('Socket disconnected');
+      // console.log('Socket disconnected');
       dispatch(setConnected(false));
     };
 
     const handleNotification = (notification: NotificationPayload) => {
-      console.log('Received notification:', notification);
+      // console.log('Received notification:', notification);
       dispatch(addNotification(notification));
       dispatch(notificationApi.util.invalidateTags(['Notification']));
     };

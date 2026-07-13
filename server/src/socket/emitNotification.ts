@@ -12,7 +12,7 @@ export const emitNotification = ({
   notification,
 }: EmitNotificationPayload) => {
   try {
-    console.log('Emitting notification to room:', recipientId, notification);
+    // console.log('Emitting notification to room:', recipientId, notification);
 
     getIo().to(recipientId).emit('notification', notification);
   } catch {

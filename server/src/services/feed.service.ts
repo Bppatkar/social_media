@@ -29,8 +29,8 @@ export const getGlobalFeedService = async () => {
 };
 
 export const invalidateFeedCacheService = async () => {
-  console.log('NODE_ENV =', process.env.NODE_ENV);
-  console.log('REDIS OPEN =', redisClient.isOpen);
+  // console.log('NODE_ENV =', process.env.NODE_ENV);
+  // console.log('REDIS OPEN =', redisClient.isOpen);
 
   if (process.env.NODE_ENV === 'test') {
     console.log('SKIPPING REDIS INVALIDATION');
