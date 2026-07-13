@@ -3,6 +3,9 @@ import env from './env.js';
 
 const redisClient = createClient({
   url: env.REDIS_URL,
+  socket: {
+    reconnectStrategy: false 
+  }
 });
 
 redisClient.on('connect', () => {
