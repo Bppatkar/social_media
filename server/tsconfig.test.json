@@ -5,6 +5,8 @@
     "moduleResolution": "node",
     "verbatimModuleSyntax": false,
     "isolatedModules": false,
-    "noUncheckedSideEffectImports": false
+    "noUncheckedSideEffectImports": false,
+
+    "types": ["node", "jest"]
   }
 }
