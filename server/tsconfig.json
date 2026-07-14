@@ -23,9 +23,11 @@
     "noUncheckedSideEffectImports": true,
 
     "moduleDetection": "force",
-    
+
     "skipLibCheck": true,
 
     "types": ["node"]
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts", "src/**/*.test.tsx", "src/tests"]
 }
