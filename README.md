@@ -1,5 +1,8 @@
 # 🚀 SocialSphere
 
+<img width="7088" height="5612" alt="socialSphere gitDiagram" src="https://github.com/user-attachments/assets/8f519e3b-4075-437a-a476-907f59810415" />
+
+
 A full-stack production-grade social media platform built with modern engineering practices.
 
 This project focuses on scalable architecture, security, real-time communication, performance, and deployment.
